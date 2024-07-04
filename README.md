@@ -16,6 +16,6 @@ Key features include:
 
 The repo is structured as:
 
--   `.idea` contains the account management feature according to Clean Architecture.
--   `src` contains interactors for use cases.
+-   `.idea` contains the core of the repository.
+-   `src` contains the app, entity, and use case directory.
 -   `test` contains the test directory.
