@@ -1,6 +1,6 @@
 package entity;
 
 public class Requests {
-    User From;
-    User To;
+    private  User From;
+    private  User To;
 }

@@ -1,7 +1,7 @@
 package entity;
 
 public class Message {
-    String Photo;
-    User sender;
-    User receiver;
+     private String Photo;
+     private User sender;
+     private User receiver;
 }
