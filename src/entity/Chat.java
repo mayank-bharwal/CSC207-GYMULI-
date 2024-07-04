@@ -3,7 +3,7 @@ package entity;
 import java.util.ArrayList;
 
 public class Chat {
-    ArrayList<User> users = new ArrayList<>();
-    Integer noOfMembers;
-    ArrayList<Message> allmessages = new ArrayList<>();
+     private ArrayList<User> users = new ArrayList<>();
+     private Integer noOfMembers;
+     private ArrayList<Message> allmessages = new ArrayList<>();
 }
