@@ -11,6 +11,4 @@ public class User {
     private String profilePicture;
     private List<String> interests = new ArrayList<String>();
     private List<String> friends = new ArrayList<String>();
-
-
 }
