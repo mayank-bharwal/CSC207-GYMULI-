@@ -1,6 +1,6 @@
 package use_case.account_creation;
 
-public class AccountCreationInteractor implements AccountCreationInputBoundary {
+abstract class AccountCreationInteractor implements AccountCreationInputBoundary {
 
 
     @Override
