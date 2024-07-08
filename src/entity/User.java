@@ -5,7 +5,7 @@ import java.util.List;
 
 public class User {
     private String username;
-    private  String password;
+    private String password;
     private String bio;
     private String programOfStudy;
     private String profilePicture;
