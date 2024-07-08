@@ -101,7 +101,6 @@ public class SignupView extends JPanel implements PropertyChangeListener {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         signupButton.addActionListener(e -> {
-            // Add logic to handle signup action
             System.out.println("Signing up...");
         });
         formPanel.add(signupButton, gbc);

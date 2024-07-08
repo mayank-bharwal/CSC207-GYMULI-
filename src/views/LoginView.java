@@ -21,7 +21,6 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
 
-        // Create the form panel
         JPanel formPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -67,7 +66,6 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         loginButton.addActionListener(e -> {
-            // Add logic to handle login action
             System.out.println("Logging in...");
         });
         formPanel.add(loginButton, gbc);
@@ -82,6 +80,6 @@ public class LoginView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // Handle view model property changes
+
     }
 }
