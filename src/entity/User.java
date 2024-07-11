@@ -1,20 +1,22 @@
 package entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
     private String username;
-    private  String password;
+    private String password;
     private String bio;
     private String programOfStudy;
     private String profilePicture;
     private List<String> interests = new ArrayList<String>();
     private List<String> friends = new ArrayList<String>();
+    private LocalDateTime dateCreated;
 
 
     User(String username, String password, String bio, String programOfStudy, String profilePicture,
-         List<String> interests, List<String> friends) {
+         List<String> interests, List<String> friends, LocalDateTime dateCreated) {
         this.username = username;
         this.password = password;
         this.bio = bio;
@@ -22,6 +24,7 @@ public class User {
         this.profilePicture = profilePicture;
         this.interests = interests;
         this.friends = friends;
+        this.dateCreated = dateCreated;
 
     }
 
@@ -53,6 +56,8 @@ public class User {
         return friends;
     }
 
+    public LocalDateTime getDateCreated() { return dateCreated; }
+
 
     public void setUsername(String username) {
         this.username = username;
@@ -81,5 +86,7 @@ public class User {
     public void setFriends(List<String> friends) {
         this.friends = friends;
     }
+
+    public void setDateCreated(LocalDateTime dateCreated) { this.dateCreated = dateCreated; }
 
 }
