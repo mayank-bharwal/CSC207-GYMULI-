@@ -1,6 +1,6 @@
 package use_case.group_creation;
 
-import entity.User;
+import entity.Group;
 
 import java.util.ArrayList;
 import java.util.List;
