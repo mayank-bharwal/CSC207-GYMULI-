@@ -11,6 +11,7 @@ public class EditFriendsInputData {
         this.addition = addition;
         this.deletion = deletion;
     }
+
     public User getAddition() {
         return addition;
     }

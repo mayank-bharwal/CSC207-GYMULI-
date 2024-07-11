@@ -7,6 +7,7 @@ public class EditFriendsInteractor implements EditFriendsInputBoundary{
     public EditFriendsInteractor(EditFriendsOutputBoundary outputBoundary, EditFriendsUserDataAccessInterface userDataAccess) {
         this.outputBoundary = outputBoundary;
         this.userDataAccess = userDataAccess;
+        this.UserFactory userFactory;
     }
 
     @Override
