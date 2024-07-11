@@ -1,4 +1,4 @@
-package use_case.Login;
+package use_case.login;
 import entity.User;
 
 public interface LoginUserDataAccessInterface {

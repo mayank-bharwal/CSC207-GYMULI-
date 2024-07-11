@@ -1,4 +1,4 @@
-package use_case.Login;
+package use_case.login;
 
 public class LoginInteractor implements LoginInputBoundary{
 

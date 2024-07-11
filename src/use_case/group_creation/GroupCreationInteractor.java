@@ -7,5 +7,6 @@ public class GroupCreationInteractor implements GroupCreationInputBoundary {
 
     @Override
     public void execute(GroupCreationInputData inputData) {
+
     }
 }
