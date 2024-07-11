@@ -7,10 +7,11 @@ import entity.Chat;
 import java.sql.Time;
 
 public class SendMessageInputData {
+
     private Message message;
-    private Time date;
+    final private Time date;
     //private Boolean sent_status;
-    private User sender;
+    final private User sender;
     private User receiver;
 
     public SendMessageInputData(Message message, Time date, User sender, User receiver) {
