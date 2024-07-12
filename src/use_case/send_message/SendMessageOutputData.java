@@ -1,18 +1,21 @@
 package use_case.send_message;
 
+import entity.Message;
+import entity.Chat;
+
 public class SendMessageOutputData {
 
-    private final String message;
+    private Message message;
     private String creationTime;
     private boolean useCaseFailed;
 
-    public SignupOutputData(String username, String creationTime, boolean useCaseFailed) {
+    public SendMessageOutputData(String username, String creationTime, boolean useCaseFailed) {
         this.message = message;
         this.creationTime = creationTime;
         this.useCaseFailed = useCaseFailed;
     }
 
-    public String getUsername() {
+    public Message getMessage() {
         return message;
     }
 
