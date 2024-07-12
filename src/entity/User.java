@@ -7,21 +7,21 @@ import java.util.List;
 public class User {
     private String username;
     private String password;
+    private Integer age;
     private String bio;
     private String programOfStudy;
-    private String profilePicture;
     private List<String> interests = new ArrayList<String>();
     private List<String> friends = new ArrayList<String>();
     private LocalDateTime dateCreated;
 
 
-    User(String username, String password, String bio, String programOfStudy, String profilePicture,
+    User(String username, String password,Integer age, String bio, String programOfStudy,
          List<String> interests, List<String> friends, LocalDateTime dateCreated) {
         this.username = username;
         this.password = password;
+        this.age = age;
         this.bio = bio;
         this.programOfStudy = programOfStudy;
-        this.profilePicture = profilePicture;
         this.interests = interests;
         this.friends = friends;
         this.dateCreated = dateCreated;
@@ -40,12 +40,12 @@ public class User {
         return bio;
     }
 
-    public String getProgramOfStudy() {
-        return programOfStudy;
+    public Integer getAge() {
+        return age;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public String getProgramOfStudy() {
+        return programOfStudy;
     }
 
     public List<String> getInterests() {
@@ -71,12 +71,12 @@ public class User {
         this.bio = bio;
     }
 
-    public void setProgramOfStudy(String programOfStudy) {
-        this.programOfStudy = programOfStudy;
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setProgramOfStudy(String programOfStudy) {
+        this.programOfStudy = programOfStudy;
     }
 
     public void setInterests(List<String> interests) {
