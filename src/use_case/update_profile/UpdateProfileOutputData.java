@@ -1,5 +1,5 @@
 package use_case.update_profile;
-
+//output data
 import java.util.List;
 
 public class UpdateProfileOutputData {
