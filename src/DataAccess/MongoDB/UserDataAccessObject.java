@@ -11,6 +11,8 @@ import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface {
@@ -20,10 +22,13 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     MongoCollection<Document> MessageCollection = database.getCollection("messages");
     MongoCollection<Document> UserCollection = database.getCollection("users");
     private final Map<String, User> accounts = new HashMap<>();
+    private UserFactory userFactory;
 
-    public UserDataAccessObject() {
+    public UserDataAccessObject(UserFactory userFactory) {
+        this.userFactory = userFactory;
         try (MongoCursor<Document> cursor = UserCollection.find().iterator()) {
             while (cursor.hasNext()) {
+
                 Document doc = cursor.next();
                 String username = doc.getString("username");
                 String password = doc.getString("password");
@@ -32,9 +37,13 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                 String programOfStudy = doc.getString("programOfStudy");
                 List<String> interests = (List<String>) doc.get("interests");
                 List<String> friends = (List<String>) doc.get("friends");
-                Date dateCreated = doc.getDate("dateCreated");
+                Date date = doc.getDate("dateCreated");
 
-                User user = UserFactory.create(username, password, bio, age, programOfStudy, interests, friends, dateCreated);
+                LocalDateTime dateCreated = date.toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime();
+
+                User user = userFactory.create(username, password, bio, age, programOfStudy, interests, friends, dateCreated);
                 accounts.put(username, user);
             }
         }
