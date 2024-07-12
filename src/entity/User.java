@@ -7,7 +7,7 @@ public interface User {
     String getUsername();
 
     String getPassword();
-
+  
     String getBio();
 
     String getProgramOfStudy();
@@ -19,7 +19,6 @@ public interface User {
     List<String> getFriends();
 
     LocalDateTime getDateCreated();
-
 
     void setUsername(String username);
 

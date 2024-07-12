@@ -26,7 +26,6 @@ public class UpdateProfileInteractor {
         user.setProgramOfStudy(programOfStudy);
         user.setProfilePicture(profilePicture);
         user.setInterests(interests);
-        user.setFriends(friends);
         return "Profile updated successfully";
     }
 }
