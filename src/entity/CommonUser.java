@@ -15,7 +15,7 @@ public class CommonUser implements User {
     private LocalDateTime dateCreated;
 
 
-    CommonUser(String username, String password, String bio, String programOfStudy,Integer age,
+    CommonUser(String username, String password, String bio, Integer age,String programOfStudy,
                List<String> interests, List<String> friends, LocalDateTime dateCreated) {
         this.username = username;
         this.password = password;
@@ -73,7 +73,7 @@ public class CommonUser implements User {
 
     public void setProgramOfStudy(String programOfStudy) {
         this.programOfStudy = programOfStudy;
-    }\
+    }
 
     public void setAge(Integer age) {
         this.age = age;
