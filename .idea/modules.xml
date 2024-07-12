@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/CSC207-GYMULI-.iml" filepath="$PROJECT_DIR$/.idea/CSC207-GYMULI-.iml" />
+      <module fileurl="file://$PROJECT_DIR$/my-mongo-project.iml" filepath="$PROJECT_DIR$/my-mongo-project.iml" />
     </modules>
   </component>
 </project>
