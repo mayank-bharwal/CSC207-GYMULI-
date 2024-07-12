@@ -25,7 +25,7 @@ public class SendMessageInteractor {
         User receiver = message.getReceiver();
         User sender = message.getSender();
         LocalDateTime now = LocalDateTime.now();
-        Chat chat = Message.create(SendMessageInputData.getMessage(), SendMessageInputData.getSender(), SendMessageInputData.getReceiver, now);
+        Message message = Message.create(SendMessageInputData.getMessage(), SendMessageInputData.getSender(), SendMessageInputData.getReceiver, now);
         SendMessageUserDataAccessInterface.save(message);
         SendMessageOutputData sendmessageOutputData = new SendMessageOutputData(Message.getMessage(), now.toString(), false);
         userPresenter.prepareSuccessView(sendmessageOutputData);
