@@ -6,6 +6,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCursor;
 import entity.Message;
+import entity.MessageFactory;
 import entity.User;
 import entity.UserFactory;
 import org.bson.Document;
@@ -23,12 +24,19 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     MongoDatabase database = mongoClient.getDatabase("GYMULI");
     MongoCollection<Document> MessageCollection = database.getCollection("messages");
     MongoCollection<Document> UserCollection = database.getCollection("users");
-    private final Map<String, User> accounts = new HashMap<>();
+    private  Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
+    private Map<String, Message> messages = new HashMap<>();
+    private MessageFactory messageFactory;
 
-    public UserDataAccessObject(UserFactory userFactory, Map<String, User> accounts) {
+
+    public UserDataAccessObject(UserFactory userFactory, Map<String, User> accounts, Map<String, Message> messages, MessageFactory messageFactory) {
+
         this.userFactory = userFactory;
         this.accounts = accounts;
+        this.messages = messages;
+        this.messageFactory = messageFactory;
+
         try (MongoCursor<Document> cursor = UserCollection.find().iterator()) {
             while (cursor.hasNext()) {
 
@@ -48,6 +56,22 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
                 User user = userFactory.createUser(username, password, bio, age, programOfStudy, interests, friends, dateCreated);
                 accounts.put(username, user);
+
+                Document mDoc = cursor.next();
+                String chatName = mDoc.getString("chatName");
+                String sender = mDoc.getString("username");
+                String receiver = mDoc.getString("receiver");
+                String messageText = mDoc.getString("message");
+                Date sendDate = mDoc.getDate("dateCreated");
+
+                LocalDateTime dateCreatedM = sendDate.toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime();
+
+                Message message = messageFactory.createMessage(chatName, sender, receiver, messageText, dateCreatedM);
+                messages.put(chatName, message);
+
+
             }
         }
     }
@@ -81,21 +105,22 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
     @Override
-    public void save(Message message) {
+    public void saveMessage(Message message) {
+        Document document = new Document();
+        document.append("chatName", message.getChatName());
+        document.append("username", message.getSender());
+        document.append("receiver", message.getReceiver());
+        document.append("message", message.getMessage());
+        document.append("dateCreated", LocalDateTime.now());
+        MessageCollection.insertOne(document);
 
+        messages.put(message.getChatName(), message)
     }
 
     @Override
     public User getUser(String username) {
             return accounts.get(username);
     }
-
-
-
-
-
-
-
 
 }
 
