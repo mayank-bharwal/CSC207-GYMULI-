@@ -6,7 +6,7 @@ import entity.User;
 
 import java.time.LocalDateTime;
 
-public class SendMessageInteractor {
+public class SendMessageInteractor  {
     final SendMessageUserDataAccessInterface userDataAccessObject;
     final SendMessageOutputBoundary userPresenter;
     Message message;

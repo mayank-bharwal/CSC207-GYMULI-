@@ -7,6 +7,9 @@ public class LoginViewModel {
     public String L_USERNAME;
 
 
+    public LoginState state = new LoginState();
+
+
 
 
 }
