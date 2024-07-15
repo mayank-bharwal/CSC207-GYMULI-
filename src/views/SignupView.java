@@ -1,121 +1,186 @@
 package views;
 
-
-import interface_adapter.SignupViewModel;
-import interface_adapter.ViewModelManager;
+import interface_adapter.account_creation.SignupController;
+import interface_adapter.account_creation.SignupState;
+import interface_adapter.account_creation.SignupViewModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 
-public class SignupView extends JPanel implements PropertyChangeListener {
-    public final String viewName = "SignupView";
-    private final SignupViewModel viewModel;
-    private final ViewModelManager viewModelManager;
+public class SignupView extends JPanel implements ActionListener, PropertyChangeListener {
+    public final String viewName = "sign up";
 
-    public SignupView(ViewModelManager viewModelManager, SignupViewModel viewModel) {
-        this.viewModelManager = viewModelManager;
-        this.viewModel = viewModel;
-        this.viewModel.addPropertyChangeListener(this);
+    private final SignupViewModel signupViewModel;
+    private final SignupController signupController;
 
-        setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(800, 600));
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+    private final JButton signUp;
+    private final JButton cancel;
+    private final JButton clear;
 
-        JLabel titleLabel = new JLabel("Signup");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    public SignupView(SignupController controller, SignupViewModel signupViewModel) {
+        this.signupController = controller;
+        this.signupViewModel = signupViewModel;
+        signupViewModel.addPropertyChangeListener(this);
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        formPanel.add(titleLabel, gbc);
+        signupViewModel.titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.EAST;
-
-        JLabel usernameLabel = new JLabel("Username:");
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        formPanel.add(usernameLabel, gbc);
-
-        JTextField usernameField = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        formPanel.add(usernameField, gbc);
-
-        JLabel passwordLabel = new JLabel("Password:");
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.EAST;
-        formPanel.add(passwordLabel, gbc);
-
-        JPasswordField passwordField = new JPasswordField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        formPanel.add(passwordField, gbc);
-
-        JLabel programOfStudyLabel = new JLabel("Program(s) of Study:");
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.anchor = GridBagConstraints.EAST;
-        formPanel.add(programOfStudyLabel, gbc);
-
-        JTextField programOfStudyField = new JTextField(20);
-        gbc.gridx = 1;
-        gbc.gridy = 5;
-        gbc.anchor = GridBagConstraints.WEST;
-        formPanel.add(programOfStudyField, gbc);
-
-        JLabel interestsLabel = new JLabel("Interests:");
-        gbc.gridx = 0;
-        gbc.gridy = 7;
-        gbc.anchor = GridBagConstraints.EAST;
-        formPanel.add(interestsLabel, gbc);
+        LabelTextPanel usernameInfo = new LabelTextPanel(
+                signupViewModel.usernameLabel, signupViewModel.usernameInputField);
+        LabelTextPanel passwordInfo = new LabelTextPanel(
+                signupViewModel.passwordLabel, signupViewModel.passwordInputField);
+        LabelTextPanel repeatPasswordInfo = new LabelTextPanel(
+                signupViewModel.repeatPasswordLabel, signupViewModel.repeatPasswordInputField);
 
         JPanel interestsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        JTextField interest1Field = new JTextField(10);
-        JTextField interest2Field = new JTextField(10);
-        JTextField interest3Field = new JTextField(10);
-        interestsPanel.add(interest1Field);
-        interestsPanel.add(interest2Field);
-        interestsPanel.add(interest3Field);
+        interestsPanel.add(signupViewModel.interest1InputField);
+        interestsPanel.add(signupViewModel.interest2InputField);
+        interestsPanel.add(signupViewModel.interest3InputField);
 
-        gbc.gridx = 1;
-        gbc.gridy = 7;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        formPanel.add(interestsPanel, gbc);
+        JPanel buttons = new JPanel();
+        signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
+        buttons.add(signUp);
+        cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
+        buttons.add(cancel);
+        clear = new JButton(SignupViewModel.CLEAR_BUTTON_LABEL);
+        buttons.add(clear);
 
-        gbc.gridwidth = 1;
+        signUp.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(signUp)) {
+                            SignupState currentState = signupViewModel.getState();
+                            signupController.execute(
+                                    currentState.getUsername(),
+                                    currentState.getPassword(),
+                                    currentState.getRepeatPassword(),
+                                    currentState.getProgramOfStudy(),
+                                    Arrays.asList(
+                                            signupViewModel.interest1InputField.getText(),
+                                            signupViewModel.interest2InputField.getText(),
+                                            signupViewModel.interest3InputField.getText()
+                                    ),
+                                    currentState.getBio(),
+                                    currentState.getAge()
+                            );
+                        }
+                    }
+                }
+        );
 
+        clear.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        signupViewModel.usernameInputField.setText("");
+                        signupViewModel.passwordInputField.setText("");
+                        signupViewModel.repeatPasswordInputField.setText("");
+                        signupViewModel.interest1InputField.setText("");
+                        signupViewModel.interest2InputField.setText("");
+                        signupViewModel.interest3InputField.setText("");
+                        SignupState currentState = new SignupState();
+                        signupViewModel.setState(currentState);
+                        signupViewModel.firePropertyChanged();
+                    }
+                }
+        );
 
-        JButton signupButton = new JButton("Signup");
-        gbc.gridx = 0;
-        gbc.gridy = 9;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        signupButton.addActionListener(e -> {
-            System.out.println("Signing up...");
-        });
-        formPanel.add(signupButton, gbc);
+        cancel.addActionListener(this);
 
-        JButton loginButton = new JButton("Go to Login");
-        loginButton.addActionListener(e -> viewModelManager.setActiveView("LoginView"));
-        gbc.gridy = 10;
-        formPanel.add(loginButton, gbc);
+        signupViewModel.usernameInputField.addKeyListener(
+                new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        SignupState currentState = signupViewModel.getState();
+                        String text = signupViewModel.usernameInputField.getText() + e.getKeyChar();
+                        currentState.setUsername(text);
+                        signupViewModel.setState(currentState);
+                    }
 
-        add(formPanel, BorderLayout.CENTER);
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                    }
 
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                    }
+                });
+
+        signupViewModel.passwordInputField.addKeyListener(
+                new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        SignupState currentState = signupViewModel.getState();
+                        currentState.setPassword(new String(signupViewModel.passwordInputField.getPassword()) + e.getKeyChar());
+                        signupViewModel.setState(currentState);
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                    }
+                }
+        );
+
+        signupViewModel.repeatPasswordInputField.addKeyListener(
+                new KeyListener() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        SignupState currentState = signupViewModel.getState();
+                        currentState.setRepeatPassword(new String(signupViewModel.repeatPasswordInputField.getPassword()) + e.getKeyChar());
+                        signupViewModel.setState(currentState);
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                    }
+                }
+        );
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        this.add(signupViewModel.titleLabel);
+        this.add(usernameInfo);
+        this.add(passwordInfo);
+        this.add(repeatPasswordInfo);
+        this.add(new LabelTextPanel(signupViewModel.interestsLabel, new JTextField()));
+        this.add(interestsPanel);
+        this.add(buttons);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        JOptionPane.showConfirmDialog(this, "Cancel not implemented yet.");
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // Handle view model property changes
+        SignupState state = (SignupState) evt.getNewValue();
+        if (state.getUsernameError() != null) {
+            JOptionPane.showMessageDialog(this, state.getUsernameError());
+        }
+    }
+
+    private static class LabelTextPanel extends JPanel {
+        public LabelTextPanel(JLabel label, JTextField textField) {
+            this.setLayout(new BorderLayout());
+            this.add(label, BorderLayout.WEST);
+            this.add(textField, BorderLayout.CENTER);
+        }
     }
 }
+
+

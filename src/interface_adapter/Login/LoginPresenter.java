@@ -7,7 +7,7 @@ import views.LoginView;
 public class LoginPresenter implements LoginOutputBoundary {
 
     private final LoginViewModel viewModel;
-    private final LogggedInViewModel logggedInViewModel;
+    // private final LogggedInViewModel logggedInViewModel;
 
 
     public LoginPresenter(LoginViewModel viewModel) {

@@ -114,7 +114,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", LocalDateTime.now());
         MessageCollection.insertOne(document);
 
-        messages.put(message.getChatName(), message)
+        messages.put(message.getChatName(), message);
     }
 
     @Override

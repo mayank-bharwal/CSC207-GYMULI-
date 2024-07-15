@@ -1,5 +1,5 @@
 package use_case.update_profile;
-
+/*
 import entity.User;
 import entity.UserFactory;
 
@@ -12,7 +12,7 @@ public class UpdateProfileInteractor {
 
     public UpdateProfileInteractor() {
         List<User> initialUsers = new ArrayList<>();
-        User jasmine = UserFactory.createUser("Jasmine", "password", "(Demo)",
+         User jasmine = UserFactory.createUser("Jasmine", "password", "(Demo)",
                 "Music", "jasmine.jpg", new ArrayList<>(), new ArrayList<>());
         initialUsers.add(jasmine);
         users = Collections.synchronizedList(initialUsers);
@@ -29,3 +29,4 @@ public class UpdateProfileInteractor {
         return "Profile updated successfully";
     }
 }
+*/
