@@ -53,7 +53,7 @@ public class RequestsTest {
         newInterests.add("Coding");
         newInterests.add("Gaming");
 
-        User newFromUser = userFactory.createUser("Barry", "newPassword", "Seeking direction",
+        User newFromUser = userFactory.createUser("Barry", "newPassword", "Seeking Direction",
                 23, "Arts", newInterests, new ArrayList<>(), LocalDateTime.now());
         request.setFrom(newFromUser);
         assertEquals(newFromUser, request.getFrom());
