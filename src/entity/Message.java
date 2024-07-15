@@ -7,7 +7,7 @@ public class Message {
     private String sender;
     private String receiver;
     private String message;
-    private final LocalDateTime time;
+    final private LocalDateTime time;
 
 
       public Message(String chatName, String sender, String receiver, String message) {
