@@ -101,7 +101,7 @@ public class UserFactoryTest {
         assertNotNull(user);
         assertEquals("Jasmine", user.getUsername());
         assertEquals("password", user.getPassword());
-        assertEquals("Demo Bio", user.getBio());
+        assertEquals("(Demo)", user.getBio());
         assertEquals(21, user.getAge());
         assertEquals("Computer Science", user.getProgramOfStudy());
         assertEquals(interests, user.getInterests());
