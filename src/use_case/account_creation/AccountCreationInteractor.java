@@ -11,17 +11,26 @@ public class AccountCreationInteractor implements AccountCreationInputBoundary {
     final AccountCreationOutputBoundary accountPresenter;
     final UserFactory userFactory;
 
+    /**
+     *
+     * @param accountDataAccessObject
+     * @param accountPresenter
+     * @param userFactory
+     */
+
     public AccountCreationInteractor(AccountCreationUserDataAccessInterface accountDataAccessObject,
                                      AccountCreationOutputBoundary accountPresenter,
                                      UserFactory userFactory) {
         this.accountDataAccessObject = accountDataAccessObject;
         this.accountPresenter = accountPresenter;
         this.userFactory = userFactory;
+
     }
 
 
     @Override
     public void execute(AccountCreationInputData inputData) {
+
         if (accountDataAccessObject.AccountExists(inputData.getUsername())) {
             accountPresenter.setFailView("Account already exists");
         } else if (!inputData.getPassword().equals(inputData.getRepeatPassword())) {
@@ -39,6 +48,7 @@ public class AccountCreationInteractor implements AccountCreationInputBoundary {
                     date);
 
             accountDataAccessObject.save(user);
+
         }
     }
 
