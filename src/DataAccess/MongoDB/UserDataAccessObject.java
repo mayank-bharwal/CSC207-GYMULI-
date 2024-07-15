@@ -5,17 +5,19 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCursor;
+import entity.Message;
 import entity.User;
 import entity.UserFactory;
 import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
+import use_case.send_message.SendMessageUserDataAccessInterface;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
-public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface {
+public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface, SendMessageUserDataAccessInterface {
     String uri = "mongodb+srv://UmerFarooqui:RealMadrid123Canon@cluster0.vbtnfad.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     MongoClient mongoClient = MongoClients.create(uri);
     MongoDatabase database = mongoClient.getDatabase("GYMULI");
@@ -24,8 +26,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     private final Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
 
-    public UserDataAccessObject(UserFactory userFactory) {
+    public UserDataAccessObject(UserFactory userFactory, Map<String, User> accounts) {
         this.userFactory = userFactory;
+        this.accounts = accounts;
         try (MongoCursor<Document> cursor = UserCollection.find().iterator()) {
             while (cursor.hasNext()) {
 
@@ -43,7 +46,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                         .atZone(ZoneId.systemDefault())
                         .toLocalDateTime();
 
-                User user = userFactory.create(username, password, bio, age, programOfStudy, interests, friends, dateCreated);
+                User user = userFactory.createUser(username, password, bio, age, programOfStudy, interests, friends, dateCreated);
                 accounts.put(username, user);
             }
         }
@@ -75,6 +78,11 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     @Override
     public boolean userExists(String username) {
         return accounts.containsKey(username);
+    }
+
+    @Override
+    public void save(Message message) {
+
     }
 
     @Override

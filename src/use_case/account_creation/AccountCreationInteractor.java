@@ -34,8 +34,8 @@ public class AccountCreationInteractor implements AccountCreationInputBoundary {
             accountPresenter.setFailView("Please fill in all fields");
         } else {
             LocalDateTime date = LocalDateTime.now();
-            User user = UserFactory.createUser(inputData.getUsername(), inputData.getPassword(),
-                    "", inputData.getProgramOfStudy(), "", inputData.getInterests(), Collections.emptyList(),
+            User user = userFactory.createUser(inputData.getUsername(), inputData.getPassword(),
+                    inputData.getBio(), inputData.getAge(), inputData.getProgramOfStudy(), inputData.getInterests(), Collections.emptyList(),
                     date);
         }
     }

@@ -11,6 +11,9 @@ public class LoginViewModel extends ViewModel {
 
 
 
+    public LoginState state = new LoginState();
+
+
 
 
 }

@@ -1,7 +1,9 @@
 package use_case.send_message;
 import entity.Message;
+import entity.User;
 
 public interface SendMessageUserDataAccessInterface{
-     static save(Message message);
-    static void save(Message message);
+     void saveMessage(Message message);
+     User getUser(String username);
+
 }

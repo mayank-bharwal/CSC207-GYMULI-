@@ -7,24 +7,26 @@ import entity.Chat;
 import java.sql.Time;
 
 public class SendMessageInputData {
-
-    private Message message;
+    private String ChatName;
+    private String message;
     //final private Time date;
     //private Boolean sent_status;
-    final private User sender;
-    final private User receiver;
+    final private String sender;
+    final private String receiver;
 
-    public SendMessageInputData(Message message, Time date, User sender, User receiver) {
+    public SendMessageInputData(String ChatName, String message, Time date, String sender, String receiver) {
         this.message = message;
         //this.date = date;
         this.sender = sender;
         this.receiver = receiver;
+        this.ChatName = ChatName;
     }
 
-    Message getMessage() {return message;}
+    String getMessage() {return message;}
     //Time getDate() {return date;}
-    User getSender() {return sender;}
-    User getReceiver() {return receiver;}
+    String getSender() {return sender;}
+    String getReceiver() {return receiver;}
+    String getChatName() {return ChatName;}
 
 
 

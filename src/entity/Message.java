@@ -1,4 +1,6 @@
 package entity;
+import jdk.vm.ci.meta.Local;
+
 import java.time.LocalDateTime;
 
 public class Message {
@@ -7,10 +9,10 @@ public class Message {
     private String sender;
     private String receiver;
     private String message;
-    private final LocalDateTime time;
+    final private LocalDateTime time;
 
 
-      public Message(String chatName, String sender, String receiver, String message) {
+      public Message(String chatName, String sender, String receiver, String message, LocalDateTime time) {
           this.chatName = chatName;
           this.sender = sender;
           this.receiver = receiver;

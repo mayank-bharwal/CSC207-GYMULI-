@@ -1,34 +1,40 @@
 package use_case.send_message;
 
-import entity.Chat;
-import entity.Message;
-import entity.User;
+import entity.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-public class SendMessageInteractor {
-    final SendMessageUserDataAccessInterface userDataAccessObject;
-    final SendMessageOutputBoundary userPresenter;
-    Message message;
+public class SendMessageInteractor implements SendMessageInputBoundary  {
+    final private SendMessageUserDataAccessInterface userDataAccessObject;
+    final private SendMessageOutputBoundary userPresenter;
+    final private MessageFactory messageFactory;
 
-    public SendMessageInteractor(SendMessageUserDataAccessInterface signupDataAccessInterface,
-                            SendMessageOutputBoundary signupOutputBoundary,
-                            Message message) {
-        this.userDataAccessObject = signupDataAccessInterface;
-        this.userPresenter = signupOutputBoundary;
-        this.message = message;
+
+    public SendMessageInteractor(SendMessageUserDataAccessInterface userDataAccessObject,
+                            SendMessageOutputBoundary userPresenter,
+                            MessageFactory messageFactory) {
+        this.userDataAccessObject = userDataAccessObject;
+        this.userPresenter = userPresenter;
+        this.messageFactory = messageFactory;
     }
 
     @Override
-    public void execute(SendMessageInputData SendMessageInputData) {
-        Message message = SendMessageInputData.getMessage();
-        User receiver = message.getReceiver();
-        User sender = message.getSender();
+    public void execute(SendMessageInputData sendMessageInputData) {
+        String message = sendMessageInputData.getMessage();
+        String chatName = sendMessageInputData.getChatName();
+        String receiver = sendMessageInputData.getReceiver();
+        String sender = sendMessageInputData.getSender();
         LocalDateTime now = LocalDateTime.now();
-        Message message = Message.create(SendMessageInputData.getMessage(), SendMessageInputData.getSender(), SendMessageInputData.getReceiver, now);
-        SendMessageUserDataAccessInterface.save(message);
-        SendMessageOutputData sendmessageOutputData = new SendMessageOutputData(Message.getMessage(), now.toString(), false);
-        userPresenter.prepareSuccessView(sendmessageOutputData);
+
+        if (Objects.equals(message, "")) {
+            userPresenter.prepareFailView("Chat field is empty");
+        } else {
+            Message msg = messageFactory.createMessage(chatName, sender, receiver, message, now);
+            userDataAccessObject.saveMessage(msg);
+            SendMessageOutputData sendmessageOutputData = new SendMessageOutputData(message, now, false, chatName);
+            userPresenter.prepareSuccessView(sendmessageOutputData);
+        }
     }
 
 }
