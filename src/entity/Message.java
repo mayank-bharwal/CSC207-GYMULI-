@@ -11,6 +11,15 @@ public class Message {
     private String message;
     final private LocalDateTime time;
 
+    /**
+     *
+     * @param chatName
+     * @param sender
+     * @param receiver
+     * @param message
+     * @param time
+     */
+
 
       public Message(String chatName, String sender, String receiver, String message, LocalDateTime time) {
           this.chatName = chatName;

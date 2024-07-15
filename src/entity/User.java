@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface User {
+    /**
+     *
+     * @return
+     */
     String getUsername();
 
     String getPassword();
