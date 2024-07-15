@@ -12,13 +12,15 @@ import entity.UserFactory;
 import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
+import use_case.search_user.SearchUserDataAccessInterface;
 import use_case.send_message.SendMessageUserDataAccessInterface;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
-public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface, SendMessageUserDataAccessInterface {
+public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
+        SendMessageUserDataAccessInterface, SearchUserDataAccessInterface {
     String uri = "mongodb+srv://UmerFarooqui:RealMadrid123Canon@cluster0.vbtnfad.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     MongoClient mongoClient = MongoClients.create(uri);
     MongoDatabase database = mongoClient.getDatabase("GYMULI");
