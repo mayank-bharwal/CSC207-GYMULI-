@@ -1,4 +1,4 @@
-package DataAccess.MongoDB;
+package data_access;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
