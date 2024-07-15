@@ -8,7 +8,7 @@ public class Chat {
      private ArrayList<User> users = new ArrayList<>();
      private Integer noOfMembers;
      private ArrayList<Message> allmessages = new ArrayList<>();
-     private final LocalDateTime time;
+     final private LocalDateTime time;
 
      Chat(String chatName, ArrayList<User> users, Integer noOfMembers, ArrayList<Message> allmessages) {
           this.chatName = chatName;
