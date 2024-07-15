@@ -37,6 +37,8 @@ public class AccountCreationInteractor implements AccountCreationInputBoundary {
             User user = userFactory.createUser(inputData.getUsername(), inputData.getPassword(),
                     inputData.getBio(), inputData.getAge(), inputData.getProgramOfStudy(), inputData.getInterests(), Collections.emptyList(),
                     date);
+
+            accountDataAccessObject.save(user);
         }
     }
 
