@@ -4,6 +4,9 @@
 package data_access;
 
 import okhttp3.*;
+import org.json.*;
+import java.io.*;
+import java.util.*;
 
 
 public class Text_API {
@@ -16,6 +19,34 @@ public class Text_API {
     public static String getApiURL(){
         return API_URL;
     }
+
+    public Float getScore(String text1, String text2) {
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        Request request = new Request.Builder()
+                .url(String.format("https://grade-logging-api.chenpan.ca/grade?course=%s&utorid=%s", course, utorid))
+                .addHeader("Authorization", API_TOKEN)
+                .addHeader("Content-Type", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println(response);
+            JSONObject responseBody = new JSONObject(response.body().string());
+
+            if (responseBody.getInt("status_code") == 200) {
+                JSONObject grade = responseBody.getJSONObject("grade");
+                return Grade.builder()
+                        .utorid(grade.getString("utorid"))
+                        .course(grade.getString("course"))
+                        .grade(grade.getInt("grade"))
+                        .build();
+            } else {
+                throw new RuntimeException(responseBody.getString("message"));
+            }
+        } catch (IOException | JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
 //package api;
 //
