@@ -12,13 +12,15 @@ import entity.UserFactory;
 import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
+
 import use_case.send_message.SendMessageUserDataAccessInterface;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
-public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface, SendMessageUserDataAccessInterface {
+public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
+        SendMessageUserDataAccessInterface {
     String uri = "mongodb+srv://UmerFarooqui:RealMadrid123Canon@cluster0.vbtnfad.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     MongoClient mongoClient = MongoClients.create(uri);
     MongoDatabase database = mongoClient.getDatabase("GYMULI");
@@ -57,19 +59,23 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                 User user = userFactory.createUser(username, password, bio, age, programOfStudy, interests, friends, dateCreated);
                 accounts.put(username, user);
 
-                Document mDoc = cursor.next();
-                String chatName = mDoc.getString("chatName");
-                String sender = mDoc.getString("username");
-                String receiver = mDoc.getString("receiver");
-                String messageText = mDoc.getString("message");
-                Date sendDate = mDoc.getDate("dateCreated");
+                try (MongoCursor<Document> messageCursor = MessageCollection.find().iterator()) {
+                    while (messageCursor.hasNext()) {
+                        Document messageDoc = messageCursor.next();
+                        String chatName = messageDoc.getString("chatName");
+                        String sender = messageDoc.getString("username");
+                        String receiver = messageDoc.getString("receiver");
+                        String messageText = messageDoc.getString("message");
+                        Date sendDate = messageDoc.getDate("dateCreated");
 
-                LocalDateTime dateCreatedM = sendDate.toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDateTime();
+                        LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
 
-                Message message = messageFactory.createMessage(chatName, sender, receiver, messageText, dateCreatedM);
-                messages.put(chatName, message);
+                        Message message = messageFactory.createMessage(chatName, sender, receiver, messageText, dateCreatedM);
+                        messages.put(chatName, message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
             }
@@ -119,9 +125,8 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
     @Override
     public User getUser(String username) {
-            return accounts.get(username);
+        return accounts.get(username);
     }
 
 }
-
 

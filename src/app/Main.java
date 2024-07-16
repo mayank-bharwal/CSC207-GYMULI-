@@ -3,7 +3,6 @@ package app;
 import entity.MessageFactory;
 import interface_adapter.Login.LoginViewModel;
 import interface_adapter.account_creation.SignupViewModel;
-import interface_adapter.account_creation.SignupController;
 import interface_adapter.ViewModelManager;
 import use_case.account_creation.AccountCreationInputBoundary;
 import use_case.account_creation.AccountCreationInteractor;
@@ -12,8 +11,8 @@ import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.account_creation.SignupPresenter;
 import DataAccess.MongoDB.UserDataAccessObject;
-import views.SignupView;
 import views.LoginView;
+import views.SignupView;
 import views.ViewManager;
 
 import javax.swing.*;
@@ -41,8 +40,7 @@ public class Main {
         UserFactory userFactory = new CommonUserFactory();
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, new HashMap<>(), new HashMap<>(), new MessageFactory());
 
-        AccountCreationOutputBoundary accountCreationOutputBoundary = new SignupPresenter(viewModelManager, signupViewModel);
-
+        AccountCreationOutputBoundary accountCreationOutputBoundary = new SignupPresenter(viewModelManager, signupViewModel, loginViewModel);
         AccountCreationInputBoundary accountCreationInputBoundary = new AccountCreationInteractor(userDataAccessObject, accountCreationOutputBoundary, userFactory);
 
         SignupView signupView = SignupViewFactory.create(viewModelManager, loginViewModel, signupViewModel, accountCreationInputBoundary);

@@ -17,6 +17,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         this.viewModel = viewModel;
         this.viewModelManager = viewModelManager;
         this.viewModel.addPropertyChangeListener(this);
+        this.viewModelManager.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
@@ -71,7 +72,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         formPanel.add(loginButton, gbc);
 
         JButton signupButton = new JButton("Go to Signup");
-        signupButton.addActionListener(e -> viewModelManager.setActiveView("SignupView"));
+        signupButton.addActionListener(e -> viewModelManager.setActiveView("sign up"));
         gbc.gridy = 4;
         formPanel.add(signupButton, gbc);
 
@@ -80,6 +81,12 @@ public class LoginView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        if ("activeView".equals(evt.getPropertyName())) {
+            if (viewModelManager.getActiveView().equals(viewName)) {
+                CardLayout cl = (CardLayout) getParent().getLayout();
+                cl.show(getParent(), viewName);
+            }
+        }
     }
 }
+
