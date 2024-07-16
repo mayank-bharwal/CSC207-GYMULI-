@@ -1,7 +1,7 @@
 // Using the dandelion API to find similarity score between two users and upload it on a
 // global dictionary on the database
 
-//package data_access;
+package data_access;
 
 import okhttp3.*;
 import org.json.*;
@@ -43,6 +43,7 @@ public class Text_API {
         } catch (IOException | JSONException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
     public static void main(String[] args){
         Text_API api = new Text_API();
