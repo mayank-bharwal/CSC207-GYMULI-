@@ -4,6 +4,12 @@ public class Requests {
     private User From;
     private User To;
 
+    /**
+     *
+     * @param From
+     * @param To
+     */
+
     public Requests(User From, User To) {
         this.From = From;
         this.To = To;
