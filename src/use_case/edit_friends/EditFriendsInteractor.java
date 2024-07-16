@@ -1,6 +1,6 @@
 package use_case.edit_friends;
 
-/***public class EditFriendsInteractor implements EditFriendsInputBoundary{
+public class EditFriendsInteractor implements EditFriendsInputBoundary{
     private EditFriendsOutputBoundary outputBoundary;
     private EditFriendsUserDataAccessInterface userDataAccess;
 
@@ -20,4 +20,3 @@ package use_case.edit_friends;
 
     }
 }
-*///
