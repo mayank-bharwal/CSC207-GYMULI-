@@ -12,7 +12,7 @@ import entity.UserFactory;
 import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
-import use_case.search_user.SearchUserDataAccessInterface;
+
 import use_case.send_message.SendMessageUserDataAccessInterface;
 
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
-        SendMessageUserDataAccessInterface, SearchUserDataAccessInterface {
+        SendMessageUserDataAccessInterface {
     String uri = "mongodb+srv://UmerFarooqui:RealMadrid123Canon@cluster0.vbtnfad.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     MongoClient mongoClient = MongoClients.create(uri);
     MongoDatabase database = mongoClient.getDatabase("GYMULI");
@@ -125,9 +125,51 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
     @Override
     public User getUser(String username) {
-            return accounts.get(username);
+        return accounts.get(username);
+    }
+
+         @Override
+    public void updateUser(String oldUsername ,String newUsername, String password, String bio, String programOfStudy, Integer age,
+                           List<String> interests) {
+
+        Document filter = new Document("username", oldUsername);
+
+        Document updateFields = new Document();
+
+        if (newUsername != null && !newUsername.trim().isEmpty()) {
+            updateFields.append("username", newUsername);
+        }
+        if (password != null && !password.trim().isEmpty()) {
+            updateFields.append("password", password);
+        }
+        if (bio != null && !bio.trim().isEmpty()) {
+            updateFields.append("bio", bio);
+        }
+        if (programOfStudy != null && !programOfStudy.trim().isEmpty()) {
+            updateFields.append("programOfStudy", programOfStudy);
+        }
+        if (age != null) {
+            updateFields.append("age", age);
+        }
+        if (interests != null && !interests.isEmpty()) {
+            updateFields.append("interests", interests);
+        }
+
+        Document update = new Document("$set", updateFields);
+        UserCollection.updateOne(filter, update);
+
+
+        User user = accounts.get(oldUsername);
+
+        user.setAge(age);
+        user.setUsername(newUsername);
+        user.setPassword(password);
+        user.setBio(bio);
+        user.setInterests(interests);
+        user.setProgramOfStudy(programOfStudy);
+
+
     }
 
 }
-
 

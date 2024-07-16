@@ -3,25 +3,20 @@ package interface_adapter.account_creation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SignUpState {
-
+public class SignupState {
     private String username = "";
-    private String usernameError = null;
     private String password = "";
-    private String passwordError = null;
     private String repeatPassword = "";
     private String repeatPasswordError = null;
     private String programOfStudy = "";
-    private String programOfStudyError = null;
     private String bio = "";
-    private String bioError = null;
     private Integer age;
-    private String ageError = null;
     private String interest1 = "";
     private String interest2 = "";
     private String interest3 = "";
+    private String error = "";
 
-    public SignUpState() {
+    public SignupState() {
     }
 
     public String getUsername() {
@@ -32,14 +27,6 @@ public class SignUpState {
         this.username = username;
     }
 
-    public String getUsernameError() {
-        return usernameError;
-    }
-
-    public void setUsernameError(String usernameError) {
-        this.usernameError = usernameError;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -48,13 +35,6 @@ public class SignUpState {
         this.password = password;
     }
 
-    public String getPasswordError() {
-        return passwordError;
-    }
-
-    public void setPasswordError(String passwordError) {
-        this.passwordError = passwordError;
-    }
 
     public String getRepeatPassword() {
         return repeatPassword;
@@ -80,13 +60,6 @@ public class SignUpState {
         this.programOfStudy = programOfStudy;
     }
 
-    public String getProgramOfStudyError() {
-        return programOfStudyError;
-    }
-
-    public void setProgramOfStudyError(String programOfStudyError) {
-        this.programOfStudyError = programOfStudyError;
-    }
 
     public String getBio() {
         return bio;
@@ -96,13 +69,6 @@ public class SignUpState {
         this.bio = bio;
     }
 
-    public String getBioError() {
-        return bioError;
-    }
-
-    public void setBioError(String bioError) {
-        this.bioError = bioError;
-    }
 
     public Integer getAge() {
         return age;
@@ -112,13 +78,6 @@ public class SignUpState {
         this.age = age;
     }
 
-    public String getAgeError() {
-        return ageError;
-    }
-
-    public void setAgeError(String ageError) {
-        this.ageError = ageError;
-    }
 
     public String getInterest1() {
         return interest1;
@@ -152,4 +111,11 @@ public class SignUpState {
         return interests;
     }
 
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String getError() {
+        return error;
+    }
 }
