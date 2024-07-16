@@ -2,8 +2,15 @@ package use_case.update_profile;
 //user data access interface
 import entity.User;
 
-public interface UpdateProfileUserDataAccessInterface {
-    boolean existsByName(String username);
+import java.util.List;
 
-    void update(User user);
+public interface UpdateProfileUserDataAccessInterface {
+    boolean userExists(String username);
+
+    void updateUser(String oldUsername,String username, String password, String bio, String programOfStudy, Integer age,
+                List<String> interests);
+
+    User getUser (String username);
+
+
 }
