@@ -117,7 +117,6 @@ public class UserTest {
     void testSetFriends() {
         List<String> newFriends = new ArrayList<>();
         newFriends.add("Charlie");
-        newFriends.add("David");
         user.setFriends(newFriends);
         assertEquals(newFriends, user.getFriends());
     }
