@@ -39,6 +39,8 @@ public class AccountCreationInteractor implements AccountCreationInputBoundary {
                     date);
 
             accountDataAccessObject.save(user);
+            AccountCreationOutputData accountCreationOutputData = new AccountCreationOutputData(user.getUsername(),date.toString(), false);
+            accountPresenter.setPassView(accountCreationOutputData);
         }
     }
 

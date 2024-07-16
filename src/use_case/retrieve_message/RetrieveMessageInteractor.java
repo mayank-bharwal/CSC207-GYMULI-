@@ -14,6 +14,6 @@ public class RetrieveMessageInteractor implements RetrieveMessageInputBoundary {
         String sender = inputData.getSender();
         String reciever = inputData.getReciever();
 
-        if
+
     }
 }
