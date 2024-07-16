@@ -94,7 +94,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         JTextField programOfStudyField = signupViewModel.programOfStudyInputField;
         formPanel.add(programOfStudyField, gbc);
 
-        // Add key listener for programOfStudyField
         signupViewModel.programOfStudyInputField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
