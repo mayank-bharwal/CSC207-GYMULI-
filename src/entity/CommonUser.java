@@ -14,6 +14,18 @@ public class CommonUser implements User {
     private List<String> friends = new ArrayList<String>();
     private LocalDateTime dateCreated;
 
+    /**
+     *Requires: password is valid
+     * @param username
+     * @param password
+     * @param bio
+     * @param age
+     * @param programOfStudy
+     * @param interests
+     * @param friends
+     * @param dateCreated
+     */
+
 
     CommonUser(String username, String password, String bio, Integer age,String programOfStudy,
                List<String> interests, List<String> friends, LocalDateTime dateCreated) {
