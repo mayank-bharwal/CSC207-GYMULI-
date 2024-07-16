@@ -11,20 +11,12 @@ public class AccountCreationInteractor implements AccountCreationInputBoundary {
     final AccountCreationOutputBoundary accountPresenter;
     final UserFactory userFactory;
 
-    /**
-     *
-     * @param accountDataAccessObject
-     * @param accountPresenter
-     * @param userFactory
-     */
-
     public AccountCreationInteractor(AccountCreationUserDataAccessInterface accountDataAccessObject,
                                      AccountCreationOutputBoundary accountPresenter,
                                      UserFactory userFactory) {
         this.accountDataAccessObject = accountDataAccessObject;
         this.accountPresenter = accountPresenter;
         this.userFactory = userFactory;
-
     }
 
 
@@ -46,16 +38,11 @@ public class AccountCreationInteractor implements AccountCreationInputBoundary {
             User user = userFactory.createUser(inputData.getUsername(), inputData.getPassword(),
                     inputData.getBio(), inputData.getAge(), inputData.getProgramOfStudy(), inputData.getInterests(), Collections.emptyList(),
                     date);
-
             accountDataAccessObject.save(user);
-
-
-            AccountCreationOutputData accountCreationOutputData = new AccountCreationOutputData(user.getUsername(),date.toString(), false);
-
+            AccountCreationOutputData outputData = new AccountCreationOutputData(user.getUsername(), date.toString(), false);
+            accountPresenter.setPassView(outputData);
         }
     }
-
-
 
 
 }

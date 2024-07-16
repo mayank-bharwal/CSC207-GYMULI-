@@ -1,21 +1,18 @@
-
 package app;
 
 import entity.MessageFactory;
 import interface_adapter.Login.LoginViewModel;
-import interface_adapter.account_creation.SignUpViewModel;
-
-
+import interface_adapter.account_creation.SignupViewModel;
 import interface_adapter.ViewModelManager;
 import use_case.account_creation.AccountCreationInputBoundary;
 import use_case.account_creation.AccountCreationInteractor;
 import use_case.account_creation.AccountCreationOutputBoundary;
 import entity.CommonUserFactory;
 import entity.UserFactory;
-import interface_adapter.account_creation.SignUpPresenter;
+import interface_adapter.account_creation.SignupPresenter;
 import DataAccess.MongoDB.UserDataAccessObject;
-import views.SignupView;
 import views.LoginView;
+import views.SignupView;
 import views.ViewManager;
 
 import javax.swing.*;
@@ -38,13 +35,12 @@ public class Main {
         new ViewManager(views, cardLayout, viewModelManager);
 
         LoginViewModel loginViewModel = new LoginViewModel();
-        SignUpViewModel signupViewModel = new SignUpViewModel();
+        SignupViewModel signupViewModel = new SignupViewModel();
 
         UserFactory userFactory = new CommonUserFactory();
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, new HashMap<>(), new HashMap<>(), new MessageFactory());
 
-        AccountCreationOutputBoundary accountCreationOutputBoundary = new SignUpPresenter(viewModelManager, signupViewModel);
-
+        AccountCreationOutputBoundary accountCreationOutputBoundary = new SignupPresenter(viewModelManager, signupViewModel, loginViewModel);
         AccountCreationInputBoundary accountCreationInputBoundary = new AccountCreationInteractor(userDataAccessObject, accountCreationOutputBoundary, userFactory);
 
         SignupView signupView = SignupViewFactory.create(viewModelManager, loginViewModel, signupViewModel, accountCreationInputBoundary);

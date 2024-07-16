@@ -6,11 +6,10 @@ import use_case.account_creation.AccountCreationInputData;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class SignUpController {
-
+public class SignupController {
     private final AccountCreationInputBoundary accountCreationInputBoundary;
 
-    public SignUpController(AccountCreationInputBoundary accountCreationInputBoundary) {
+    public SignupController(AccountCreationInputBoundary accountCreationInputBoundary) {
         this.accountCreationInputBoundary = accountCreationInputBoundary;
     }
 
@@ -18,6 +17,4 @@ public class SignUpController {
         AccountCreationInputData inputData = new AccountCreationInputData(username, password, repeatPassword, programOfStudy, interests, bio, LocalDateTime.now(), age);
         accountCreationInputBoundary.execute(inputData);
     }
-
-
 }

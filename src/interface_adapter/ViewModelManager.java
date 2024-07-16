@@ -13,6 +13,10 @@ public class ViewModelManager {
         pcs.firePropertyChange("activeView", oldView, activeView);
     }
 
+    public String getActiveView() {
+        return activeView;
+    }
+
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
     }
