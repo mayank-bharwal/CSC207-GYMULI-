@@ -1,7 +1,7 @@
 // Using the dandelion API to find similarity score between two users and upload it on a
 // global dictionary on the database
 
-package data_access;
+//package data_access;
 
 import okhttp3.*;
 import org.json.*;
@@ -23,28 +23,32 @@ public class Text_API {
     public Float getScore(String text1, String text2) {
         OkHttpClient client = new OkHttpClient().newBuilder().build();
         Request request = new Request.Builder()
-                .url(String.format("https://grade-logging-api.chenpan.ca/grade?course=%s&utorid=%s", course, utorid))
-                .addHeader("Authorization", API_TOKEN)
-                .addHeader("Content-Type", "application/json")
+                .url(String.format("https://api.dandelion.eu/datatxt/sim/v1/?text1=%s&text2=%s&token=%s",text1, text2, API_TOKEN))
                 .build();
         try {
             Response response = client.newCall(request).execute();
             System.out.println(response);
-            JSONObject responseBody = new JSONObject(response.body().string());
-
-            if (responseBody.getInt("status_code") == 200) {
-                JSONObject grade = responseBody.getJSONObject("grade");
-                return Grade.builder()
-                        .utorid(grade.getString("utorid"))
-                        .course(grade.getString("course"))
-                        .grade(grade.getInt("grade"))
-                        .build();
-            } else {
-                throw new RuntimeException(responseBody.getString("message"));
-            }
+//            JSONObject responseBody = new JSONObject(response.body().string());
+//
+//            if (responseBody.getInt("status_code") == 200) {
+//                JSONObject grade = responseBody.getJSONObject("grade");
+//                return Grade.builder()
+//                        .utorid(grade.getString("utorid"))
+//                        .course(grade.getString("course"))
+//                        .grade(grade.getInt("grade"))
+//                        .build();
+//            } else {
+//                throw new RuntimeException(responseBody.getString("message"));
+//            }
         } catch (IOException | JSONException e) {
             throw new RuntimeException(e);
         }
+    }
+    public static void main(String[] args){
+        Text_API api = new Text_API();
+        System.out.println(api.getApiToken());
+        System.out.println(api.getApiURL());
+        api.getScore("Grant Hamblin", "Umer Farooqi");
     }
 
 }
