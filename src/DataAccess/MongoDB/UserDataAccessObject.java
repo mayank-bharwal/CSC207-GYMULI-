@@ -128,5 +128,48 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         return accounts.get(username);
     }
 
+         @Override
+    public void updateUser(String oldUsername ,String newUsername, String password, String bio, String programOfStudy, Integer age,
+                           List<String> interests) {
+
+        Document filter = new Document("username", oldUsername);
+
+        Document updateFields = new Document();
+
+        if (newUsername != null && !newUsername.trim().isEmpty()) {
+            updateFields.append("username", newUsername);
+        }
+        if (password != null && !password.trim().isEmpty()) {
+            updateFields.append("password", password);
+        }
+        if (bio != null && !bio.trim().isEmpty()) {
+            updateFields.append("bio", bio);
+        }
+        if (programOfStudy != null && !programOfStudy.trim().isEmpty()) {
+            updateFields.append("programOfStudy", programOfStudy);
+        }
+        if (age != null) {
+            updateFields.append("age", age);
+        }
+        if (interests != null && !interests.isEmpty()) {
+            updateFields.append("interests", interests);
+        }
+
+        Document update = new Document("$set", updateFields);
+        UserCollection.updateOne(filter, update);
+
+
+        User user = accounts.get(oldUsername);
+
+        user.setAge(age);
+        user.setUsername(newUsername);
+        user.setPassword(password);
+        user.setBio(bio);
+        user.setInterests(interests);
+        user.setProgramOfStudy(programOfStudy);
+
+
+    }
+
 }
 
