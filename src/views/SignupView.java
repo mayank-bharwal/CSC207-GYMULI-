@@ -23,7 +23,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final ViewModelManager viewModelManager;
 
     private final JButton signUp;
-    private final JButton cancel;
     private final JButton clear;
     private final JButton login;
 
@@ -152,8 +151,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
         buttonPanel.add(signUp);
-        cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
-        buttonPanel.add(cancel);
         clear = new JButton(SignupViewModel.CLEAR_BUTTON_LABEL);
         buttonPanel.add(clear);
         login = new JButton("Go to Login");
@@ -190,7 +187,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
             signupViewModel.firePropertyChanged();
         });
 
-        cancel.addActionListener(this);
 
         login.addActionListener(e -> viewModelManager.setActiveView("LoginView"));
 
@@ -246,7 +242,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-        JOptionPane.showConfirmDialog(this, "Cancel not implemented yet.");
     }
 
     @Override
