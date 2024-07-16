@@ -14,8 +14,21 @@ public class AccountCreationInputData {
     final private LocalDateTime time;
     final private Integer age;
 
+    /**
+     *
+     * @param username - username of user
+     * @param password - password
+     * @param repeatPassword - verifies password
+     * @param programOfStudy - program the user is studying
+     * @param interests - user's interests
+     * @param bio - user's bio
+     * @param time - time of creation
+     * @param age - age of user
+     */
+
 
     public AccountCreationInputData(String username, String password, String repeatPassword, String programOfStudy, List<String> interests, String bio, LocalDateTime time, Integer age) {
+
         this.username = username;
         this.password = password;
         this.repeatPassword = repeatPassword;

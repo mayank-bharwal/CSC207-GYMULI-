@@ -11,6 +11,15 @@ public class Group {
     private String image;
     private LocalDateTime dateCreated;
 
+    /**
+     *
+     * @param groupName
+     * @param users
+     * @param bio
+     * @param image
+     * @param dateCreated
+     */
+
     public Group(String groupName, ArrayList<User> users, String bio, String image, LocalDateTime dateCreated) {
         this.groupName = groupName;
         this.users = users;
