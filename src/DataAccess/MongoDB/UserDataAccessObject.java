@@ -59,19 +59,23 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                 User user = userFactory.createUser(username, password, bio, age, programOfStudy, interests, friends, dateCreated);
                 accounts.put(username, user);
 
-                Document mDoc = cursor.next();
-                String chatName = mDoc.getString("chatName");
-                String sender = mDoc.getString("username");
-                String receiver = mDoc.getString("receiver");
-                String messageText = mDoc.getString("message");
-                Date sendDate = mDoc.getDate("dateCreated");
+                try (MongoCursor<Document> messageCursor = MessageCollection.find().iterator()) {
+                    while (messageCursor.hasNext()) {
+                        Document messageDoc = messageCursor.next();
+                        String chatName = messageDoc.getString("chatName");
+                        String sender = messageDoc.getString("username");
+                        String receiver = messageDoc.getString("receiver");
+                        String messageText = messageDoc.getString("message");
+                        Date sendDate = messageDoc.getDate("dateCreated");
 
-                LocalDateTime dateCreatedM = sendDate.toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDateTime();
+                        LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
 
-                Message message = messageFactory.createMessage(chatName, sender, receiver, messageText, dateCreatedM);
-                messages.put(chatName, message);
+                        Message message = messageFactory.createMessage(chatName, sender, receiver, messageText, dateCreatedM);
+                        messages.put(chatName, message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
             }

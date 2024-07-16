@@ -3,7 +3,7 @@ package interface_adapter.edit_friends;
 import use_case.edit_friends.EditFriendsInputBoundary;
 import use_case.edit_friends.EditFriendsInputData;
 
-public class EditFriendsController {
+/***public class EditFriendsController {
     final EditFriendsInputBoundary editFriendsCaseInteractor;
 
     public EditFriendsController(EditFriendsInputBoundary editFriendsCaseInteractor) {
@@ -16,3 +16,4 @@ public class EditFriendsController {
         editFriendsCaseInteractor.execute(editFriendsInputData);
     }
 }
+***/
