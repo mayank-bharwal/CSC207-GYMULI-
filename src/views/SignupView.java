@@ -252,6 +252,15 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 cl.show(getParent(), viewName);
             }
         }
+        if ("generalError".equals(evt.getPropertyName())) {
+            String errorMessage = signupViewModel.getState().getError();
+            if (errorMessage != null) {
+                JOptionPane.showMessageDialog(this, errorMessage, "Signup Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        if ("success".equals(evt.getPropertyName())) {
+            JOptionPane.showMessageDialog(this, "Account successfully created!", "Signup Success", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private static class LabelTextPanel extends JPanel {

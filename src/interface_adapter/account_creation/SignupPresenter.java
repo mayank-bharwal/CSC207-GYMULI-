@@ -24,17 +24,21 @@ public class SignupPresenter implements AccountCreationOutputBoundary {
 
         SignupState signupState = signupViewModel.getState();
         signupState.setUsername(user.getUsername());
+        signupState.setError(null);
         signupViewModel.setState(signupState);
         signupViewModel.firePropertyChanged();
 
         viewModelManager.setActiveView("LoginView");
         viewModelManager.firePropertyChanged();
+
+        signupViewModel.firePropertyChanged("success", null, "Account successfully created!");
     }
 
     @Override
     public void setFailView(String error) {
         SignupState signupState = signupViewModel.getState();
-        signupState.setUsernameError(error);
-        signupViewModel.firePropertyChanged();
+        signupState.setError(error);
+        signupViewModel.setState(signupState);
+        signupViewModel.firePropertyChanged("generalError", null, error);
     }
 }
