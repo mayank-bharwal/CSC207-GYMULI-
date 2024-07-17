@@ -84,7 +84,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
     @Override
-    public void save(User user) { // will call Text API here
+    public void save(User user) { // will call Text API here using DBupdate
 
         Document document = new Document();
         document.append("username", user.getUsername());
@@ -123,6 +123,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     public User getUser(String username) {
             return accounts.get(username);
     }
+    public Map<String, User> getAccounts() {return accounts;}
 
 }
 

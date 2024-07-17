@@ -1,0 +1,8 @@
+{
+  "(mayank, grant)" : "0.2",
+  "(ishaan, grant)" : "0.4",
+  "(farooqi, grant)" : "0.3",
+  "(mayank, farooqi)" : "0.6",
+  "(mayank, ishaan)" : "0.8",
+  "(farooqi, ishaan)" : "0.9"
+}
