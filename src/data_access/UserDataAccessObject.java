@@ -14,13 +14,14 @@ import use_case.account_creation.AccountCreationUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 
 import use_case.send_message.SendMessageUserDataAccessInterface;
+import use_case.update_profile.UpdateProfileUserDataAccessInterface;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
-        SendMessageUserDataAccessInterface, UpdateProfileUserDataAccessInterface  {
+        SendMessageUserDataAccessInterface, UpdateProfileUserDataAccessInterface {
     String uri = "mongodb+srv://UmerFarooqui:RealMadrid123Canon@cluster0.vbtnfad.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     MongoClient mongoClient = MongoClients.create(uri);
     MongoDatabase database = mongoClient.getDatabase("GYMULI");
@@ -83,9 +84,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
     @Override
-    public boolean AccountExists(String username) {
-        return accounts.containsKey(username);
-    }
+    public boolean AccountExists(String username) {return accounts.containsKey(username);}
 
     @Override
 <<<<<<< HEAD:src/DataAccess/MongoDB/UserDataAccessObject.java
