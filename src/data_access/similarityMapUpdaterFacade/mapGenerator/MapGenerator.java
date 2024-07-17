@@ -1,5 +1,20 @@
 package data_access.similarityMapUpdaterFacade.mapGenerator;
 
+/* Sample Return JSON object
+{
+"(Mayank, Liban)" :  "0.6546"
+"(Mayank, Grant)" :  "0.7544"
+"(Mayank, Trudeau)" :  "0.3482"
+"(Mayank, Biden)" :  "0.0"
+"(Mayank, Farooqi)" :  "0.6627"
+"(Mayank, Yuechen)" :  "0.4837"
+"(Mayank, Yasamanro)" :  "0.2831"
+"(Mayank, Justin)" :  "0.2534"
+"(Mayank, Sadia)" :  "0.3783"
+"(Mayank, Ishaan)" :  "0.3631"
+}
+*/
+
 import data_access.similarityMapUpdaterFacade.mapGenerator.apiCaller.APICaller;
 import entity.User;
 import org.json.JSONObject;
