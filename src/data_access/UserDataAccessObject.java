@@ -1,4 +1,4 @@
-package DataAccess.MongoDB;
+package data_access;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -88,7 +88,11 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
     @Override
+<<<<<<< HEAD:src/DataAccess/MongoDB/UserDataAccessObject.java
     public void save(User user) {// will call text API here
+=======
+    public void save(User user) { // will call Text API here
+>>>>>>> Text_API:src/data_access/UserDataAccessObject.java
 
         Document document = new Document();
         document.append("username", user.getUsername());
