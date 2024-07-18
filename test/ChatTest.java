@@ -34,12 +34,14 @@ public class ChatTest {
         friends.add("Alice");
         friends.add("Barry");
 
+        List<String> chats = new ArrayList<>();
+
         LocalDateTime userDateCreated = LocalDateTime.now();
 
         User user1 = userFactory.createUser("Jasmine", "password", "(Demo)", 21,
-                "Computer Science", interests, friends, userDateCreated);
+                "Computer Science", interests, friends, chats, userDateCreated);
         User user2 = userFactory.createUser("Charlie", "password123", "Always Sunny", 22,
-                "Law", interests, friends, userDateCreated);
+                "Law", interests, friends, chats, userDateCreated);
 
         users.add(user1);
         users.add(user2);
@@ -91,11 +93,13 @@ public class ChatTest {
     void testSetUsers() {
         ArrayList<User> newUsers = new ArrayList<>();
         List<String> newInterests = new ArrayList<>();
+        List<String> newFriends = new ArrayList<>();
+        List<String> newChats = new ArrayList<>();
         newInterests.add("Hiking");
         newInterests.add("Traveling");
 
         User newUser = userFactory.createUser("Alice", "newPassword", "In Wonderland", 24,
-                "Chemistry", newInterests, new ArrayList<>(), LocalDateTime.now());
+                "Chemistry", newInterests, newFriends, newChats, LocalDateTime.now());
         newUsers.add(newUser);
 
         chat.setUsers(newUsers);
