@@ -25,38 +25,5 @@ public class UpdateProfileOutputData {
         this.useCaseFailed = useCaseFailed;
     }
 
-    public String getUsername() {
-        return username;
-    }
 
-    public String getPassword() {
-
-        return password;
-    }
-
-    public String getBio() {
-
-        return bio;
-    }
-
-    public String getProgramOfStudy() {
-        return programOfStudy;
-    }
-
-    public Integer getAge() {
-
-        return age;
-    }
-
-    public List<String> getInterests() {
-        return interests;
-    }
-
-    public boolean isUseCaseFailed() {
-        return useCaseFailed;
-    }
-
-    public void setUseCaseFailed(boolean useCaseFailed) {
-        this.useCaseFailed = useCaseFailed;
-    }
 }
