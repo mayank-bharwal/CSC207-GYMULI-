@@ -3,20 +3,19 @@ package interface_adapter.send_message;
 import use_case.send_message.SendMessageInputBoundary;
 import use_case.send_message.SendMessageInputData;
 import entity.Message;
+import entity.User;
 
 import java.time.LocalDateTime;
 
 public class SendMessageController {
-    final SendMessageInputBoundary sendMessageUseCaseInteractor;
+    private final SendMessageInputBoundary sendMessageInteractor;
 
-    public SendMessageController(SendMessageInputBoundary sendMessageCaseInteractor) {
-        this.sendMessageUseCaseInteractor = sendMessageUseCaseInteractor;
+    public SendMessageController(SendMessageInputBoundary sendMessageInteractor) {
+        this.sendMessageInteractor = sendMessageInteractor;
     }
 
-    public void execute(String message, String sender, String receiver){
-        SendMessageInputData sendMessageInputData = new Message(chatName, sender, receiver, message, LocalDateTime.now());
-        sendMessageUseCaseInteractor.sendMessageInputData(message);
+    public void execute(String chatName, String message, LocalDateTime time, String sender, String receiver){
+        SendMessageInputData InputData = new SendMessageInputData(chatName, message, LocalDateTime.now(), sender, receiver);
 
-        sendMessageUseCaseInteractor.execute(sendMessageInputData);
     }
 }
