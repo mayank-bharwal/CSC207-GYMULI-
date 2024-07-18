@@ -12,6 +12,7 @@ public class CommonUser implements User {
     private Integer age;
     private List<String> interests = new ArrayList<String>();
     private List<String> friends = new ArrayList<String>();
+    private List<String> chats = new ArrayList<String>();
     private LocalDateTime dateCreated;
 
     /**
@@ -23,12 +24,13 @@ public class CommonUser implements User {
      * @param programOfStudy
      * @param interests
      * @param friends
+     * @param chats
      * @param dateCreated
      */
 
 
     CommonUser(String username, String password, String bio, Integer age,String programOfStudy,
-               List<String> interests, List<String> friends, LocalDateTime dateCreated) {
+               List<String> interests, List<String> friends, List<String> chats, LocalDateTime dateCreated) {
         this.username = username;
         this.password = password;
         this.bio = bio;
@@ -36,6 +38,7 @@ public class CommonUser implements User {
         this.age = age;
         this.interests = interests;
         this.friends = friends;
+        this.chats = chats;
         this.dateCreated = dateCreated;
 
     }
@@ -68,6 +71,8 @@ public class CommonUser implements User {
         return friends;
     }
     @Override
+    public List<String> getChats() { return chats; }
+    @Override
     public LocalDateTime getDateCreated() { return dateCreated; }
 
     @Override
@@ -98,6 +103,14 @@ public class CommonUser implements User {
     public void setFriends(List<String> friends) {
         this.friends = friends;
     }
+
+    @Override
+    public void setChats(List<String> chats) {
+
+    }
+
+    @Override
+    public void getChats(List<String> chats) { this.chats = chats; }
     @Override
     public void setDateCreated(LocalDateTime dateCreated) { this.dateCreated = dateCreated; }
 

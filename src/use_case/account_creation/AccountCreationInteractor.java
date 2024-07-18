@@ -37,7 +37,7 @@ public class AccountCreationInteractor implements AccountCreationInputBoundary {
             LocalDateTime date = LocalDateTime.now();
             User user = userFactory.createUser(inputData.getUsername(), inputData.getPassword(),
                     inputData.getBio(), inputData.getAge(), inputData.getProgramOfStudy(), inputData.getInterests(), Collections.emptyList(),
-                    date);
+                    Collections.emptyList(), date);
             accountDataAccessObject.save(user);
             AccountCreationOutputData outputData = new AccountCreationOutputData(user.getUsername(), date.toString(), false);
             accountPresenter.setPassView(outputData);
