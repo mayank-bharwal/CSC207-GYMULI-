@@ -87,12 +87,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     public boolean AccountExists(String username) {return accounts.containsKey(username);}
 
     @Override
-<<<<<<< HEAD:src/DataAccess/MongoDB/UserDataAccessObject.java
-    public void save(User user) {// will call text API here
-=======
-    public void save(User user) { // will call Text API here
->>>>>>> Text_API:src/data_access/UserDataAccessObject.java
 
+
+    public void save(User user) { // will call Text API here
         Document document = new Document();
         document.append("username", user.getUsername());
         document.append("password", user.getPassword());
