@@ -51,13 +51,14 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                 String programOfStudy = doc.getString("programOfStudy");
                 List<String> interests = (List<String>) doc.get("interests");
                 List<String> friends = (List<String>) doc.get("friends");
+                List<String> chats = (List<String>) doc.get("chats");
                 Date date = doc.getDate("dateCreated");
 
                 LocalDateTime dateCreated = date.toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDateTime();
 
-                User user = userFactory.createUser(username, password, bio, age, programOfStudy, interests, friends, dateCreated);
+                User user = userFactory.createUser(username, password, bio, age, programOfStudy, interests, friends, chats, dateCreated);
                 accounts.put(username, user);
 
                 try (MongoCursor<Document> messageCursor = MessageCollection.find().iterator()) {
@@ -98,6 +99,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("programOfStudy", user.getProgramOfStudy());
         document.append("interests", user.getInterests());
         document.append("friends", user.getFriends());
+        document.append("chats", user.getChats());
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
