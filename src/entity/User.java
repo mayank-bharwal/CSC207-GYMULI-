@@ -22,6 +22,8 @@ public interface User {
 
     List<String> getFriends();
 
+    List<String> getChats();
+
     LocalDateTime getDateCreated();
 
     void setUsername(String username);
@@ -37,6 +39,10 @@ public interface User {
     void setInterests(List<String> interests);
 
     void setFriends(List<String> friends);
+
+    void setChats(List<String> chats);
+
+    void getChats(List<String> chats);
 
     void setDateCreated(LocalDateTime dateCreated);
 

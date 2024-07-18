@@ -7,7 +7,6 @@ public class SignupState {
     private String username = "";
     private String password = "";
     private String repeatPassword = "";
-    private String repeatPasswordError = null;
     private String programOfStudy = "";
     private String bio = "";
     private Integer age;
@@ -44,14 +43,6 @@ public class SignupState {
         this.repeatPassword = repeatPassword;
     }
 
-    public String getRepeatPasswordError() {
-        return repeatPasswordError;
-    }
-
-    public void setRepeatPasswordError(String repeatPasswordError) {
-        this.repeatPasswordError = repeatPasswordError;
-    }
-
     public String getProgramOfStudy() {
         return programOfStudy;
     }
@@ -59,7 +50,6 @@ public class SignupState {
     public void setProgramOfStudy(String programOfStudy) {
         this.programOfStudy = programOfStudy;
     }
-
 
     public String getBio() {
         return bio;
@@ -77,7 +67,6 @@ public class SignupState {
     public void setAge(Integer age) {
         this.age = age;
     }
-
 
     public String getInterest1() {
         return interest1;
