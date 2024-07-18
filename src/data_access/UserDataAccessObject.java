@@ -1,4 +1,4 @@
-package DataAccess.MongoDB;
+package data_access;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -84,13 +84,12 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
     @Override
-    public boolean AccountExists(String username) {
-        return accounts.containsKey(username);
-    }
+    public boolean AccountExists(String username) {return accounts.containsKey(username);}
 
     @Override
-    public void save(User user) {
 
+
+    public void save(User user) { // will call Text API here
         Document document = new Document();
         document.append("username", user.getUsername());
         document.append("password", user.getPassword());
@@ -131,7 +130,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
     @Override
     public void updateUser(String oldUsername ,String newUsername, String password, String bio, String programOfStudy, Integer age,
-                           List<String> interests) {
+                           List<String> interests) { // maybe call text api here too
 
         Document filter = new Document("username", oldUsername);
 

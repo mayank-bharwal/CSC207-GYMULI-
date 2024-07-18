@@ -10,7 +10,7 @@ import use_case.account_creation.AccountCreationOutputBoundary;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.account_creation.SignupPresenter;
-import DataAccess.MongoDB.UserDataAccessObject;
+import data_access.UserDataAccessObject;
 import views.LoginView;
 import views.SignupView;
 import views.ViewManager;

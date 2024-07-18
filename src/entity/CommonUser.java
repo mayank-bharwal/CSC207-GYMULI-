@@ -39,66 +39,66 @@ public class CommonUser implements User {
         this.dateCreated = dateCreated;
 
     }
-
+    @Override
     public String getUsername() {
         return username;
     }
-
+    @Override
     public String getPassword() {
         return password;
     }
-
+    @Override
     public String getBio() {
         return bio;
     }
-
+    @Override
     public String getProgramOfStudy() {
         return programOfStudy;
     }
-
+    @Override
     public Integer getAge() {
         return age;
     }
-
+    @Override
     public List<String> getInterests() {
         return interests;
     }
-
+    @Override
     public List<String> getFriends() {
         return friends;
     }
-
+    @Override
     public LocalDateTime getDateCreated() { return dateCreated; }
 
-
+    @Override
     public void setUsername(String username) {
         this.username = username;
     }
-
+    @Override
     public void setPassword(String password) {
         this.password = password;
     }
-
+    @Override
     public void setBio(String bio) {
         this.bio = bio;
     }
-
+    @Override
     public void setProgramOfStudy(String programOfStudy) {
         this.programOfStudy = programOfStudy;
     }
-
+    @Override
     public void setAge(Integer age) {
         this.age = age;
     }
-
+    @Override
     public void setInterests(List<String> interests) {
         this.interests = interests;
     }
-
+    @Override
     public void setFriends(List<String> friends) {
         this.friends = friends;
     }
-
+    @Override
     public void setDateCreated(LocalDateTime dateCreated) { this.dateCreated = dateCreated; }
 
 }

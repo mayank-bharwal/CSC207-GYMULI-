@@ -1,4 +1,3 @@
-import entity.Group;
 import entity.User;
 import entity.UserFactory;
 
