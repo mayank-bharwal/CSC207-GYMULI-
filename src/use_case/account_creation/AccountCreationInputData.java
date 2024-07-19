@@ -40,22 +40,23 @@ public class AccountCreationInputData {
     }
     // need to decide access modifiers for each of the following
     //mainly during implementation of other programs
-    String getUsername() {
+    //I (Liban) made it public for now so I could finish my tests
+    public String getUsername() {
         return username;
     }
-    String getPassword() {
+    public String getPassword() {
         return password;
     }
-    String getRepeatPassword() {
+    public String getRepeatPassword() {
         return repeatPassword;
     }
-    String getProgramOfStudy() {
+    public String getProgramOfStudy() {
         return programOfStudy;
     }
-    List<String> getInterests() {
+    public List<String> getInterests() {
         return interests;
     }
-    String getBio() {return bio; }
-    LocalDateTime getTime() {return time;}
-    Integer getAge() {return age;}
+    public String getBio() {return bio; }
+    public LocalDateTime getTime() {return time;}
+    public Integer getAge() {return age;}
 }
