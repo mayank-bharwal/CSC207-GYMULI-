@@ -47,11 +47,4 @@ public class APICaller {
             throw new RuntimeException(e);
         }
     }
-
-    public static void main(String[] args) { // testing
-        APICaller api = new APICaller();
-        String text1 = "Mike tyson won the heavyweight boxing match";
-        String text2 = "Muhammad Ali was the greatest boxer of all time";
-        System.out.println(api.getSimilarityScore(text1, text2));
-    }
 }

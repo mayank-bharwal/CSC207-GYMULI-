@@ -32,8 +32,4 @@ public class GetAPI {
     public static String getAPI(String text1, String text2) {
         return String.format(API_URL + API_BODY,text1, text2, API_TOKEN);
     }
-
-    public static void main(String[] args) {
-        System.out.println(getAPI("It was a good day", "Today was a rainy day"));
-    }
 }
