@@ -1,14 +1,23 @@
 package app;
 
-import interface_adapter.LoginViewModel;
-import interface_adapter.SignupViewModel;
+import entity.MessageFactory;
+import interface_adapter.Login.LoginViewModel;
+import interface_adapter.account_creation.SignupViewModel;
 import interface_adapter.ViewModelManager;
+import use_case.account_creation.AccountCreationInputBoundary;
+import use_case.account_creation.AccountCreationInteractor;
+import use_case.account_creation.AccountCreationOutputBoundary;
+import entity.CommonUserFactory;
+import entity.UserFactory;
+import interface_adapter.account_creation.SignupPresenter;
+import data_access.UserDataAccessObject;
 import views.LoginView;
 import views.SignupView;
 import views.ViewManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,13 +37,19 @@ public class Main {
         LoginViewModel loginViewModel = new LoginViewModel();
         SignupViewModel signupViewModel = new SignupViewModel();
 
-        SignupView signupView = SignupViewFactory.create(viewModelManager, loginViewModel, signupViewModel);
+        UserFactory userFactory = new CommonUserFactory();
+        UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, new HashMap<>(), new HashMap<>(), new MessageFactory());
+
+        AccountCreationOutputBoundary accountCreationOutputBoundary = new SignupPresenter(viewModelManager, signupViewModel, loginViewModel);
+        AccountCreationInputBoundary accountCreationInputBoundary = new AccountCreationInteractor(userDataAccessObject, accountCreationOutputBoundary, userFactory);
+
+        SignupView signupView = SignupViewFactory.create(viewModelManager, loginViewModel, signupViewModel, accountCreationInputBoundary);
         views.add(signupView, signupView.viewName);
 
         LoginView loginView = new LoginView(loginViewModel, viewModelManager);
         views.add(loginView, loginView.viewName);
 
-        viewModelManager.setActiveView(signupView.viewName);
+        viewModelManager.setActiveView(loginView.viewName);
         viewModelManager.firePropertyChanged();
 
         application.pack();
