@@ -1,1 +1,0 @@
-?text1=%s&text2=%s&token=%s
