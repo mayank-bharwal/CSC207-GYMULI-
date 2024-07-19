@@ -8,5 +8,5 @@ public class RetrieveChatInputData {
     }
 
 
-    String getChatName() {return chatName;}
+    public String getChatName() {return chatName;}
 }
