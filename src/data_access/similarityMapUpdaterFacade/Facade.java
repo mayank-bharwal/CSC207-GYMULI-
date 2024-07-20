@@ -40,7 +40,7 @@ public class Facade implements FacadeInterface {
         chats5.add("Chat10");
 
         User user = userFactory.createUser(
-                "Gerald Penn", "password131415", "Bio for Eve", 29, "Computer Science",
+                "Mayank Bharwal", "password131415", "Bio for Eve", 29, "Computer Science",
                 hobbies5, friends5, chats5, LocalDateTime.now()
         );
 

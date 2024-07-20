@@ -30,9 +30,11 @@ public class MapGenerator implements MapGeneratorInterface {
         Map<Tuple, Float> similarityMap = new HashMap<>();
         accounts.forEach((key, value) -> {
             String text1 = user.getBio() + " " + user.getProgramOfStudy() + " " + String.join(" ",user.getInterests())
-                    + " " + user.getAge().toString();
+                    + " " + user.getAge().toString() + " " + String.join(" ",user.getFriends());
+
             String text2 = value.getBio() + " " + value.getProgramOfStudy() + " " + String.join(" ",value.getInterests())
-                    + " " + value.getAge().toString();
+                    + " " + value.getAge().toString() + " " + String.join(" ",value.getFriends());
+
             Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
             similarityMap.put(new Tuple(user.getUsername(), key), similarityScore);
         });

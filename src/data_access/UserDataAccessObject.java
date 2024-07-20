@@ -5,29 +5,33 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCursor;
-import entity.Message;
-import entity.MessageFactory;
-import entity.User;
-import entity.UserFactory;
+import entity.*;
 import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 
+import use_case.recommendations.RecommendationDataAccessInterface;
 import use_case.send_message.SendMessageUserDataAccessInterface;
 import use_case.update_profile.UpdateProfileUserDataAccessInterface;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.*;
+import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.getCollectionID;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
-        SendMessageUserDataAccessInterface, UpdateProfileUserDataAccessInterface {
-    String uri = "mongodb+srv://UmerFarooqui:RealMadrid123Canon@cluster0.vbtnfad.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+        SendMessageUserDataAccessInterface, UpdateProfileUserDataAccessInterface, RecommendationDataAccessInterface {
+
+    String uri = getURI();
     MongoClient mongoClient = MongoClients.create(uri);
-    MongoDatabase database = mongoClient.getDatabase("GYMULI");
+    MongoDatabase database = mongoClient.getDatabase(getDBName());
     MongoCollection<Document> MessageCollection = database.getCollection("messages");
     MongoCollection<Document> UserCollection = database.getCollection("users");
-    private  Map<String, User> accounts = new HashMap<>();
+    MongoCollection<Document> similarityCollection = database.getCollection(getCollectionName());
+    private Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
     private Map<String, Message> messages = new HashMap<>();
     private MessageFactory messageFactory;
@@ -85,7 +89,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
     @Override
-    public boolean AccountExists(String username) {return accounts.containsKey(username);}
+    public boolean AccountExists(String username) {
+        return accounts.containsKey(username);
+    }
 
     @Override
 
@@ -131,7 +137,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
     @Override
-    public void updateUser(String oldUsername ,String newUsername, String password, String bio, String programOfStudy, Integer age,
+    public void updateUser(String oldUsername, String newUsername, String password, String bio, String programOfStudy, Integer age,
                            List<String> interests) { // maybe call text api here too
 
         Document filter = new Document("username", oldUsername);
@@ -171,6 +177,80 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         user.setProgramOfStudy(programOfStudy);
 
 
+    }
+
+    @Override
+    public List<User> getNSimilarUsers(User user, int N) {
+        // get top N users from the database by converting it into MAP and according to similarity score and make a list
+        // of users and return
+//        try (MongoClient mongoClient = MongoClients.create(getURI())) {
+//            MongoDatabase database = mongoClient.getDatabase(getDBName());
+        //MongoCollection<Document> similarityCollection = database.getCollection(getCollectionName());
+
+        //MongoCollection<Document> UserCollection = database.getCollection("users");
+
+        Document doc = similarityCollection.find(new Document("_id", getCollectionID())).first();
+
+        if (doc != null) {
+            List<UserSimilarity> userSimilarities = new ArrayList<>();
+            String username = user.getUsername();
+
+            for (String key : doc.keySet()) {
+
+                if (key.equals("_id")) continue; // Skip the _id field
+
+                String[] users = key.replace("(", "").replace(")", "").split(", ");
+
+                if (users.length == 2) {
+                    String user1 = users[0];
+                    String user2 = users[1];
+                    double score = doc.getDouble(key);
+
+                    if (user1.equals(username) || user2.equals(username)) {
+                        String otherUser = user1.equals(username) ? user2 : user1;
+                        userSimilarities.add(new UserSimilarity(otherUser, score));
+                    }
+                }
+            }
+
+            Collections.sort(userSimilarities, Comparator.comparingDouble(UserSimilarity::getScore).reversed());
+
+            List<String> topNUsernames = userSimilarities.stream()
+                    .limit(N)
+                    .map(UserSimilarity::getUsername)
+                    .collect(Collectors.toList());
+
+            List<User> topNUsers = new ArrayList<>();
+            for (String topUsername : topNUsernames) {
+                User similarUser = getUser(topUsername);
+                if (similarUser != null) {
+                    topNUsers.add(similarUser);
+                }
+            }
+
+            return topNUsers;
+        //catch(Exception e)
+
+    {
+        System.out.println("An error occurred while connecting to MongoDB" + e.getMessage());
+    }
+        return new ArrayList<>();
+}
+
+
+    public static void main(String[] args) {
+        // Example usage
+        UserFactory userFactory = new CommonUserFactory();
+        Map<String, User> accounts = new HashMap<>();
+        Map<String, Message> messages = new HashMap<>();
+        MessageFactory messageFactory = new MessageFactory();
+
+        UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, accounts, messages, messageFactory);
+        //RecommendationDataAccessObject dao = new RecommendationDataAccessObject();
+
+        User user = userDataAccessObject.getUser("Alice");
+        List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user, 3);
+        similarUsers.forEach(u -> System.out.println(u.getUsername()));
     }
 
 }

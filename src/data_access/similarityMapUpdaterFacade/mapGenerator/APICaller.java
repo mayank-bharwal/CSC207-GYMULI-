@@ -29,7 +29,7 @@ public class APICaller implements APICallerInterface {
             if (!response.isSuccessful()) {
                 System.out.println("Primary API failed, Trying the backup API");
                 String backupUrl = getBackupAPI(text1, text2);
-                System.out.println("Backup API URL: " + backupUrl);
+
                 request = new Request.Builder()
                         .url(backupUrl)
                         .build();
