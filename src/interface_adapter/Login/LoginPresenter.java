@@ -16,7 +16,8 @@ public class LoginPresenter implements LoginOutputBoundary {
 
     @Override
     public void showSuccessScreen(LoginOutputData user) {
-        // Implement success screen handling here if needed
+        viewModelManager.setActiveView("ChatView");
+        viewModelManager.firePropertyChanged();
     }
 
     @Override

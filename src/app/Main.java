@@ -2,6 +2,7 @@ package app;
 
 import entity.MessageFactory;
 import interface_adapter.LoggedIn.LoggedInViewModel;
+import interface_adapter.Login.LoginController;
 import interface_adapter.Login.LoginPresenter;
 import interface_adapter.Login.LoginViewModel;
 import interface_adapter.account_creation.SignupViewModel;
@@ -16,6 +17,7 @@ import data_access.UserDataAccessObject;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
+import views.ChatView;
 import views.LoginView;
 import views.SignupView;
 import views.ViewManager;
@@ -27,7 +29,7 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) {
 
-        JFrame application = new JFrame("GYMULI");
+        JFrame application = new JFrame("Login Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setPreferredSize(new Dimension(800, 600));
 
@@ -56,6 +58,9 @@ public class Main {
 
         LoginView loginView = LoginViewFactory.create(viewModelManager, loginViewModel, loginInputBoundary);
         views.add(loginView, loginView.viewName);
+
+        ChatView chatView = new ChatView();
+        views.add(chatView, ChatView.viewName);
 
         viewModelManager.setActiveView(loginView.viewName);
         viewModelManager.firePropertyChanged();
