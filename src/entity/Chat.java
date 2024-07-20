@@ -8,7 +8,7 @@ public class Chat {
      private ArrayList<User> users = new ArrayList<>();
      private Integer noOfMembers;
      private ArrayList<Message> allmessages = new ArrayList<>();
-     final private LocalDateTime time;
+     private LocalDateTime time;
 
      /**
       * Requires:
@@ -18,7 +18,7 @@ public class Chat {
       * @param allmessages - display all messages in the chat
       */
 
-     Chat(String chatName, ArrayList<User> users, Integer noOfMembers, ArrayList<Message> allmessages) {
+     Chat(String chatName, ArrayList<User> users, Integer noOfMembers, ArrayList<Message> allmessages, LocalDateTime time) {
           this.chatName = chatName;
           this.users = users;
           this.noOfMembers = noOfMembers;
