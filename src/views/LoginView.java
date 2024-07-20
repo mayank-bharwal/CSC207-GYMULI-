@@ -22,7 +22,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private final ViewModelManager viewModelManager;
 
     private final JButton loginButton;
-    private final JButton cancelButton;
+    private final JButton clearButton;
     private final JButton signupButton;
 
     public LoginView(LoginViewModel loginViewModel, LoginController controller, ViewModelManager viewModelManager) {
@@ -78,14 +78,14 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         loginButton = new JButton(LoginViewModel.LOGIN_BUTTON_LABEL);
         buttonPanel.add(loginButton);
-        cancelButton = new JButton(LoginViewModel.CANCEL_BUTTON_LABEL);
-        buttonPanel.add(cancelButton);
+        clearButton = new JButton("Clear");
+        buttonPanel.add(clearButton);
         signupButton = new JButton("Go to Signup");
         buttonPanel.add(signupButton);
         formPanel.add(buttonPanel, gbc);
 
         loginButton.addActionListener(e -> login());
-        cancelButton.addActionListener(this);
+        clearButton.addActionListener(e -> clearFields());
         signupButton.addActionListener(e -> viewModelManager.setActiveView(SignupView.viewName));
 
         loginViewModel.usernameInputField.addKeyListener(new KeyListener() {
@@ -127,11 +127,17 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         loginController.login(currentState.getUsername(), currentState.getPassword());
     }
 
+    private void clearFields() {
+        loginViewModel.usernameInputField.setText("");
+        loginViewModel.passwordInputField.setText("");
+        LoginState currentState = new LoginState();
+        loginViewModel.setState(currentState);
+        loginViewModel.firePropertyChanged();
+    }
+
     @Override
     public void actionPerformed(ActionEvent evt) {
-        if (evt.getSource().equals(cancelButton)) {
-            viewModelManager.setActiveView(SignupView.viewName);
-        }
+        // No action needed here since the clear button is handled separately
     }
 
     @Override
