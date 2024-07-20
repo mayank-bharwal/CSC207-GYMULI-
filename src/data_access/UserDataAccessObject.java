@@ -11,6 +11,7 @@ import entity.User;
 import entity.UserFactory;
 import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
+import use_case.add_friends.AddFriendsUserDataAccessObject;
 import use_case.login.LoginUserDataAccessInterface;
 
 import use_case.send_message.SendMessageUserDataAccessInterface;
@@ -21,7 +22,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
-         UpdateProfileUserDataAccessInterface {
+         UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject {
     private MongoConnection mongoConnection;
     private MongoCollection<Document> UserCollection;
     private  Map<String, User> accounts = new HashMap<>();
@@ -93,6 +94,20 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     @Override
     public boolean userExists(String username) {
         return accounts.containsKey(username);
+    }
+
+    @Override
+    public void addFriend(String currentUser, String friend) {
+        accounts.get(currentUser).getFriends().add(friend);
+        accounts.get(friend).getFriends().add(currentUser);
+
+        Document filter = new Document("username", currentUser);
+        Document update = new Document("$push", new Document("friends", friend));
+        UserCollection.updateOne(filter, update);
+
+        Document filter2 = new Document("username", friend);
+        Document update2 = new Document("$push", new Document("friends", currentUser));
+        UserCollection.updateOne(filter2, update2);
     }
 
 
