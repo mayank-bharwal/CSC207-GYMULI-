@@ -25,7 +25,7 @@ public class MakeChatInteractor implements MakeChatInputBoundary{
         if (makeChatDAO.ChatExists(inputData.getChatName())) {
             makeChatPresenter.setFailView("Chat name already exists");
         } else if (!makeChatDAO.UserExists(inputData.getUser_2())) {
-            makeChatPresenter.setFailView("User doesnt exist");
+            makeChatPresenter.setFailView("User doesn't exist");
         } else {
             LocalDateTime date = LocalDateTime.now();
             ArrayList<String> user = new ArrayList<>();
