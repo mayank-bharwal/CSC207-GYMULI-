@@ -17,7 +17,8 @@ public class RetrieveChatInteractor implements RetrieveChatInputBoundary {
             chatPresenter.prepareFailView("Could not retrieve chat info");
         } else {
             Chat chat = retrieveChatDAO.getChat(inputData.getChatName());
-            RetrieveChatOutputData outputData = new RetrieveChatOutputData(chat.getChatName(), chat.getAllmessages(), false);
+            RetrieveChatOutputData outputData = new RetrieveChatOutputData(chat.getChatName(), chat.getUsers(),
+                    chat.getNoOfMembers(), chat.getAllmessages(), chat.getTime(), false);
             chatPresenter.prepareSuccessView(outputData);
 
         }
