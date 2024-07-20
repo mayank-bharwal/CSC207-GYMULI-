@@ -21,6 +21,7 @@ public class UserFactoryTest {
     private String program;
     private List<String> interests;
     private List<String> friends;
+    private List<String> chats;
     private LocalDateTime date;
 
     @BeforeEach
@@ -36,12 +37,13 @@ public class UserFactoryTest {
         interests.add("Gym");
         friends = new ArrayList<>();
         friends.add("Barry");
+        chats = new ArrayList<>();
         date = LocalDateTime.now();
     }
 
     @Test
     void testCreateUser() {
-        User user = userFactory.createUser(username, password, bio, age, program, interests, friends, date);
+        User user = userFactory.createUser(username, password, bio, age, program, interests, friends, chats, date);
 
         assertNotNull(user);
         assertEquals(username, user.getUsername());
@@ -51,13 +53,14 @@ public class UserFactoryTest {
         assertEquals(program, user.getProgramOfStudy());
         assertEquals(interests, user.getInterests());
         assertEquals(friends, user.getFriends());
+        assertEquals(chats, user.getChats());
         assertEquals(date, user.getDateCreated());
     }
 
     @Test
     void testCreateUserWithSpecialCharacters() {
         User user = userFactory.createUser("J@sm!ne", "p@$$w0rd", "(D!@#mo)", 21,
-                "C0mput3r Sc!3nce", interests, friends, date);
+                "C0mput3r Sc!3nce", interests, friends, chats, date);
 
         assertNotNull(user);
         assertEquals("J@sm!ne", user.getUsername());
@@ -67,6 +70,7 @@ public class UserFactoryTest {
         assertEquals("C0mput3r Sc!3nce", user.getProgramOfStudy());
         assertEquals(interests, user.getInterests());
         assertEquals(friends, user.getFriends());
+        assertEquals(chats, user.getChats());
         assertEquals(date, user.getDateCreated());
     }
 
@@ -77,7 +81,7 @@ public class UserFactoryTest {
         specialCharInterests.add("G@m!ng");
 
         User user = userFactory.createUser("Jasmine", "password", "Demo Bio", 21,
-                "Computer Science", specialCharInterests, friends, date);
+                "Computer Science", specialCharInterests, friends, chats, date);
 
         assertNotNull(user);
         assertEquals("Jasmine", user.getUsername());
@@ -87,6 +91,7 @@ public class UserFactoryTest {
         assertEquals("Computer Science", user.getProgramOfStudy());
         assertEquals(specialCharInterests, user.getInterests());
         assertEquals(friends, user.getFriends());
+        assertEquals(chats, user.getChats());
         assertEquals(date, user.getDateCreated());
     }
 
@@ -96,7 +101,7 @@ public class UserFactoryTest {
         specialCharFriends.add("Charl!e");
 
         User user = userFactory.createUser("Jasmine", "password", "Demo Bio", 21,
-                "Computer Science", interests, specialCharFriends, date);
+                "Computer Science", interests, specialCharFriends, chats, date);
 
         assertNotNull(user);
         assertEquals("Jasmine", user.getUsername());
@@ -106,6 +111,7 @@ public class UserFactoryTest {
         assertEquals("Computer Science", user.getProgramOfStudy());
         assertEquals(interests, user.getInterests());
         assertEquals(specialCharFriends, user.getFriends());
+        assertEquals(chats, user.getChats());
         assertEquals(date, user.getDateCreated());
     }
 
@@ -113,22 +119,22 @@ public class UserFactoryTest {
     void testCreateUserWithEmptyStrings() {
         assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("", "password", "(Demo)", 21, "Computer Science",
-                    interests, friends, date);
+                    interests, friends, chats, date);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Jasmine", "", "(Demo)", 21, "Computer Science",
-                    interests, friends, date);
+                    interests, friends, chats, date);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Jasmine", "password", "", 21, "Computer Science",
-                    interests, friends, date);
+                    interests, friends, chats, date);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Jasmine", "password", "(Demo)", 21, "",
-                    interests, friends, date);
+                    interests, friends, chats, date);
         });
     }
 
@@ -136,22 +142,22 @@ public class UserFactoryTest {
     void testCreateUserWithWhitespaceStrings() {
         assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser(" ", "password", "(Demo)", 21, "Computer Science",
-                    interests, friends, date);
+                    interests, friends, chats, date);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Jasmine", " ", "(Demo)", 21, "Computer Science",
-                    interests, friends, date);
+                    interests, friends, chats, date);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Jasmine", "password", " ", 21, "Computer Science",
-                    interests, friends, date);
+                    interests, friends, chats, date);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Jasmine", "password", "(Demo)", 21, " ",
-                    interests, friends, date);
+                    interests, friends, chats, date);
         });
     }
 
@@ -162,17 +168,17 @@ public class UserFactoryTest {
 
         assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Jasmine", "password", "(Demo)", 21,
-                    "Computer Science", emptyInterests, friends, date);
+                    "Computer Science", emptyInterests, friends, chats, date);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Jasmine", "password", "(Demo)", 21,
-                    "Computer Science", interests, emptyFriends, date);
+                    "Computer Science", interests, emptyFriends, chats, date);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
             userFactory.createUser("Jasmine", "password", "(Demo)", 21,
-                    "Computer Science", emptyInterests, emptyFriends, date);
+                    "Computer Science", emptyInterests, emptyFriends, chats, date);
         });
     }
 }

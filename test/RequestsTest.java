@@ -27,12 +27,14 @@ public class RequestsTest {
         List<String> friends = new ArrayList<>();
         friends.add("Barry");
 
+        List<String> chats = new ArrayList<>();
+
         LocalDateTime dateCreated = LocalDateTime.now();
 
         fromUser = userFactory.createUser("Jasmine", "password", "(Demo)", 21,
-                "Computer Science", interests, friends, dateCreated);
+                "Computer Science", interests, friends, chats, dateCreated);
         toUser = userFactory.createUser("Charlie", "password123", "Always Sunny", 22,
-                "Law", interests, friends, dateCreated);
+                "Law", interests, friends, chats, dateCreated);
 
         request = new Requests(fromUser, toUser);
     }
@@ -53,8 +55,11 @@ public class RequestsTest {
         newInterests.add("Coding");
         newInterests.add("Gaming");
 
+        List<String> newFriends = new ArrayList<>();
+        List<String> newChats = new ArrayList<>();
+
         User newFromUser = userFactory.createUser("Barry", "newPassword", "Seeking Direction",
-                23, "Arts", newInterests, new ArrayList<>(), LocalDateTime.now());
+                23, "Arts", newInterests, newFriends, newChats, LocalDateTime.now());
         request.setFrom(newFromUser);
         assertEquals(newFromUser, request.getFrom());
     }
@@ -65,8 +70,11 @@ public class RequestsTest {
         newInterests.add("Hiking");
         newInterests.add("Traveling");
 
+        List<String> newFriends = new ArrayList<>();
+        List<String> newChats = new ArrayList<>();
+
         User newToUser = userFactory.createUser("Alice", "anotherPassword", "In Wonderland",
-                24, "Chemistry", newInterests, new ArrayList<>(), LocalDateTime.now());
+                24, "Chemistry", newInterests, newFriends, newChats, LocalDateTime.now());
         request.setTo(newToUser);
         assertEquals(newToUser, request.getTo());
     }
@@ -75,9 +83,9 @@ public class RequestsTest {
     void testSetFromToMultipleTimes() {
         User firstUser = userFactory.createUser("Jasmine", "password",
                 "(Demo)", 21,  "Computer Science", new ArrayList<>(), new ArrayList<>(),
-                LocalDateTime.now());
+                new ArrayList<>(), LocalDateTime.now());
         User secondUser = userFactory.createUser("Imogen", "secondPassword", "Details", 21,
-                "Music", new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
+                "Music", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
 
         request.setFrom(firstUser);
         assertEquals(firstUser, request.getFrom());
