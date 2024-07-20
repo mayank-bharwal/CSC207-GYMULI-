@@ -1,3 +1,5 @@
+/*IGNORE THIS CLASS, IT'S FOR TESTING FACADE ONLY*/
+
 package data_access;
 
 import entity.CommonUserFactory;
@@ -17,6 +19,9 @@ public class userMap {
 
         // Create an instance of CommonUserFactory
         CommonUserFactory userFactory = new CommonUserFactory();
+
+        // CommonUser(String username, String password, String bio, Integer age, String programOfStudy,
+        //                      List<String> interests, List<String> friends, List<String> chats, LocalDateTime dateCreated)
 
         // Create an ArrayList for each user attribute
         List<String> hobbies1 = new ArrayList<>();

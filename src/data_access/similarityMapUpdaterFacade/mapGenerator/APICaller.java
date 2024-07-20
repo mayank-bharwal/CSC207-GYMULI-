@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import static data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.GetAPI.getAPI;
+import static data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.GetAPI.getBackupAPI;
 
 public class APICaller {
 
@@ -26,7 +27,15 @@ public class APICaller {
         try {
             Response response = client.newCall(request).execute();
             if (!response.isSuccessful()) {
-                throw new IOException("Unexpected code " + response);
+                String backupUrl = getBackupAPI(text1, text2);
+                request = new Request.Builder()
+                        .url(backupUrl)
+                        .build();
+
+                response = client.newCall(request).execute();
+                if (!response.isSuccessful()) {
+                    throw new IOException(response.body().string());
+                }
             }
 
             JSONObject responseBody = new JSONObject(response.body().string());
@@ -40,7 +49,7 @@ public class APICaller {
             }
 
         } catch (IOException | JSONException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("API call failed -- both primary and backup", e);
         }
     }
 }
