@@ -22,7 +22,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private final ViewModelManager viewModelManager;
 
     private final JButton loginButton;
-    private final JButton cancelButton;
+    private final JButton clearButton;
     private final JButton signupButton;
 
     public LoginView(LoginController loginController, LoginViewModel loginViewModel, ViewModelManager viewModelManager) {
@@ -38,7 +38,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        JLabel titleLabel = new JLabel("Login");
+        JLabel titleLabel = loginViewModel.titleLabel;
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -50,7 +50,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.EAST;
 
-        JLabel usernameLabel = new JLabel("Username:");
+        JLabel usernameLabel = loginViewModel.usernameLabel;
         gbc.gridx = 0;
         gbc.gridy = 1;
         formPanel.add(usernameLabel, gbc);
@@ -63,7 +63,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         gbc.anchor = GridBagConstraints.EAST;
         gbc.gridx = 0;
         gbc.gridy = 2;
-        JLabel passwordLabel = new JLabel("Password:");
+        JLabel passwordLabel = loginViewModel.passwordLabel;
         formPanel.add(passwordLabel, gbc);
 
         gbc.anchor = GridBagConstraints.WEST;
@@ -76,16 +76,16 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         gbc.gridy = 3;
         gbc.gridwidth = 2;
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        loginButton = new JButton("Login");
+        loginButton = new JButton(LoginViewModel.LOGIN_BUTTON_LABEL);
         buttonPanel.add(loginButton);
-        cancelButton = new JButton("Clear");
-        buttonPanel.add(cancelButton);
+        clearButton = new JButton(LoginViewModel.CLEAR_BUTTON_LABEL);
+        buttonPanel.add(clearButton);
         signupButton = new JButton("Go to Signup");
         buttonPanel.add(signupButton);
         formPanel.add(buttonPanel, gbc);
 
         loginButton.addActionListener(e -> login());
-        cancelButton.addActionListener(e -> clearFields());
+        clearButton.addActionListener(e -> clearFields());
         signupButton.addActionListener(e -> viewModelManager.setActiveView(SignupView.viewName));
 
         loginViewModel.usernameInputField.addKeyListener(new KeyListener() {
@@ -155,5 +155,4 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         }
     }
 }
-
 

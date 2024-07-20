@@ -1,2 +1,3 @@
-package views;public class ChatView {
+package views;
+public class ChatView {
 }
