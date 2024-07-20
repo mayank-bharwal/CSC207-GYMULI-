@@ -14,6 +14,11 @@ public class GetDB {
     public static String getCollectionName(){
         return readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapUpdater/readDB/DB_files/CollectionName.txt");
     }
+
+    public static String getCollectionID(){
+        return readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapUpdater/readDB/DB_files/CollectionID");
+    }
+
     private static String readTokenFromFile(String fileName) {
         return GetAPI.readTokenFromFile(fileName);
     }

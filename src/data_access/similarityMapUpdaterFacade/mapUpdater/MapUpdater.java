@@ -25,21 +25,15 @@ public class MapUpdater implements MapUpdaterInterface {
                     // Convert JSONObject to Document
                     Document document = Document.parse(map.toString());
 
-//            // Check if the collection is empty
-//            long count = collection.countDocuments();
-                    //Document document = Document.parse(map.toString());
-
-                    // Convert JSONObject to Document
-                    // Document document = Document.parse(map.toString());
-
                     // Extract the _id from the document
                     Object id = document.get("_id");
-
-                    // Ensure the _id field is included in the document
-                    document.put("_id", id);
+                    System.out.println(id==null);
+                    if (id == null) {
+                        document.put("_id", getCollectionID());
+                    }
 
                     // Replace the document if it exists, otherwise insert a new one
-                    collection.replaceOne(Filters.eq("_id", id), document, new ReplaceOptions().upsert(true));
+                    collection.replaceOne(Filters.eq("_id", getCollectionID()), document, new ReplaceOptions().upsert(true));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

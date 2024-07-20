@@ -37,6 +37,25 @@ public class MapGenerator implements MapGeneratorInterface {
             Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
             similarityMap.put(new Tuple(user.getUsername(), key), similarityScore);
         });
+
+        // Calculate similarity between all users in accounts
+        String[] keys = accounts.keySet().toArray(new String[0]);
+        for (int i = 0; i < keys.length; i++) {
+            for (int j = i + 1; j < keys.length; j++) {
+                String key1 = keys[i];
+                String key2 = keys[j];
+                User user1 = accounts.get(key1);
+                User user2 = accounts.get(key2);
+
+                String text1 = user1.getBio() + " " + user1.getProgramOfStudy() + " " + user1.getInterests().toString()
+                        + " " + user1.getAge().toString();
+                String text2 = user2.getBio() + " " + user2.getProgramOfStudy() + " " + user2.getInterests().toString()
+                        + " " + user2.getAge().toString();
+                Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
+                similarityMap.put(new Tuple(key1, key2), similarityScore);
+            }
+        }
+
         JSONObject jsonObject = new JSONObject();
         for (Map.Entry<Tuple, Float> entry : similarityMap.entrySet()) {
             jsonObject.put(entry.getKey().toString(), entry.getValue());
