@@ -22,7 +22,7 @@ class LoginControllerTest {
 
     @Test
     void testLogin() {
-        String username = "testUser";
+        String username = "Jasmine";
         String password = "password";
         ArgumentCaptor<LoginInputData> captor = ArgumentCaptor.forClass(LoginInputData.class);
 
