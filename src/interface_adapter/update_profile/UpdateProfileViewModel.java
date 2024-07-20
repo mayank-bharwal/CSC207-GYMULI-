@@ -2,6 +2,8 @@ package interface_adapter.update_profile;
 
 import interface_adapter.ViewModel;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 
 public class UpdateProfileViewModel extends ViewModel {
@@ -31,6 +33,20 @@ public class UpdateProfileViewModel extends ViewModel {
     private String programOfStudy;
     private List<String> interests;
     private String error;
+
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        pcs.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        pcs.removePropertyChangeListener(listener);
+    }
+
+    private void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
+        pcs.firePropertyChange(propertyName, oldValue, newValue);
+    }
 
     public String getCurrentUsername() {
         return currentUsername;
