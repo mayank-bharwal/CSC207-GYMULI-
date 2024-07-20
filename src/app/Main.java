@@ -18,6 +18,8 @@ import use_case.login.LoginOutputBoundary;
 import views.MainView;
 import views.LoginView;
 import views.SignupView;
+import views.ChatView;
+import views.CreateChatView;
 import views.ViewManager;
 
 import javax.swing.*;
@@ -59,8 +61,14 @@ public class Main {
         LoginView loginView = LoginViewFactory.create(viewModelManager, loginViewModel, loginInputBoundary);
         views.add(loginView, loginView.viewName);
 
-        MainView chatView = new MainView();
-        views.add(chatView, MainView.viewName);
+        MainView mainView = new MainView(viewModelManager);
+        views.add(mainView, MainView.viewName);
+
+        ChatView chatView = new ChatView();
+        views.add(chatView, ChatView.viewName);
+
+        CreateChatView createChatView = new CreateChatView(viewModelManager);
+        views.add(createChatView, CreateChatView.viewName);
 
         viewModelManager.setActiveView(loginView.viewName);
         viewModelManager.firePropertyChanged();
