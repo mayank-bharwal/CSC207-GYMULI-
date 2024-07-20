@@ -39,4 +39,3 @@ public class MapUpdater implements MapUpdaterInterface {
                 }
             }
     }
-}
