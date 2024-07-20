@@ -15,4 +15,7 @@ public abstract class ViewModel {
         pcs.removePropertyChangeListener(listener);
     }
 
+    protected void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
+        pcs.firePropertyChange(propertyName, oldValue, newValue);
+    }
 }
