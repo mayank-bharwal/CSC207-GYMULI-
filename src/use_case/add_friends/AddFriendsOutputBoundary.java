@@ -4,9 +4,9 @@ import use_case.edit_friends.EditFriendsOutputData;
 
 public interface AddFriendsOutputBoundary {
 
-    void setPassView(EditFriendsOutputData outputData);
+    void setPassView(AddFriendsOutputData outputData);
 
-    void sstFailView(String msg);
+    void setFailView(String msg);
 
 
 }
