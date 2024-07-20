@@ -15,7 +15,7 @@ package data_access.similarityMapUpdaterFacade.mapGenerator;
 }
 */
 
-import data_access.similarityMapUpdaterFacade.mapGenerator.apiCaller.*;
+import data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.Tuple;
 import entity.User;
 import org.json.JSONObject;
 
@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class MapGenerator implements MapGeneratorInterface {
 
-    // generates a json dictionary like package.json
+    // generates a json dictionary
     @Override
     public JSONObject generateMap(User user, Map<String, User> accounts) {
         APICaller apiCaller = new APICaller();
