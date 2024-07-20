@@ -22,7 +22,9 @@ public class MakeChatInteractor implements MakeChatInputBoundary{
 
     @Override
     public void makeChat(MakeChatInputData inputData) {
-        if (makeChatDAO.ChatExists(inputData.getChatName())) {
+        if (inputData.getChatName().isEmpty() || inputData.getUser_2().isEmpty()) {
+            makeChatPresenter.setFailView("Please enter all fields");
+        } else if (makeChatDAO.ChatExists(inputData.getChatName())) {
             makeChatPresenter.setFailView("Chat name already exists");
         } else if (!makeChatDAO.UserExists(inputData.getUser_2())) {
             makeChatPresenter.setFailView("User doesn't exist");
@@ -34,6 +36,7 @@ public class MakeChatInteractor implements MakeChatInputBoundary{
             Chat chat = chatFactory.createChat(inputData.getChatName(), user, 2, new ArrayList<>(), date);
             makeChatDAO.saveChat(chat);
             MakeChatOutputData outputData = new MakeChatOutputData(chat, false);
+            makeChatPresenter.setPassView(outputData);
         }
     }
 }

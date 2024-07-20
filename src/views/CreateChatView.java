@@ -94,6 +94,8 @@ public class CreateChatView extends JPanel implements PropertyChangeListener {
         CreateChatState state = createChatViewModel.getState();
         if (state.isSuccess()) {
             JOptionPane.showMessageDialog(this, "Chat created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            chatNameField.setText("");
+            userField.setText("");
             viewModelManager.setActiveView(MainView.viewName);
         } else if (state.getError() != null) {
             JOptionPane.showMessageDialog(this, state.getError(), "Error", JOptionPane.ERROR_MESSAGE);
