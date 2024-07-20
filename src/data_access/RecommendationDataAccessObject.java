@@ -11,7 +11,6 @@ import use_case.recommendations.RecommendationDataAccessInterface;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
-import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.*;
 
 public class RecommendationDataAccessObject implements RecommendationDataAccessInterface {
     @Override

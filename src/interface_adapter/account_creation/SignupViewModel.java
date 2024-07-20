@@ -19,7 +19,6 @@ public class SignupViewModel extends ViewModel {
     public static final String INTEREST3_LABEL = "Interest 3";
 
     public static final String SIGNUP_BUTTON_LABEL = "Sign up";
-    public static final String CANCEL_BUTTON_LABEL = "Cancel";
 
     private SignupState state = new SignupState();
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);

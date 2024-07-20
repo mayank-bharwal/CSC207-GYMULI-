@@ -16,7 +16,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
 public class SignupView extends JPanel implements ActionListener, PropertyChangeListener {
-    public final String viewName = "sign up";
+    public static final String viewName = "sign up";
 
     private final SignupViewModel signupViewModel;
     private final SignupController signupController;

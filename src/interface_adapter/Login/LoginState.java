@@ -14,7 +14,7 @@ public class LoginState {
         passwordError = copy.passwordError;
     }
 
-    public LoginState() {};
+    public LoginState() {}
 
     public String getPassword() {
         return password;

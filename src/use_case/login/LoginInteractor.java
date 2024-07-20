@@ -19,16 +19,16 @@ public class LoginInteractor implements LoginInputBoundary{
         if (UserDAO.userExists(username)) {
             String password = UserDAO.getUser(username).getPassword();
             if (password.equals(inputPassword)) {
-
                 LoginOutputData loginOutputData = new LoginOutputData(username);
                 outputBoundary.showSuccessScreen(loginOutputData);
-
+                System.out.println("Successfully logged in");
             } else {
 
-
+                System.out.println("incorrect password");
                 outputBoundary.showFailureScreen("Incorrect Password");
             }
         } else {
+            System.out.println("User not found");
             outputBoundary.showFailureScreen("User not found");
         }
 
