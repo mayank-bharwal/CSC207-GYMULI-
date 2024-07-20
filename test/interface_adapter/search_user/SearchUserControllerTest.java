@@ -23,7 +23,7 @@ public class SearchUserControllerTest {
 
     @Test
     void testSearchUser() {
-        String username = "testUser";
+        String username = "Jasmine";
         ArgumentCaptor<SearchUserInputData> captor = ArgumentCaptor.forClass(SearchUserInputData.class);
 
         searchUserController.search_user(username);
