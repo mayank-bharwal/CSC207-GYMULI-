@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import entity.*;
 import org.bson.Document;
+import use_case.make_chat.MakeChatUserDataAccessInterface;
 import use_case.retrieve_chat.RetrieveChatUserDataAccessInterface;
 import use_case.send_message.SendMessageUserDataAccessInterface;
 
@@ -11,7 +12,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
-public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface, SendMessageUserDataAccessInterface
+public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface, SendMessageUserDataAccessInterface,
+        MakeChatUserDataAccessInterface
 {
 
     private MongoConnection mongoConnection;
@@ -19,13 +21,14 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
     private MessageFactory messageFactory;
     private Map<String, Chat> chats = new HashMap<>();
     private ChatFactory chatFactory;
+    private UserDataAccessObject userDataAccessObject;
 
     private MongoCollection<Document> MessageCollection ;
     private MongoCollection<Document> ChatCollection ;
 
 
     public ChatDataAccessObject(MongoConnection mongoConnection,  Map<String, Message> messages, MessageFactory messageFactory,
-                                Map<String, Chat> chats,  ChatFactory chatFactory) {
+                                Map<String, Chat> chats,  ChatFactory chatFactory, UserDataAccessObject userDataAccessObject) {
         this.mongoConnection = mongoConnection;
         this.messages = messages;
         this.messageFactory = messageFactory;
@@ -33,6 +36,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         this.chatFactory = chatFactory;
         this.MessageCollection = mongoConnection.getMessageCollection();
         this.ChatCollection = mongoConnection.getChatCollection();
+        this.userDataAccessObject = userDataAccessObject;
 
         try (MongoCursor<Document> messageCursor = MessageCollection.find().iterator()) {
             while (messageCursor.hasNext()) {
@@ -104,4 +108,34 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
 
     }
 
-}
+    @Override
+    public boolean ChatExists(String chatName) {
+        return chats.containsKey(chatName);
+
+    }
+
+    @Override
+    public boolean UserExists(String username) {
+        Map<String, User> accounts = userDataAccessObject.getAccounts();
+        return accounts.containsKey(username);
+
+    }
+
+    @Override
+    public void saveChat(Chat chat) {
+
+        Document document = new Document();
+        document.append("chatName", chat.getChatName());
+        document.append("users", chat.getUsers());
+        document.append("noOfMembers", chat.getNoOfMembers());
+        document.append("allMessage", chat.getAllmessages());
+        document.append("time", LocalDateTime.now());
+        ChatCollection.insertOne(document);
+        chats.put(chat.getChatName(), chat);
+
+
+
+
+
+
+}}

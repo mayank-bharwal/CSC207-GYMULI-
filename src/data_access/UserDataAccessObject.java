@@ -63,6 +63,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         }
     }
 
+    public Map<String, User> getAccounts() {
+        return accounts;
+    }
 
     @Override
     public boolean AccountExists(String username) {return accounts.containsKey(username);}
