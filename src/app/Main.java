@@ -1,8 +1,6 @@
 package app;
 
 import entity.MessageFactory;
-import interface_adapter.LoggedIn.LoggedInViewModel;
-import interface_adapter.Login.LoginController;
 import interface_adapter.Login.LoginPresenter;
 import interface_adapter.Login.LoginViewModel;
 import interface_adapter.account_creation.SignupViewModel;
