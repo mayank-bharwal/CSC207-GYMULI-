@@ -4,6 +4,6 @@ import entity.User;
 
 public interface SendMessageUserDataAccessInterface{
      void saveMessage(Message message);
-     User getUser(String username);
+
 
 }

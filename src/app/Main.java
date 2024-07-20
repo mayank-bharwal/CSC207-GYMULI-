@@ -1,5 +1,6 @@
 package app;
 
+import data_access.MongoConnection;
 import entity.MessageFactory;
 import interface_adapter.Login.LoginPresenter;
 import interface_adapter.Login.LoginViewModel;
@@ -42,8 +43,10 @@ public class Main {
         LoginViewModel loginViewModel = new LoginViewModel();
         SignupViewModel signupViewModel = new SignupViewModel();
 
+        MongoConnection mongoConnection = new MongoConnection();
+
         UserFactory userFactory = new CommonUserFactory();
-        UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, new HashMap<>(), new HashMap<>(), new MessageFactory());
+        UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, new HashMap<>(), mongoConnection);
 
         AccountCreationOutputBoundary accountCreationOutputBoundary = new SignupPresenter(viewModelManager, signupViewModel, loginViewModel);
         AccountCreationInputBoundary accountCreationInputBoundary = new AccountCreationInteractor(userDataAccessObject, accountCreationOutputBoundary, userFactory);

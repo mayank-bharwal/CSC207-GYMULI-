@@ -4,7 +4,7 @@ import entity.Chat;
 
 public interface MakeChatUserDataAccessInterface {
 
-    boolean ChatExists(String username);
+    boolean ChatExists(String chatName);
     boolean UserExists(String username);
-    boolean saveChat(Chat chat);
+    void saveChat(Chat chat);
 }
