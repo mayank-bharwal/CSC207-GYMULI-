@@ -15,18 +15,24 @@ public class UpdateProfilePresenter implements UpdateProfileOutputBoundary {
         this.updateProfileViewModel = updateProfileViewModel;
         this.viewModelManager = viewModelManager;
     }
+
     @Override
     public void prepareSuccessView(UpdateProfileOutputData user) {
+        updateProfileViewModel.setUsername(user.getUsername());
+        updateProfileViewModel.setBio(user.getBio());
+        updateProfileViewModel.setAge(user.getAge());
+        updateProfileViewModel.setProgramOfStudy(user.getProgramOfStudy());
+        updateProfileViewModel.setInterests(user.getInterests());
 
+        updateProfileViewModel.setError(null);
+
+        updateProfileViewModel.firePropertyChanged("updateSuccess", null, "Profile successfully updated!");
+        viewModelManager.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String error) {
-        UpdateProfileState updateProfileState = updateProfileViewModel.getState();
-        updateProfileState.setCurrentpasswordError(error);
-        updateProfileState.setCurrentusernameError(error);
-        updateProfileState.setUsernameError(error);
-        updateProfileViewModel.setUpdateProfileState(updateProfileState);
-        updateProfileViewModel.firePropertyChanged("generalError", null, error);
+        updateProfileViewModel.setError(error);
+        updateProfileViewModel.firePropertyChanged("updateError", null, error);
     }
 }

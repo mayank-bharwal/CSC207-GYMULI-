@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.query.Update;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.List;
 import javax.swing.*;
 
 public class UpdateProfileViewModel extends ViewModel {
@@ -49,5 +50,52 @@ public class UpdateProfileViewModel extends ViewModel {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         support.removePropertyChangeListener(listener);
+    }
+    //the following is for testing
+
+    private String currentUsername;
+    private String currentPassword;
+    private String username;
+    private String password;
+    private Integer age;
+    private String bio;
+    private String programOfStudy;
+    private List<String> interests;
+    private String error;
+
+    public void setUsername(String username) {
+        String oldUsername = this.username;
+        this.username = username;
+        firePropertyChanged("username", oldUsername, username);
+    }
+
+    public void setBio(String bio) {
+        String oldBio = this.bio;
+        this.bio = bio;
+        firePropertyChanged("bio", oldBio, bio);
+    }
+
+    public void setAge(Integer age) {
+        Integer oldAge = this.age;
+        this.age = age;
+        firePropertyChanged("age", oldAge, age);
+    }
+
+    public void setProgramOfStudy(String programOfStudy) {
+        String oldProgramOfStudy = this.programOfStudy;
+        this.programOfStudy = programOfStudy;
+        firePropertyChanged("programOfStudy", oldProgramOfStudy, programOfStudy);
+    }
+
+    public void setInterests(List<String> interests) {
+        List<String> oldInterests = this.interests;
+        this.interests = interests;
+        firePropertyChanged("interests", oldInterests, interests);
+    }
+
+    public void setError(String error) {
+        String oldError = this.error;
+        this.error = error;
+        firePropertyChanged("error", oldError, error);
     }
 }
