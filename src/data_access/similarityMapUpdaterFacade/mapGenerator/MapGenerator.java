@@ -26,7 +26,7 @@ public class MapGenerator implements MapGeneratorInterface {
     // generates a json dictionary
     @Override
     public JSONObject generateMap(User user, Map<String, User> accounts) {
-        APICaller apiCaller = new APICaller();
+        APICallerInterface apiCaller = new APICaller();
         Map<Tuple, Float> similarityMap = new HashMap<>();
         accounts.forEach((key, value) -> {
             String text1 = user.getBio() + " " + user.getProgramOfStudy() + " " + String.join(" ",user.getInterests())

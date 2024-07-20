@@ -14,9 +14,9 @@ import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.*;
 public class MapUpdater implements MapUpdaterInterface {
     @Override
     public void updateMap(JSONObject map) {
-            // upload or modify dictionary present on the database
+        // upload or modify dictionary present on the database
         // Connection string to MongoDB server, application is DB agnostic
-                // Connection string to MongoDB server, application is DB agnostic
+
                 String uri = getURI(); // uri.txt
                 try (MongoClient mongoClient = MongoClients.create(uri)) {
                     MongoDatabase db = mongoClient.getDatabase(getDBName());

@@ -1,7 +1,9 @@
 package data_access.similarityMapUpdaterFacade;
 
 import data_access.similarityMapUpdaterFacade.mapGenerator.MapGenerator;
+import data_access.similarityMapUpdaterFacade.mapGenerator.MapGeneratorInterface;
 import data_access.similarityMapUpdaterFacade.mapUpdater.MapUpdater;
+import data_access.similarityMapUpdaterFacade.mapUpdater.MapUpdaterInterface;
 import entity.User;
 
 import java.time.LocalDateTime;
@@ -14,8 +16,8 @@ import static data_access.userMap_ignore.getMap;
 public class Facade implements FacadeInterface {
 
     public void UpdateDB(User user, Map<String, User> accounts){
-        MapGenerator mapGenerator = new MapGenerator();
-        MapUpdater mapUpdater = new MapUpdater();
+        MapGeneratorInterface mapGenerator = new MapGenerator();
+        MapUpdaterInterface mapUpdater = new MapUpdater();
         mapUpdater.updateMap(mapGenerator.generateMap(user, accounts)) ;
     }
 
