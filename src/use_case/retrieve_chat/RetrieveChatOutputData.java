@@ -8,13 +8,13 @@ import java.util.ArrayList;
 
 public class RetrieveChatOutputData {
     final private String chatName;
-    private ArrayList<String> users = new ArrayList<User>();
+    private ArrayList<String> users = new ArrayList<>();
     private final Integer noOfmembers;
     final private ArrayList<Message> allMessages;
     private final LocalDateTime time;
     private final boolean useCaseFailed;
 
-    public RetrieveChatOutputData(String chatName, ArrayList<User> users, Integer noOfmembers, ArrayList<Message> allMessages, LocalDateTime time, boolean useCaseFailed) {
+    public RetrieveChatOutputData(String chatName, ArrayList<String> users, Integer noOfmembers, ArrayList<Message> allMessages, LocalDateTime time, boolean useCaseFailed) {
         this.chatName = chatName;
         this.users = users;
         this.noOfmembers = noOfmembers;
