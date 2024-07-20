@@ -1,9 +1,14 @@
 package interface_adapter.update_profile;
 
 import interface_adapter.ViewModel;
+import org.springframework.data.mongodb.core.query.Update;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import javax.swing.*;
 
 public class UpdateProfileViewModel extends ViewModel {
-
+    UpdateProfileState updateProfileState = new UpdateProfileState();
     public static final String CLEAR_BUTTON_LABEL = "Clear";
     public static final String TITLE_LABEL = "Update Profile";
     public static final String CURRENT_USERNAME_LABEL = "Enter current username";
@@ -20,4 +25,29 @@ public class UpdateProfileViewModel extends ViewModel {
     public static final String UPDATE_BUTTON_LABEL = "Update";
     public static final String CANCEL_UPDATE_BUTTON_LABEL = "Cancel";
 
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+    public UpdateProfileState getState() {
+        return updateProfileState;
+    }
+
+    public void setUpdateProfileState(UpdateProfileState updateProfileState) {
+        this.updateProfileState = updateProfileState;
+    }
+
+    public void firePropertyChanged() {
+        support.firePropertyChange("state", null, this.updateProfileState);
+    }
+
+    public void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
+        support.firePropertyChange(propertyName, oldValue, newValue);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        support.removePropertyChangeListener(listener);
+    }
 }

@@ -22,6 +22,11 @@ public class UpdateProfilePresenter implements UpdateProfileOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-
+        UpdateProfileState updateProfileState = updateProfileViewModel.getState();
+        updateProfileState.setCurrentpasswordError(error);
+        updateProfileState.setCurrentusernameError(error);
+        updateProfileState.setUsernameError(error);
+        updateProfileViewModel.setUpdateProfileState(updateProfileState);
+        updateProfileViewModel.firePropertyChanged("generalError", null, error);
     }
 }
