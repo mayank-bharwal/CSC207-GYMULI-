@@ -1,7 +1,6 @@
 package app;
 
 import data_access.MongoConnection;
-import entity.MessageFactory;
 import interface_adapter.Login.LoginPresenter;
 import interface_adapter.Login.LoginViewModel;
 import interface_adapter.account_creation.SignupViewModel;
@@ -16,7 +15,7 @@ import data_access.UserDataAccessObject;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
-import views.ChatView;
+import views.MainView;
 import views.LoginView;
 import views.SignupView;
 import views.ViewManager;
@@ -60,8 +59,8 @@ public class Main {
         LoginView loginView = LoginViewFactory.create(viewModelManager, loginViewModel, loginInputBoundary);
         views.add(loginView, loginView.viewName);
 
-        ChatView chatView = new ChatView();
-        views.add(chatView, ChatView.viewName);
+        MainView chatView = new MainView();
+        views.add(chatView, MainView.viewName);
 
         viewModelManager.setActiveView(loginView.viewName);
         viewModelManager.firePropertyChanged();
