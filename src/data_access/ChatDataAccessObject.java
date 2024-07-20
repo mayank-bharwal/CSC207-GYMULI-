@@ -22,13 +22,14 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
     private Map<String, Chat> chats = new HashMap<>();
     private ChatFactory chatFactory;
     private UserDataAccessObject userDataAccessObject;
-
+    private MongoCollection<Document> UserCollection;
     private MongoCollection<Document> MessageCollection ;
     private MongoCollection<Document> ChatCollection ;
 
 
     public ChatDataAccessObject(MongoConnection mongoConnection,  Map<String, Message> messages, MessageFactory messageFactory,
-                                Map<String, Chat> chats,  ChatFactory chatFactory, UserDataAccessObject userDataAccessObject) {
+                                Map<String, Chat> chats,  ChatFactory chatFactory,
+                                UserDataAccessObject userDataAccessObject) {
         this.mongoConnection = mongoConnection;
         this.messages = messages;
         this.messageFactory = messageFactory;
@@ -36,7 +37,9 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         this.chatFactory = chatFactory;
         this.MessageCollection = mongoConnection.getMessageCollection();
         this.ChatCollection = mongoConnection.getChatCollection();
+        this.UserCollection = mongoConnection.getUserCollection();
         this.userDataAccessObject = userDataAccessObject;
+
 
         try (MongoCursor<Document> messageCursor = MessageCollection.find().iterator()) {
             while (messageCursor.hasNext()) {
@@ -122,7 +125,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
     }
 
     @Override
-    public void saveChat(Chat chat) {
+    public void saveChat(String user_1,String user_2,Chat chat) {
 
         Document document = new Document();
         document.append("chatName", chat.getChatName());
@@ -133,9 +136,22 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         ChatCollection.insertOne(document);
         chats.put(chat.getChatName(), chat);
 
+        Document filter = new Document("username", user_1);
+        Document update = new Document("$push", new Document("chats", chat.getChatName()));
+        UserCollection.updateOne(filter, update);
+
+        Document filter2 = new Document("username", user_2);
+        Document update2 = new Document("$push", new Document("chats", chat.getChatName()));
+        UserCollection.updateOne(filter2, update2);
+
+        Map<String, User> accounts = userDataAccessObject.getAccounts();
+        User user1 = accounts.get(user_1);
+        User user2 = accounts.get(user_2);
+        user1.getChats().add(chat.getChatName());
+        user2.getChats().add(chat.getChatName());
 
 
 
+}
 
-
-}}
+}
