@@ -27,7 +27,7 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) {
 
-        JFrame application = new JFrame("Login Example");
+        JFrame application = new JFrame("GYMULI");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setPreferredSize(new Dimension(800, 600));
 
