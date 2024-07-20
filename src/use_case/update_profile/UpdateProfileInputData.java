@@ -1,23 +1,37 @@
 package use_case.update_profile;
 //input data
+import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateProfileInputData {
+
+    private final String currentUsername;
+    private final String currentPassword;
     private final String username;
     private final String password;
     private final String bio;
     private final String programOfStudy;
-    private final String profilePicture;
-    private final List<String> interests;
+    private final Integer age;
+    private List<String> interests = new ArrayList<String>();
 
-    public UpdateProfileInputData(String username, String password, String bio, String programOfStudy,
-                                  String profilePicture, List<String> interests, List<String> friends) {
+    public UpdateProfileInputData(String currentUsername, String currentPassword, String username, String password, String bio, String programOfStudy, Integer age,
+                                  List<String> interests) {
+        this.currentUsername = currentUsername;
+        this.currentPassword = currentPassword;
         this.username = username;
         this.password = password;
         this.bio = bio;
         this.programOfStudy = programOfStudy;
-        this.profilePicture = profilePicture;
+        this.age = age;
         this.interests = interests;
+    }
+
+    public String getCurrentPassword() {
+        return currentPassword;
+    }
+
+    public String getCurrentUsername() {
+        return currentUsername;
     }
 
     public String getUsername() {
@@ -36,8 +50,8 @@ public class UpdateProfileInputData {
         return programOfStudy;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public Integer getAge() {
+        return age;
     }
 
     public List<String> getInterests() {

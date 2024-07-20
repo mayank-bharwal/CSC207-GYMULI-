@@ -10,6 +10,14 @@ public class Chat {
      private ArrayList<Message> allmessages = new ArrayList<>();
      final private LocalDateTime time;
 
+     /**
+      * Requires:
+      * @param chatName -name of chatroom
+      * @param users - the people using chat
+      * @param noOfMembers - number of users
+      * @param allmessages - display all messages in the chat
+      */
+
      Chat(String chatName, ArrayList<User> users, Integer noOfMembers, ArrayList<Message> allmessages) {
           this.chatName = chatName;
           this.users = users;

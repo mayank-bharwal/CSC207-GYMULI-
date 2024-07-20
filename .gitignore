@@ -1,0 +1,4 @@
+*.class
+/target/    # Ignore the build output directory (if using Maven/Gradle)
+*.log        # Ignore log files
+*.tmp        # Ignore temporary files

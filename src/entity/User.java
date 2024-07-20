@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface User {
+    /**
+     *
+     * @return
+     */
     String getUsername();
 
     String getPassword();
@@ -17,6 +21,8 @@ public interface User {
     List<String> getInterests();
 
     List<String> getFriends();
+
+    List<String> getChats();
 
     LocalDateTime getDateCreated();
 
@@ -33,6 +39,10 @@ public interface User {
     void setInterests(List<String> interests);
 
     void setFriends(List<String> friends);
+
+    void setChats(List<String> chats);
+
+    void getChats(List<String> chats);
 
     void setDateCreated(LocalDateTime dateCreated);
 
