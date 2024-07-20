@@ -1,4 +1,4 @@
-package data_access.similarityMapUpdaterFacade.mapGenerator.readAPI;
+package data_access.similarityMapUpdaterFacade.mapGenerator;
 
 public class Tuple {
     private final String first;

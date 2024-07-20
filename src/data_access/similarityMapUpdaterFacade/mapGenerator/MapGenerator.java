@@ -15,7 +15,6 @@ package data_access.similarityMapUpdaterFacade.mapGenerator;
 }
 */
 
-import data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.Tuple;
 import entity.User;
 import org.json.JSONObject;
 

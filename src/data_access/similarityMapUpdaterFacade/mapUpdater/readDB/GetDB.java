@@ -1,18 +1,18 @@
 package data_access.similarityMapUpdaterFacade.mapUpdater.readDB;
 
-import data_access.similarityMapUpdaterFacade.mapGenerator.apiCaller.readAPI.GetAPI;
+import data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.GetAPI;
 
 public class GetDB {
     public static String getURI(){
-        return readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapUpdater/readDB/DB_files/DB_uri.txt");
+        return readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapUpdater/readDB/DB_files/DB_uri");
     }
 
     public static String getDBName(){
-        return readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapUpdater/readDB/DB_files/DB_name.txt");
+        return readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapUpdater/readDB/DB_files/DB_name");
     }
 
     public static String getCollectionName(){
-        return readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapUpdater/readDB/DB_files/CollectionName.txt");
+        return readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapUpdater/readDB/DB_files/CollectionName");
     }
 
     public static String getCollectionID(){
