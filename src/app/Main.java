@@ -2,7 +2,6 @@ package app;
 
 import entity.MessageFactory;
 import interface_adapter.LoggedIn.LoggedInViewModel;
-import interface_adapter.Login.LoginController;
 import interface_adapter.Login.LoginPresenter;
 import interface_adapter.Login.LoginViewModel;
 import interface_adapter.account_creation.SignupViewModel;
@@ -54,8 +53,8 @@ public class Main {
 
         LoginOutputBoundary loginOutputBoundary = new LoginPresenter(loginViewModel, new LoggedInViewModel(), viewModelManager);
         LoginInputBoundary loginInputBoundary = new LoginInteractor(loginOutputBoundary, userDataAccessObject);
-        LoginController loginController = new LoginController(loginInputBoundary);
-        LoginView loginView = new LoginView(loginController, loginViewModel, viewModelManager);
+
+        LoginView loginView = LoginViewFactory.create(viewModelManager, loginViewModel, loginInputBoundary);
         views.add(loginView, loginView.viewName);
 
         viewModelManager.setActiveView(loginView.viewName);
