@@ -84,6 +84,10 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         }
     }
 
+    public MongoCollection<Document> getMessageCollection() {
+        return MessageCollection;
+    }
+
     @Override
     public boolean AccountExists(String username) {return accounts.containsKey(username);}
 

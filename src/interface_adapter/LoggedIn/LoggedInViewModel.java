@@ -13,9 +13,9 @@ public class LoggedInViewModel extends ViewModel {
     public static final String LOGOUT_BUTTON_LABEL = "Log out";
     private String loggedInUser;
 
-    public LoggedInViewModel() {
-       super("logged in");
-    }
+//    public LoggedInViewModel() {
+//       super("logged in");
+//    }
 
     public void setState(LoggedInState state) {
         this.state = state;
