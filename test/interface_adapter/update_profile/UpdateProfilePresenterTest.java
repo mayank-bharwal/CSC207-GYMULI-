@@ -36,6 +36,8 @@ class UpdateProfilePresenterTest {
         verify(mockUpdateProfileViewModel).setProgramOfStudy(outputData.getProgramOfStudy());
         verify(mockUpdateProfileViewModel).setInterests(outputData.getInterests());
         verify(mockUpdateProfileViewModel).setError(null);
+        verify(mockUpdateProfileViewModel).firePropertyChanged("updateSuccess", null,
+                "Profile successfully updated!");
         verify(mockViewModelManager).firePropertyChanged();
     }
 
@@ -46,5 +48,6 @@ class UpdateProfilePresenterTest {
         updateProfilePresenter.prepareFailView(error);
 
         verify(mockUpdateProfileViewModel).setError(error);
+        verify(mockUpdateProfileViewModel).firePropertyChanged("updateError", null, error);
     }
 }
