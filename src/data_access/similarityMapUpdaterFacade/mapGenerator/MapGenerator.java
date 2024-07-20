@@ -29,9 +29,9 @@ public class MapGenerator implements MapGeneratorInterface {
         APICaller apiCaller = new APICaller();
         Map<Tuple, Float> similarityMap = new HashMap<>();
         accounts.forEach((key, value) -> {
-            String text1 = user.getBio() + " " + user.getProgramOfStudy() + " " + user.getInterests().toString()
+            String text1 = user.getBio() + " " + user.getProgramOfStudy() + " " + String.join(" ",user.getInterests())
                     + " " + user.getAge().toString();
-            String text2 = value.getBio() + " " + value.getProgramOfStudy() + " " + value.getInterests().toString()
+            String text2 = value.getBio() + " " + value.getProgramOfStudy() + " " + String.join(" ",value.getInterests())
                     + " " + value.getAge().toString();
             Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
             similarityMap.put(new Tuple(user.getUsername(), key), similarityScore);
@@ -46,9 +46,9 @@ public class MapGenerator implements MapGeneratorInterface {
                 User user1 = accounts.get(key1);
                 User user2 = accounts.get(key2);
 
-                String text1 = user1.getBio() + " " + user1.getProgramOfStudy() + " " + user1.getInterests().toString()
+                String text1 = user1.getBio() + " " + user1.getProgramOfStudy() + " " + String.join(" ",user1.getInterests())
                         + " " + user1.getAge().toString();
-                String text2 = user2.getBio() + " " + user2.getProgramOfStudy() + " " + user2.getInterests().toString()
+                String text2 = user2.getBio() + " " + user2.getProgramOfStudy() + " " + String.join(" ",user2.getInterests())
                         + " " + user2.getAge().toString();
                 Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
                 similarityMap.put(new Tuple(key1, key2), similarityScore);

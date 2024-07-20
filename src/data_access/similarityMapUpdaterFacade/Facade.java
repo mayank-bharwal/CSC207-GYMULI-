@@ -19,6 +19,8 @@ public class Facade implements FacadeInterface {
         mapUpdater.updateMap(mapGenerator.generateMap(user, accounts)) ;
     }
 
+
+    // ignore this, testing purposes only
     public static void main(String[]args){
         // Create an instance of CommonUserFactory
         CommonUserFactory userFactory = new CommonUserFactory();
@@ -36,7 +38,7 @@ public class Facade implements FacadeInterface {
         chats5.add("Chat10");
 
         User user = userFactory.createUser(
-                "Mayank", "password131415", "Bio for Eve", 29, "Computer Science",
+                "Gerald Penn", "password131415", "Bio for Eve", 29, "Computer Science",
                 hobbies5, friends5, chats5, LocalDateTime.now()
         );
 
