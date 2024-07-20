@@ -9,7 +9,7 @@ import java.util.*;
 
 import entity.CommonUserFactory;
 
-import static data_access.userMap.getMap;
+import static data_access.userMap_ignore.getMap;
 
 public class Facade implements FacadeInterface {
 

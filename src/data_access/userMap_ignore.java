@@ -9,10 +9,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class userMap {
+public class userMap_ignore {
     public static Map<String, User> getMap() {
 
         Map<String, User> userMap = new HashMap<>();
@@ -154,7 +153,7 @@ public class userMap {
     }
 
     public static void main(String []args) {
-        Map<String, User> Map = userMap.getMap();
+        Map<String, User> Map = userMap_ignore.getMap();
         for (Map.Entry<String, User> entry : Map.entrySet()) {
             String key = entry.getKey();
             User user = entry.getValue();
