@@ -22,14 +22,14 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private final ViewModelManager viewModelManager;
 
     private final JButton loginButton;
-    private final JButton clearButton;
+    private final JButton cancelButton;
     private final JButton signupButton;
 
-    public LoginView(LoginController loginController, LoginViewModel loginViewModel, ViewModelManager viewModelManager) {
-        this.loginController = loginController;
+    public LoginView(LoginViewModel loginViewModel, LoginController controller, ViewModelManager viewModelManager) {
+        this.loginController = controller;
         this.loginViewModel = loginViewModel;
         this.viewModelManager = viewModelManager;
-        loginViewModel.addPropertyChangeListener(this);
+        this.loginViewModel.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
@@ -38,14 +38,14 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        JLabel titleLabel = loginViewModel.titleLabel;
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel title = loginViewModel.titleLabel;
+        title.setFont(new Font("Arial", Font.BOLD, 24));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        formPanel.add(titleLabel, gbc);
+        formPanel.add(title, gbc);
 
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.EAST;
@@ -78,14 +78,14 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         loginButton = new JButton(LoginViewModel.LOGIN_BUTTON_LABEL);
         buttonPanel.add(loginButton);
-        clearButton = new JButton(LoginViewModel.CLEAR_BUTTON_LABEL);
-        buttonPanel.add(clearButton);
+        cancelButton = new JButton(LoginViewModel.CANCEL_BUTTON_LABEL);
+        buttonPanel.add(cancelButton);
         signupButton = new JButton("Go to Signup");
         buttonPanel.add(signupButton);
         formPanel.add(buttonPanel, gbc);
 
         loginButton.addActionListener(e -> login());
-        clearButton.addActionListener(e -> clearFields());
+        cancelButton.addActionListener(this);
         signupButton.addActionListener(e -> viewModelManager.setActiveView(SignupView.viewName));
 
         loginViewModel.usernameInputField.addKeyListener(new KeyListener() {
@@ -127,31 +127,41 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         loginController.login(currentState.getUsername(), currentState.getPassword());
     }
 
-    private void clearFields() {
-        loginViewModel.usernameInputField.setText("");
-        loginViewModel.passwordInputField.setText("");
-        LoginState currentState = new LoginState();
-        loginViewModel.setState(currentState);
-        loginViewModel.firePropertyChanged();
-    }
-
     @Override
     public void actionPerformed(ActionEvent evt) {
+        if (evt.getSource().equals(cancelButton)) {
+            viewModelManager.setActiveView(SignupView.viewName);
+        }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("activeView".equals(evt.getPropertyName())) {
-            if (viewModelManager.getActiveView().equals(viewName)) {
-                CardLayout cl = (CardLayout) getParent().getLayout();
-                cl.show(getParent(), viewName);
-            }
-        }
         if ("generalError".equals(evt.getPropertyName())) {
             String errorMessage = loginViewModel.getState().getPasswordError();
             if (errorMessage != null) {
                 JOptionPane.showMessageDialog(this, errorMessage, "Login Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+        LoginState state = loginViewModel.getState();
+        setFields(state);
+    }
+
+    private void setFields(LoginState state) {
+        loginViewModel.usernameInputField.setText(state.getUsername());
+        loginViewModel.passwordInputField.setText(state.getPassword());
+    }
+
+    private static class LabelTextPanel extends JPanel {
+        public LabelTextPanel(JLabel label, JTextField textField) {
+            this.setLayout(new BorderLayout());
+            this.add(label, BorderLayout.WEST);
+            this.add(textField, BorderLayout.CENTER);
+        }
+
+        public LabelTextPanel(JLabel label, JPasswordField passwordField) {
+            this.setLayout(new BorderLayout());
+            this.add(label, BorderLayout.WEST);
+            this.add(passwordField, BorderLayout.CENTER);
         }
     }
 }

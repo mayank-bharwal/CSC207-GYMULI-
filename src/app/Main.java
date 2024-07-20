@@ -27,7 +27,7 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) {
 
-        JFrame application = new JFrame("Login Example");
+        JFrame application = new JFrame("GYMULI");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setPreferredSize(new Dimension(800, 600));
 
@@ -51,7 +51,7 @@ public class Main {
         SignupView signupView = SignupViewFactory.create(viewModelManager, loginViewModel, signupViewModel, accountCreationInputBoundary);
         views.add(signupView, signupView.viewName);
 
-        LoginOutputBoundary loginOutputBoundary = new LoginPresenter(loginViewModel, new LoggedInViewModel(), viewModelManager);
+        LoginOutputBoundary loginOutputBoundary = new LoginPresenter(loginViewModel, viewModelManager);
         LoginInputBoundary loginInputBoundary = new LoginInteractor(loginOutputBoundary, userDataAccessObject);
 
         LoginView loginView = LoginViewFactory.create(viewModelManager, loginViewModel, loginInputBoundary);

@@ -9,6 +9,6 @@ import views.LoginView;
 public class LoginViewFactory {
     public static LoginView create(ViewModelManager viewModelManager, LoginViewModel loginViewModel, LoginInputBoundary loginInputBoundary) {
         LoginController loginController = new LoginController(loginInputBoundary);
-        return new LoginView(loginController, loginViewModel, viewModelManager);
+        return new LoginView(loginViewModel, loginController, viewModelManager);
     }
 }
