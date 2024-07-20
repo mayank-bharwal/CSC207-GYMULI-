@@ -2,6 +2,7 @@ package app;
 
 import data_access.MongoConnection;
 import entity.MessageFactory;
+import interface_adapter.Login.LoginPresenter;
 import interface_adapter.Login.LoginViewModel;
 import interface_adapter.account_creation.SignupViewModel;
 import interface_adapter.ViewModelManager;
@@ -12,6 +13,10 @@ import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.account_creation.SignupPresenter;
 import data_access.UserDataAccessObject;
+import use_case.login.LoginInputBoundary;
+import use_case.login.LoginInteractor;
+import use_case.login.LoginOutputBoundary;
+import views.ChatView;
 import views.LoginView;
 import views.SignupView;
 import views.ViewManager;
@@ -23,7 +28,7 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) {
 
-        JFrame application = new JFrame("Login Example");
+        JFrame application = new JFrame("GYMULI");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setPreferredSize(new Dimension(800, 600));
 
@@ -49,8 +54,14 @@ public class Main {
         SignupView signupView = SignupViewFactory.create(viewModelManager, loginViewModel, signupViewModel, accountCreationInputBoundary);
         views.add(signupView, signupView.viewName);
 
-        LoginView loginView = new LoginView(loginViewModel, viewModelManager);
+        LoginOutputBoundary loginOutputBoundary = new LoginPresenter(loginViewModel, viewModelManager);
+        LoginInputBoundary loginInputBoundary = new LoginInteractor(loginOutputBoundary, userDataAccessObject);
+
+        LoginView loginView = LoginViewFactory.create(viewModelManager, loginViewModel, loginInputBoundary);
         views.add(loginView, loginView.viewName);
+
+        ChatView chatView = new ChatView();
+        views.add(chatView, ChatView.viewName);
 
         viewModelManager.setActiveView(loginView.viewName);
         viewModelManager.firePropertyChanged();
@@ -59,3 +70,4 @@ public class Main {
         application.setVisible(true);
     }
 }
+
