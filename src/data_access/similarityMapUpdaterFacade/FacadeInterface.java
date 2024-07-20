@@ -4,6 +4,6 @@ import entity.User;
 
 import java.util.Map;
 
-public interface UpdateDBInterface {
+public interface FacadeInterface {
     public void UpdateDB(User user, Map<String, User> accounts);
 }

@@ -6,7 +6,7 @@ import entity.User;
 
 import java.util.Map;
 
-public class UpdateDB implements UpdateDBInterface {
+public class Facade implements FacadeInterface {
 
     public void UpdateDB(User user, Map<String, User> accounts){
         MapGenerator mapGenerator = new MapGenerator();
