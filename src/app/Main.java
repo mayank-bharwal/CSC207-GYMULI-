@@ -1,10 +1,15 @@
 package app;
 
+import data_access.ChatDataAccessObject;
 import data_access.MongoConnection;
+import entity.ChatFactory;
+import entity.MessageFactory;
 import interface_adapter.Login.LoginPresenter;
 import interface_adapter.Login.LoginViewModel;
 import interface_adapter.account_creation.SignupViewModel;
 import interface_adapter.ViewModelManager;
+import interface_adapter.make_chat.CreateChatPresenter;
+import interface_adapter.make_chat.CreateChatViewModel;
 import use_case.account_creation.AccountCreationInputBoundary;
 import use_case.account_creation.AccountCreationInteractor;
 import use_case.account_creation.AccountCreationOutputBoundary;
@@ -15,6 +20,8 @@ import data_access.UserDataAccessObject;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
+import use_case.make_chat.MakeChatInputBoundary;
+import use_case.make_chat.MakeChatInteractor;
 import views.MainView;
 import views.LoginView;
 import views.SignupView;
@@ -43,11 +50,13 @@ public class Main {
 
         LoginViewModel loginViewModel = new LoginViewModel();
         SignupViewModel signupViewModel = new SignupViewModel();
+        CreateChatViewModel createChatViewModel = new CreateChatViewModel();
 
         MongoConnection mongoConnection = new MongoConnection();
 
         UserFactory userFactory = new CommonUserFactory();
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, new HashMap<>(), mongoConnection);
+        ChatDataAccessObject chatDataAccessObject = new ChatDataAccessObject(new MongoConnection(), new HashMap<>(), new MessageFactory(), new HashMap<>(), new ChatFactory(), userDataAccessObject);
 
         AccountCreationOutputBoundary accountCreationOutputBoundary = new SignupPresenter(viewModelManager, signupViewModel, loginViewModel);
         AccountCreationInputBoundary accountCreationInputBoundary = new AccountCreationInteractor(userDataAccessObject, accountCreationOutputBoundary, userFactory);
@@ -61,13 +70,15 @@ public class Main {
         LoginView loginView = LoginViewFactory.create(viewModelManager, loginViewModel, loginInputBoundary);
         views.add(loginView, loginView.viewName);
 
-        MainView mainView = new MainView(viewModelManager);
+        MainView mainView = MainViewFactory.create(viewModelManager);
         views.add(mainView, MainView.viewName);
 
         ChatView chatView = new ChatView();
         views.add(chatView, ChatView.viewName);
 
-        CreateChatView createChatView = new CreateChatView(viewModelManager);
+        CreateChatPresenter createChatPresenter = new CreateChatPresenter(createChatViewModel);
+        MakeChatInputBoundary makeChatInputBoundary = new MakeChatInteractor(chatDataAccessObject, createChatPresenter, new ChatFactory());
+        CreateChatView createChatView = CreateChatViewFactory.create(viewModelManager, createChatViewModel, makeChatInputBoundary);
         views.add(createChatView, CreateChatView.viewName);
 
         viewModelManager.setActiveView(loginView.viewName);
