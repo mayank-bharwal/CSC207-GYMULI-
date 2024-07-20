@@ -20,8 +20,8 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
     private Map<String, Chat> chats = new HashMap<>();
     private ChatFactory chatFactory;
 
-    private MongoCollection<Document> MessageCollection = mongoConnection.getMessageCollection();
-    private MongoCollection<Document> ChatCollection = mongoConnection.getChatCollection();
+    private MongoCollection<Document> MessageCollection ;
+    private MongoCollection<Document> ChatCollection ;
 
 
     public ChatDataAccessObject(MongoConnection mongoConnection,  Map<String, Message> messages, MessageFactory messageFactory,
@@ -31,6 +31,8 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         this.messageFactory = messageFactory;
         this.chats = chats;
         this.chatFactory = chatFactory;
+        this.MessageCollection = mongoConnection.getMessageCollection();
+        this.ChatCollection = mongoConnection.getChatCollection();
 
         try (MongoCursor<Document> messageCursor = MessageCollection.find().iterator()) {
             while (messageCursor.hasNext()) {
@@ -55,7 +57,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
             while (chatCursor.hasNext()) {
                 Document chatDoc = chatCursor.next();
                 String chatName = chatDoc.getString("chatName");
-                ArrayList<User> users = (ArrayList<User>) chatDoc.get("users");
+                ArrayList<String> users = (ArrayList<String>) chatDoc.get("users");
                 Integer noOfMembers = chatDoc.getInteger("noOfMembers");
                 ArrayList<Message> message = (ArrayList<Message>) chatDoc.get("allmessages");
                 Date sendDate = chatDoc.getDate("dateCreated");

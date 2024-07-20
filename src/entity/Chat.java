@@ -2,10 +2,11 @@ package entity;
 
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Chat {
      private String chatName;
-     private ArrayList<User> users = new ArrayList<>();
+     private ArrayList<String> users = new ArrayList<>();
      private Integer noOfMembers;
      private ArrayList<Message> allmessages = new ArrayList<>();
      private LocalDateTime time;
@@ -18,7 +19,7 @@ public class Chat {
       * @param allmessages - display all messages in the chat
       */
 
-     Chat(String chatName, ArrayList<User> users, Integer noOfMembers, ArrayList<Message> allmessages, LocalDateTime time) {
+     Chat(String chatName, ArrayList<String> users, Integer noOfMembers, ArrayList<Message> allmessages, LocalDateTime time) {
           this.chatName = chatName;
           this.users = users;
           this.noOfMembers = noOfMembers;
@@ -30,11 +31,11 @@ public class Chat {
 
      public void setChatName(String chatName) {this.chatName = chatName;}
 
-     public ArrayList<User> getUsers() {
+     public ArrayList<String> getUsers() {
           return users;
      }
 
-     public void setUsers(ArrayList<User> users) {
+     public void setUsers(ArrayList<String> users) {
           this.users = users;
      }
 

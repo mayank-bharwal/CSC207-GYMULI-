@@ -21,24 +21,21 @@ import java.time.ZoneId;
 import java.util.*;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
-        SendMessageUserDataAccessInterface, UpdateProfileUserDataAccessInterface {
-    String uri = "mongodb+srv://UmerFarooqui:RealMadrid123Canon@cluster0.vbtnfad.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-    MongoClient mongoClient = MongoClients.create(uri);
-    MongoDatabase database = mongoClient.getDatabase("GYMULI");
-    MongoCollection<Document> MessageCollection = database.getCollection("messages");
-    MongoCollection<Document> UserCollection = database.getCollection("users");
+         UpdateProfileUserDataAccessInterface {
+    private MongoConnection mongoConnection;
+    private MongoCollection<Document> UserCollection;
     private  Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
-    private Map<String, Message> messages = new HashMap<>();
-    private MessageFactory messageFactory;
 
 
-    public UserDataAccessObject(UserFactory userFactory, Map<String, User> accounts, Map<String, Message> messages, MessageFactory messageFactory) {
+
+    public UserDataAccessObject(UserFactory userFactory, Map<String, User> accounts, MongoConnection mongoConnection) {
 
         this.userFactory = userFactory;
         this.accounts = accounts;
-        this.messages = messages;
-        this.messageFactory = messageFactory;
+        this.mongoConnection = mongoConnection;
+        this.UserCollection = mongoConnection.getUserCollection();
+
 
         try (MongoCursor<Document> cursor = UserCollection.find().iterator()) {
             while (cursor.hasNext()) {
@@ -61,32 +58,11 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                 User user = userFactory.createUser(username, password, bio, age, programOfStudy, interests, friends, chats, dateCreated);
                 accounts.put(username, user);
 
-                try (MongoCursor<Document> messageCursor = MessageCollection.find().iterator()) {
-                    while (messageCursor.hasNext()) {
-                        Document messageDoc = messageCursor.next();
-                        String chatName = messageDoc.getString("chatName");
-                        String sender = messageDoc.getString("username");
-                        String receiver = messageDoc.getString("receiver");
-                        String messageText = messageDoc.getString("message");
-                        Date sendDate = messageDoc.getDate("dateCreated");
-
-                        LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
-
-                        Message message = messageFactory.createMessage(chatName, sender, receiver, messageText, dateCreatedM);
-                        messages.put(chatName, message);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
 
             }
         }
     }
 
-    public MongoCollection<Document> getMessageCollection() {
-        return MessageCollection;
-    }
 
     @Override
     public boolean AccountExists(String username) {return accounts.containsKey(username);}
@@ -116,18 +92,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         return accounts.containsKey(username);
     }
 
-    @Override
-    public void saveMessage(Message message) {
-        Document document = new Document();
-        document.append("chatName", message.getChatName());
-        document.append("username", message.getSender());
-        document.append("receiver", message.getReceiver());
-        document.append("message", message.getMessage());
-        document.append("dateCreated", LocalDateTime.now());
-        MessageCollection.insertOne(document);
-
-        messages.put(message.getChatName(), message);
-    }
 
     @Override
     public User getUser(String username) {

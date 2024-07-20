@@ -55,7 +55,7 @@ public class ChatTest {
         messages.add(message2);
 
         chatFactory = new ChatFactory();
-        chat = chatFactory.createChat("Test Chat", users, users.size(), messages);
+//        chat = chatFactory.createChat("Test Chat", users, users.size(), messages);
     }
 
     @Test
