@@ -29,8 +29,8 @@ public class CommonUser implements User {
      */
 
 
-    CommonUser(String username, String password, String bio, Integer age,String programOfStudy,
-               List<String> interests, List<String> friends, List<String> chats, LocalDateTime dateCreated) {
+    CommonUser(String username, String password, String bio, Integer age, String programOfStudy,
+                      List<String> interests, List<String> friends, List<String> chats, LocalDateTime dateCreated) {
         this.username = username;
         this.password = password;
         this.bio = bio;
