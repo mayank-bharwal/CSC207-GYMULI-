@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class RetrieveChatOutputData {
     final private String chatName;
-    private ArrayList<User> users = new ArrayList<User>();
+    private ArrayList<String> users = new ArrayList<User>();
     private final Integer noOfmembers;
     final private ArrayList<Message> allMessages;
     private final LocalDateTime time;
@@ -26,7 +26,7 @@ public class RetrieveChatOutputData {
         return chatName;
     }
 
-    public ArrayList<User> getUsers() {
+    public ArrayList<String> getUsers() {
         return users;
     }
 

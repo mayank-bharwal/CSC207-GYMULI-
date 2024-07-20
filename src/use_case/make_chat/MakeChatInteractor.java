@@ -31,7 +31,7 @@ public class MakeChatInteractor implements MakeChatInputBoundary{
             ArrayList<String> user = new ArrayList<>();
             user.add(inputData.getUser_1());
             user.add(inputData.getUser_2());
-            Chat chat = chatFactory.createChat(inputData.getChatName(), user, 2, new ArrayList<>());
+            Chat chat = chatFactory.createChat(inputData.getChatName(), user, 2, new ArrayList<>(), date);
             makeChatDAO.saveChat(chat);
             MakeChatOutputData outputData = new MakeChatOutputData(chat, false);
         }
