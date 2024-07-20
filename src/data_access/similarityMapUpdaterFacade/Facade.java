@@ -5,9 +5,7 @@ import data_access.similarityMapUpdaterFacade.mapUpdater.MapUpdater;
 import entity.User;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import entity.CommonUserFactory;
 
@@ -25,10 +23,21 @@ public class Facade implements FacadeInterface {
         // Create an instance of CommonUserFactory
         CommonUserFactory userFactory = new CommonUserFactory();
 
+        List<String> hobbies5 = new ArrayList<>();
+        hobbies5.add("Dancing");
+        hobbies5.add("Painting");
+
+        List<String> friends5 = new ArrayList<>();
+        friends5.add("Charlie");
+        friends5.add("David");
+
+        List<String> chats5 = new ArrayList<>();
+        chats5.add("Chat9");
+        chats5.add("Chat10");
+
         User user = userFactory.createUser(
-                "Mayank", "password123", "I love movies", 45, "Computer Science",
-                Arrays.asList("Coding", "Traveling"), Arrays.asList("Bob", "Charlie"),
-                Arrays.asList("Chat1", "Chat2"), LocalDateTime.now()
+                "Mayank", "password131415", "Bio for Eve", 29, "Computer Science",
+                hobbies5, friends5, chats5, LocalDateTime.now()
         );
 
         Map<String, User> accounts = new HashMap<>();

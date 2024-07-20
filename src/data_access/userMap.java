@@ -4,55 +4,110 @@ import entity.CommonUserFactory;
 import entity.User;
 
 import java.time.LocalDateTime;
-//import java.util.Array;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class userMap {
     public static Map<String, User> getMap() {
+
         Map<String, User> userMap = new HashMap<>();
 
         // Create an instance of CommonUserFactory
         CommonUserFactory userFactory = new CommonUserFactory();
 
-        // Create 5 users for testing
+        // Create an ArrayList for each user attribute
+        List<String> hobbies1 = new ArrayList<>();
+        hobbies1.add("Reading");
+        hobbies1.add("Traveling");
+
+        List<String> friends1 = new ArrayList<>();
+        friends1.add("Bob");
+        friends1.add("Charlie");
+
+        List<String> chats1 = new ArrayList<>();
+        chats1.add("Chat1");
+        chats1.add("Chat2");
+
         User user1 = userFactory.createUser(
                 "Alice", "password123", "Bio for Alice", 25, "Computer Science",
-                Arrays.asList("Reading", "Traveling"), Arrays.asList("Bob", "Charlie"),
-                Arrays.asList("Chat1", "Chat2"), LocalDateTime.now()
+                hobbies1, friends1, chats1, LocalDateTime.now()
         );
         userMap.put(user1.getUsername(), user1);
 
+        List<String> hobbies2 = new ArrayList<>();
+        hobbies2.add("Hiking");
+        hobbies2.add("Chess");
+
+        List<String> friends2 = new ArrayList<>();
+        friends2.add("Alice");
+        friends2.add("David");
+
+        List<String> chats2 = new ArrayList<>();
+        chats2.add("Chat3");
+        chats2.add("Chat4");
+
         User user2 = userFactory.createUser(
                 "Bob", "password456", "Bio for Bob", 30, "Mathematics",
-                Arrays.asList("Hiking", "Chess"), Arrays.asList("Alice", "David"),
-                Arrays.asList("Chat3", "Chat4"), LocalDateTime.now()
+                hobbies2, friends2, chats2, LocalDateTime.now()
         );
         userMap.put(user2.getUsername(), user2);
 
+        List<String> hobbies3 = new ArrayList<>();
+        hobbies3.add("Cooking");
+        hobbies3.add("Gaming");
+
+        List<String> friends3 = new ArrayList<>();
+        friends3.add("Alice");
+        friends3.add("Eve");
+
+        List<String> chats3 = new ArrayList<>();
+        chats3.add("Chat5");
+        chats3.add("Chat6");
+
         User user3 = userFactory.createUser(
                 "Charlie", "password789", "Bio for Charlie", 22, "Physics",
-                Arrays.asList("Cooking", "Gaming"), Arrays.asList("Alice", "Eve"),
-                Arrays.asList("Chat5", "Chat6"), LocalDateTime.now()
+                hobbies3, friends3, chats3, LocalDateTime.now()
         );
         userMap.put(user3.getUsername(), user3);
 
+        List<String> hobbies4 = new ArrayList<>();
+        hobbies4.add("Photography");
+        hobbies4.add("Music");
+
+        List<String> friends4 = new ArrayList<>();
+        friends4.add("Bob");
+        friends4.add("Eve");
+
+        List<String> chats4 = new ArrayList<>();
+        chats4.add("Chat7");
+        chats4.add("Chat8");
+
         User user4 = userFactory.createUser(
                 "David", "password101112", "Bio for David", 27, "Biology",
-                Arrays.asList("Photography", "Music"), Arrays.asList("Bob", "Eve"),
-                Arrays.asList("Chat7", "Chat8"), LocalDateTime.now()
+                hobbies4, friends4, chats4, LocalDateTime.now()
         );
         userMap.put(user4.getUsername(), user4);
 
+        List<String> hobbies5 = new ArrayList<>();
+        hobbies5.add("Dancing");
+        hobbies5.add("Painting");
+
+        List<String> friends5 = new ArrayList<>();
+        friends5.add("Charlie");
+        friends5.add("David");
+
+        List<String> chats5 = new ArrayList<>();
+        chats5.add("Chat9");
+        chats5.add("Chat10");
+
         User user5 = userFactory.createUser(
                 "Eve", "password131415", "Bio for Eve", 29, "Chemistry",
-                Arrays.asList("Dancing", "Painting"), Arrays.asList("Charlie", "David"),
-                Arrays.asList("Chat9", "Chat10"), LocalDateTime.now()
+                hobbies5, friends5, chats5, LocalDateTime.now()
         );
         userMap.put(user5.getUsername(), user5);
-
 //        // Add more users as needed to reach at least 10 elements
 //        // Example:
 //        List<String> interests6 = new ArrayList<>();
