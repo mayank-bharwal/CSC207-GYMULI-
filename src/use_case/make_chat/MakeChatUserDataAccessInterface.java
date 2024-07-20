@@ -6,5 +6,5 @@ public interface MakeChatUserDataAccessInterface {
 
     boolean ChatExists(String chatName);
     boolean UserExists(String username);
-    void saveChat(Chat chat);
+    void saveChat(String user_1,String user_2, Chat chat);
 }
