@@ -48,6 +48,22 @@ public class SignupViewModel extends ViewModel {
         this.state = state;
     }
 
+    //for testing
+    private String username;
+    private String error;
+
+    public void setUsername(String username) {
+        String oldUsername = this.username;
+        this.username = username;
+        firePropertyChanged("username", oldUsername, username);
+    }
+
+    public void setError(String error) {
+        String oldError = this.error;
+        this.error = error;
+        firePropertyChanged("error", oldError, error);
+    }
+
     public void firePropertyChanged() {
         support.firePropertyChange("state", null, this.state);
     }

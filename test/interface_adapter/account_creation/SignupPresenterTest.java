@@ -19,14 +19,14 @@ class SignupPresenterTest {
     private SignupPresenter signupPresenter;
     private ViewModelManager mockViewModelManager;
     private SignupViewModel mockSignupViewModel;
-    private LoginViewModel mockLoginViewModel;
+    //private LoginViewModel mockLoginViewModel;
 
     @BeforeEach
     void setUp() {
         mockViewModelManager = Mockito.mock(ViewModelManager.class);
         mockSignupViewModel = Mockito.mock(SignupViewModel.class);
-        mockLoginViewModel = Mockito.mock(LoginViewModel.class);
-        signupPresenter = new SignupPresenter(mockViewModelManager, mockSignupViewModel, mockLoginViewModel);
+       //mockLoginViewModel = Mockito.mock(LoginViewModel.class);
+        signupPresenter = new SignupPresenter(mockViewModelManager, mockSignupViewModel);
     }
 
     @Test
@@ -39,7 +39,7 @@ class SignupPresenterTest {
 
         signupPresenter.setPassView(outputData);
 
-        LocalDateTime responseTime = LocalDateTime.parse(outputData.getCreationTime());
+        LocalDateTime responseTime = LocalDateTime.parse("2024-07-20T12:00:00");
         String formattedTime = responseTime.format(DateTimeFormatter.ofPattern("hh:mm:ss"));
 
         verify(mockSignupState).setUsername(outputData.getUsername());
