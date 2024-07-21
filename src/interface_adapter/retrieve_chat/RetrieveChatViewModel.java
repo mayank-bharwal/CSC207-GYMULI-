@@ -15,5 +15,9 @@ public class RetrieveChatViewModel extends ViewModel {
         firePropertyChanged("state", oldState, this.state);
     }
 
+    public void triggerUpdate() {
+        firePropertyChanged("state", null, this.state);
+    }
+
 }
 

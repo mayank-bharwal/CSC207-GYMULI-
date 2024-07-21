@@ -10,6 +10,8 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ChatView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "ChatView";
@@ -22,6 +24,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final JTextField messageField;
     private final JButton sendButton;
     private final JButton backButton;
+    private Timer timer;
 
     public ChatView(ViewModelManager viewModelManager, SendMessageController sendMessageController, SendMessageViewModel sendMessageViewModel, RetrieveChatViewModel retrieveChatViewModel) {
         this.viewModelManager = viewModelManager;
@@ -30,6 +33,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         this.retrieveChatViewModel = retrieveChatViewModel;
         this.sendMessageViewModel.addPropertyChangeListener(this);
         this.retrieveChatViewModel.addPropertyChangeListener(this);
+        this.viewModelManager.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
@@ -83,9 +87,34 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if ("state".equals(evt.getPropertyName())) {
             loadChatMessages();
+        } else if ("activeView".equals(evt.getPropertyName())) {
+            if (ChatView.viewName.equals(evt.getNewValue())) {
+                startTimer();
+            } else {
+                stopTimer();
+            }
+        }
+    }
+
+    private void startTimer() {
+        if (timer == null) {
+            timer = new Timer(true);
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    System.out.println("Timer triggered");
+                    retrieveChatViewModel.triggerUpdate();
+                }
+            }, 0, 3000);
+        }
+    }
+
+    private void stopTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
         }
     }
 }
-
 
 
