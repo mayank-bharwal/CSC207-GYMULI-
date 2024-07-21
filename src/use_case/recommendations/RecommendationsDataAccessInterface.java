@@ -4,6 +4,7 @@ import entity.User;
 
 import java.util.List;
 
-public interface RecommendationDataAccessInterface {
+public interface RecommendationsDataAccessInterface {
     List<User> getNSimilarUsers(User user, int numberOfUsers);
+    public boolean AccountExists(String username);
 }

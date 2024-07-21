@@ -11,7 +11,7 @@ import use_case.account_creation.AccountCreationUserDataAccessInterface;
 import use_case.add_friends.AddFriendsUserDataAccessObject;
 import use_case.login.LoginUserDataAccessInterface;
 
-import use_case.recommendations.RecommendationDataAccessInterface;
+import use_case.recommendations.RecommendationsDataAccessInterface;
 import use_case.update_profile.UpdateProfileUserDataAccessInterface;
 
 import java.time.LocalDateTime;
@@ -23,7 +23,7 @@ import static data_access.readDB.GetDB.getCollectionID;
 import static data_access.userMap_ignore.getMap;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
-        UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationDataAccessInterface {
+        UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationsDataAccessInterface {
     private MongoConnection mongoConnection;
     private MongoCollection<Document> UserCollection;
     private Map<String, User> accounts = new HashMap<>();
@@ -205,7 +205,8 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
             List<User> topNUsers = new ArrayList<>();
             for (String topUsername : topNUsernames) {
                 User similarUser = getUser(topUsername);
-                if (similarUser != null & !similarUser.getUsername().equals(username)) {
+                assert similarUser != null;
+                if (!similarUser.getUsername().equals(username)) {
                     topNUsers.add(similarUser);
                 }
             }
@@ -217,7 +218,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { // TESTING PURPOSES ONLY, REDUNDANT MAIN METHOD
         // Example usage
         UserFactory userFactory = new CommonUserFactory();
         Map<String, Message> messages = new HashMap<>();
