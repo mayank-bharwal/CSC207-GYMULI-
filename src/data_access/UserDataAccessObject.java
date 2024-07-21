@@ -11,7 +11,7 @@ import use_case.account_creation.AccountCreationUserDataAccessInterface;
 import use_case.add_friends.AddFriendsUserDataAccessObject;
 import use_case.login.LoginUserDataAccessInterface;
 
-import use_case.recommendations.RecommendationDataAccessInterface;
+import use_case.recommendations.RecommendationsDataAccessInterface;
 import use_case.update_profile.UpdateProfileUserDataAccessInterface;
 
 import java.time.LocalDateTime;
@@ -23,7 +23,7 @@ import static data_access.readDB.GetDB.getCollectionID;
 import static data_access.userMap_ignore.getMap;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
-        UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationDataAccessInterface {
+        UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationsDataAccessInterface {
     private MongoConnection mongoConnection;
     private MongoCollection<Document> UserCollection;
     private Map<String, User> accounts = new HashMap<>();
