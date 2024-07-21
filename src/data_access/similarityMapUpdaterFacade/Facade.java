@@ -40,8 +40,8 @@ public class Facade implements FacadeInterface {
         chats5.add("Chat10");
 
         User user = userFactory.createUser(
-                "Mayank Bharwal", "password131415", "Bio for Eve", 29, "Computer Science",
-                hobbies5, friends5, chats5, LocalDateTime.now()
+                "Mayank", "password131415", "Audiophile", 29, "Cinema Studies",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now()
         );
 
         Map<String, User> accounts = new HashMap<>();

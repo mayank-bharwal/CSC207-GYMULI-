@@ -5,6 +5,8 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCursor;
+import data_access.similarityMapUpdaterFacade.Facade;
+import data_access.similarityMapUpdaterFacade.FacadeInterface;
 import entity.*;
 import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 
 import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.*;
 import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.getCollectionID;
+import static data_access.userMap_ignore.getMap;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
         SendMessageUserDataAccessInterface, UpdateProfileUserDataAccessInterface, RecommendationDataAccessInterface {
@@ -181,13 +184,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
     @Override
     public List<User> getNSimilarUsers(User user, int N) {
-        // get top N users from the database by converting it into MAP and according to similarity score and make a list
-        // of users and return
-//        try (MongoClient mongoClient = MongoClients.create(getURI())) {
-//            MongoDatabase database = mongoClient.getDatabase(getDBName());
-        //MongoCollection<Document> similarityCollection = database.getCollection(getCollectionName());
-
-        //MongoCollection<Document> UserCollection = database.getCollection("users");
 
         Document doc = similarityCollection.find(new Document("_id", getCollectionID())).first();
 
@@ -230,13 +226,14 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
             List<User> topNUsers = new ArrayList<>();
             for (String topUsername : topNUsernames) {
                 User similarUser = getUser(topUsername);
-                if (similarUser != null) {
+                if (similarUser != null & !similarUser.getUsername().equals(username)) {
                     topNUsers.add(similarUser);
                 }
             }
 
             return topNUsers;
         }
+        System.out.println("Document Does not exist");
         return new ArrayList<>();
     }
 
@@ -244,40 +241,46 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     public static void main(String[] args) {
         // Example usage
         UserFactory userFactory = new CommonUserFactory();
-        Map<String, User> accounts = new HashMap<>();
         Map<String, Message> messages = new HashMap<>();
         MessageFactory messageFactory = new MessageFactory();
 
-        UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, accounts, messages, messageFactory);
+        User user = userFactory.createUser("Gippy", "love123", "Audiophile", 34, "Cinema Studies",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
+
+        FacadeInterface facade = new Facade();
+        facade.UpdateDB(user, getMap());
+
+        UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, getMap(), messages, messageFactory);
         //RecommendationDataAccessObject dao = new RecommendationDataAccessObject();
 
-        User user = userDataAccessObject.getUser("Alice");
-        if (user != null) {
-            List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user, 3);
-            similarUsers.forEach(u -> System.out.println(u.getUsername()));
-        }else {
+        User user1 = userDataAccessObject.getUser("Alice");
+        if (user1 != null) {
+            List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user1,3);
+            similarUsers.forEach(u -> System.out.println(u.getUsername() + " " + u.getPassword()));
+        } else {
             System.out.println("User 'Alice' not found.");
         }
 //        List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user, 3);
 //        similarUsers.forEach(u -> System.out.println(u.getUsername()));
     }
-
-
-    private static class UserSimilarity {
-        private final String username;
-        private final double score;
-
-        public UserSimilarity(String username, double score) {
-            this.username = username;
-            this.score = score;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public double getScore() {
-            return score;
-        }
-    }
 }
+
+
+//    private static class UserSimilarity {
+//        private final String username;
+//        private final double score;
+//
+//        public UserSimilarity(String username, double score) {
+//            this.username = username;
+//            this.score = score;
+//        }
+//
+//        public String getUsername() {
+//            return username;
+//        }
+//
+//        public double getScore() {
+//            return score;
+//        }
+//    }
+//}

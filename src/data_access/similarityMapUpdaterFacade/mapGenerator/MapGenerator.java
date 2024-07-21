@@ -27,7 +27,7 @@ public class MapGenerator implements MapGeneratorInterface {
     @Override
     public JSONObject generateMap(User user, Map<String, User> accounts) {
         APICallerInterface apiCaller = new APICaller();
-        Map<Tuple, Float> similarityMap = new HashMap<>();
+        Map<Tuple, Double> similarityMap = new HashMap<>();
         accounts.forEach((key, value) -> {
             String text1 = user.getBio() + " " + user.getProgramOfStudy() + " " + String.join(" ",user.getInterests())
                     + " " + user.getAge().toString() + " " + String.join(" ",user.getFriends());
@@ -35,7 +35,7 @@ public class MapGenerator implements MapGeneratorInterface {
             String text2 = value.getBio() + " " + value.getProgramOfStudy() + " " + String.join(" ",value.getInterests())
                     + " " + value.getAge().toString() + " " + String.join(" ",value.getFriends());
 
-            Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
+            Double similarityScore = apiCaller.getSimilarityScore(text1, text2);
             similarityMap.put(new Tuple(user.getUsername(), key), similarityScore);
         });
 
@@ -52,13 +52,13 @@ public class MapGenerator implements MapGeneratorInterface {
                         + " " + user1.getAge().toString();
                 String text2 = user2.getBio() + " " + user2.getProgramOfStudy() + " " + String.join(" ",user2.getInterests())
                         + " " + user2.getAge().toString();
-                Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
+                Double similarityScore = apiCaller.getSimilarityScore(text1, text2);
                 similarityMap.put(new Tuple(key1, key2), similarityScore);
             }
         }
 
         JSONObject jsonObject = new JSONObject();
-        for (Map.Entry<Tuple, Float> entry : similarityMap.entrySet()) {
+        for (Map.Entry<Tuple, Double> entry : similarityMap.entrySet()) {
             jsonObject.put(entry.getKey().toString(), entry.getValue());
         }
         return jsonObject;
