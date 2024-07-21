@@ -45,7 +45,7 @@ public class APICaller {
 
             // Extract and return the similarity score if it exists
             if (responseBody.has("similarity")) {
-                return (float) responseBody.getDouble("similarity");
+                return (float) responseBody.getDouble("similarity") + 0.01f;
             } else {
                 throw new JSONException("Response does not contain 'similarity' field");
             }
