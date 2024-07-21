@@ -39,12 +39,24 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         this.UserCollection = mongoConnection.getUserCollection();
         this.userDataAccessObject = userDataAccessObject;
 
-        loadMessages();
-        loadChats();
-    }
+        try (MongoCursor<Document> chatCursor = ChatCollection.find().iterator()) {
+            while (chatCursor.hasNext()) {
+                Document chatDoc = chatCursor.next();
+                String chatName = chatDoc.getString("chatName");
+                List<String> users = chatDoc.getList("users", String.class);
+                Integer noOfMembers = chatDoc.getInteger("noOfMembers");
+                List<Message> message = new ArrayList<>(); // Initialize mutable list
+                Date sendDate = chatDoc.getDate("time");
 
-    private void loadMessages() {
-        System.out.println("Loading messages from the database...");
+                LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
+
+                Chat chat = chatFactory.createChat(chatName, new ArrayList<>(users), noOfMembers, new ArrayList<>(message), dateCreatedM);
+                chats.put(chatName, chat);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try (MongoCursor<Document> messageCursor = MessageCollection.find().iterator()) {
             while (messageCursor.hasNext()) {
                 Document messageDoc = messageCursor.next();
@@ -62,28 +74,11 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
-    private void loadChats() {
-        System.out.println("Loading chats from the database...");
-        try (MongoCursor<Document> chatCursor = ChatCollection.find().iterator()) {
-            while (chatCursor.hasNext()) {
-                Document chatDoc = chatCursor.next();
-                String chatName = chatDoc.getString("chatName");
-                List<String> users = chatDoc.getList("users", String.class);
-                Integer noOfMembers = chatDoc.getInteger("noOfMembers");
-                List<Message> messages = new ArrayList<>(); // Initialize mutable list
-                Date sendDate = chatDoc.getDate("dateCreated");
 
-                LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
-
-                Chat chat = chatFactory.createChat(chatName, new ArrayList<>(users), noOfMembers, new ArrayList<>(messages), dateCreatedM);
-                chats.put(chatName, chat);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public boolean chatExistsByName(String chatName) {
