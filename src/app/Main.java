@@ -1,7 +1,7 @@
 package app;
 
 import data_access.ChatDataAccessObject;
-import data_access.MongoConnection;
+import data_access.readDB.MongoConnection;
 import entity.ChatFactory;
 import entity.MessageFactory;
 import interface_adapter.Login.LoginPresenter;
@@ -28,7 +28,6 @@ import use_case.make_chat.MakeChatInteractor;
 import use_case.retrieve_chat.RetrieveChatInputBoundary;
 import use_case.retrieve_chat.RetrieveChatInteractor;
 import use_case.retrieve_chat.RetrieveChatOutputBoundary;
-import use_case.retrieve_chat.RetrieveChatUserDataAccessInterface;
 import views.MainView;
 import views.LoginView;
 import views.SignupView;

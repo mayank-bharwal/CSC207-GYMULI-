@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 public class SendMessageInputData {
 
-    private String ChatName;
-    private String message;
+    final private String ChatName;
+    final private String message;
     final private String sender;
     final private String receiver;
     //final private Time date;
@@ -34,11 +34,11 @@ public class SendMessageInputData {
 
     }
 
-    String getMessage() {return message;}
+    public String getMessage() {return message;}
     //Time getDate() {return date;}
-    String getSender() {return sender;}
-    String getReceiver() {return receiver;}
-    String getChatName() {return ChatName;}
+    public String getSender() {return sender;}
+    public String getReceiver() {return receiver;}
+    public String getChatName() {return ChatName;}
 
     /**
      * @returns the requested information

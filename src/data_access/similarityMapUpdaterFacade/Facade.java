@@ -1,7 +1,10 @@
 package data_access.similarityMapUpdaterFacade;
 
+import data_access.readDB.MongoConnection;
 import data_access.similarityMapUpdaterFacade.mapGenerator.MapGenerator;
+import data_access.similarityMapUpdaterFacade.mapGenerator.MapGeneratorInterface;
 import data_access.similarityMapUpdaterFacade.mapUpdater.MapUpdater;
+import data_access.similarityMapUpdaterFacade.mapUpdater.MapUpdaterInterface;
 import entity.User;
 
 import java.time.LocalDateTime;
@@ -13,10 +16,10 @@ import static data_access.userMap_ignore.getMap;
 
 public class Facade implements FacadeInterface {
 
-    public void UpdateDB(User user, Map<String, User> accounts){
-        MapGenerator mapGenerator = new MapGenerator();
-        MapUpdater mapUpdater = new MapUpdater();
-        mapUpdater.updateMap(mapGenerator.generateMap(user, accounts)) ;
+    public void UpdateDB(User user, Map<String, User> accounts, MongoConnection mongoConnection){
+        MapGeneratorInterface mapGenerator = new MapGenerator();
+        MapUpdaterInterface mapUpdater = new MapUpdater();
+        mapUpdater.updateMap(mapGenerator.generateMap(user, accounts), mongoConnection);
     }
 
 
@@ -38,14 +41,15 @@ public class Facade implements FacadeInterface {
         chats5.add("Chat10");
 
         User user = userFactory.createUser(
-                "Gerald Penn", "password131415", "Bio for Eve", 29, "Computer Science",
-                hobbies5, friends5, chats5, LocalDateTime.now()
+                "Mayank", "password131415", "Audiophile", 29, "Cinema Studies",
+                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now()
         );
 
         Map<String, User> accounts = new HashMap<>();
         accounts = getMap();
 
+        MongoConnection mongoConnection = new MongoConnection();
         FacadeInterface facade = new Facade();
-        facade.UpdateDB(user, accounts);
+        facade.UpdateDB(user, accounts, mongoConnection);
     }
 }

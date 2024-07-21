@@ -112,6 +112,26 @@ public class userMap_ignore {
                 hobbies5, friends5, chats5, LocalDateTime.now()
         );
         userMap.put(user5.getUsername(), user5);
+
+
+        List<String> hobbies6 = new ArrayList<>();
+        hobbies5.add("Boxing");
+        hobbies5.add("Music");
+
+        List<String> friends6 = new ArrayList<>();
+        friends5.add("Bob");
+        friends5.add("David");
+
+        List<String> chats6 = new ArrayList<>();
+        chats5.add("Chat9");
+        chats5.add("Chat10");
+
+        User user6 = userFactory.createUser(
+                "Mayank", "password131415", "Punjabi", 29, "Computer Science",
+                hobbies5, friends5, chats5, LocalDateTime.now()
+        );
+        userMap.put(user6.getUsername(), user6);
+
 //        // Add more users as needed to reach at least 10 elements
 //        // Example:
 //        List<String> interests6 = new ArrayList<>();
