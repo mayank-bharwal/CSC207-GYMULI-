@@ -81,7 +81,7 @@ public class CreateChatView extends JPanel implements PropertyChangeListener {
         add(formPanel, BorderLayout.CENTER);
 
         createChatButton.addActionListener(e -> createChatController.createChat(
-                chatNameField.getText(), viewModelManager.getCurrentUser(), userField.getText()
+                chatNameField.getText(), viewModelManager.getCurrentUser().getUsername(), userField.getText()
         ));
         cancelButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
     }

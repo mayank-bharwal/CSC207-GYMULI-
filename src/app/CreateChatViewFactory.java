@@ -8,7 +8,7 @@ import views.CreateChatView;
 
 public class CreateChatViewFactory {
     public static CreateChatView create(ViewModelManager viewModelManager, CreateChatViewModel createChatViewModel, MakeChatInputBoundary makeChatInputBoundary) {
-        CreateChatController createChatController = new CreateChatController(makeChatInputBoundary);
+        CreateChatController createChatController = new CreateChatController(makeChatInputBoundary, viewModelManager);
         return new CreateChatView(viewModelManager, createChatViewModel, createChatController);
     }
 }

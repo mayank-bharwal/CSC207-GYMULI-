@@ -73,7 +73,7 @@ public class Main {
         MainView mainView = MainViewFactory.create(viewModelManager);
         views.add(mainView, MainView.viewName);
 
-        ChatView chatView = new ChatView();
+        ChatView chatView = new ChatView(viewModelManager);
         views.add(chatView, ChatView.viewName);
 
         CreateChatPresenter createChatPresenter = new CreateChatPresenter(createChatViewModel);
