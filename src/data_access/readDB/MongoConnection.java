@@ -1,4 +1,4 @@
-package data_access;
+package data_access.readDB;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -6,18 +6,19 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import org.bson.Document;
 
-import static data_access.readDB.GetDB.getCollectionName;
+import static data_access.readDB.GetDB.*;
 
 public class MongoConnection {
 
-    // mongodb+srv://gymuli07:csc207gymuli@cluster0.zjadzk8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-    private String uri = "mongodb+srv://UmerFarooqui:RealMadrid123Canon@cluster0.vbtnfad.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-    private MongoClient mongoClient = MongoClients.create(uri);
-    private MongoDatabase database = mongoClient.getDatabase("GYMULI");
+    // new db: mongodb+srv://gymuli07:csc207gymuli@cluster0.zjadzk8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+    private MongoClient mongoClient = MongoClients.create(getURI()); // still using Umer's db, will change later
+    private MongoDatabase database = mongoClient.getDatabase(getDBName());
+    private MongoCollection<Document> similarityCollection = database.getCollection(getCollectionName());
+
     private MongoCollection<Document> MessageCollection = database.getCollection("messages");
     private MongoCollection<Document> UserCollection = database.getCollection("users");
     private MongoCollection<Document> ChatCollection = database.getCollection("chats");
-    MongoCollection<Document> similarityCollection = database.getCollection(getCollectionName());
 
 
     public MongoCollection<Document> getMessageCollection() {

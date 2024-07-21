@@ -1,6 +1,6 @@
 package data_access.similarityMapUpdaterFacade.mapUpdater;
 
-import data_access.MongoConnection;
+import data_access.readDB.MongoConnection;
 import org.json.JSONObject;
 
 public interface MapUpdaterInterface {

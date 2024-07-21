@@ -2,7 +2,7 @@ package data_access.similarityMapUpdaterFacade.mapUpdater;
 
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
-import data_access.MongoConnection;
+import data_access.readDB.MongoConnection;
 import org.bson.Document;
 import org.json.JSONObject;
 

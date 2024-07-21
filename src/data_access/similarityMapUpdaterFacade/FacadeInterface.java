@@ -1,6 +1,6 @@
 package data_access.similarityMapUpdaterFacade;
 
-import data_access.MongoConnection;
+import data_access.readDB.MongoConnection;
 import entity.User;
 
 import java.util.Map;
