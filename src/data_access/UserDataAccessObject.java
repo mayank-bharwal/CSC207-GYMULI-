@@ -26,12 +26,11 @@ import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.get
 import static data_access.userMap_ignore.getMap;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
-         UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationDataAccessInterface {
+        UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationDataAccessInterface {
     private MongoConnection mongoConnection;
     private MongoCollection<Document> UserCollection;
-    private  Map<String, User> accounts = new HashMap<>();
+    private Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
-
 
 
     public UserDataAccessObject(UserFactory userFactory, Map<String, User> accounts, MongoConnection mongoConnection) {
@@ -73,7 +72,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
     @Override
-    public boolean AccountExists(String username) {return accounts.containsKey(username);}
+    public boolean AccountExists(String username) {
+        return accounts.containsKey(username);
+    }
 
     @Override
 
@@ -121,7 +122,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
     @Override
-    public void updateUser(String oldUsername ,String newUsername, String password, String bio, String programOfStudy, Integer age,
+    public void updateUser(String oldUsername, String newUsername, String password, String bio, String programOfStudy, Integer age,
                            List<String> interests) { // maybe call text api here too
 
         Document filter = new Document("username", oldUsername);
@@ -229,16 +230,16 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
 
         FacadeInterface facade = new Facade();
-        facade.UpdateDB(user, getMap());
+        //facade.UpdateDB(user, getMap());
 
         MongoConnection mongoConnection = new MongoConnection();
 
-        UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, getMap(),mongoConnection);
+        UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, getMap(), mongoConnection);
         //RecommendationDataAccessObject dao = new RecommendationDataAccessObject();
 
         User user1 = userDataAccessObject.getUser("Alice");
         if (user1 != null) {
-            List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user1,3);
+            List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user1, 3);
             similarUsers.forEach(u -> System.out.println(u));
         } else {
             System.out.println("User 'Alice' not found.");
@@ -246,4 +247,3 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
 }
-
