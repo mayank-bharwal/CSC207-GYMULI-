@@ -15,7 +15,7 @@ public class SendMessageController {
     }
 
     public void execute(String chatName, String message, LocalDateTime time, String sender, String receiver){
-        SendMessageInputData InputData = new SendMessageInputData(chatName, message, LocalDateTime.now(), sender, receiver);
-
+        SendMessageInputData inputData = new SendMessageInputData(chatName, message, LocalDateTime.now(), sender, receiver);
+        sendMessageInteractor.execute(inputData);
     }
 }
