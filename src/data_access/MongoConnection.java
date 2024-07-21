@@ -4,12 +4,9 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCursor;
-import entity.User;
 import org.bson.Document;
 
-import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.getCollectionName;
-import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.getURI;
+import static data_access.readDB.GetDB.getCollectionName;
 
 public class MongoConnection {
 

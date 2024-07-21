@@ -1,5 +1,6 @@
 package data_access.similarityMapUpdaterFacade;
 
+import data_access.MongoConnection;
 import data_access.similarityMapUpdaterFacade.mapGenerator.MapGenerator;
 import data_access.similarityMapUpdaterFacade.mapGenerator.MapGeneratorInterface;
 import data_access.similarityMapUpdaterFacade.mapUpdater.MapUpdater;
@@ -15,10 +16,10 @@ import static data_access.userMap_ignore.getMap;
 
 public class Facade implements FacadeInterface {
 
-    public void UpdateDB(User user, Map<String, User> accounts){
+    public void UpdateDB(User user, Map<String, User> accounts, MongoConnection mongoConnection){
         MapGeneratorInterface mapGenerator = new MapGenerator();
         MapUpdaterInterface mapUpdater = new MapUpdater();
-        mapUpdater.updateMap(mapGenerator.generateMap(user, accounts)) ;
+        mapUpdater.updateMap(mapGenerator.generateMap(user, accounts), mongoConnection);
     }
 
 
@@ -47,7 +48,8 @@ public class Facade implements FacadeInterface {
         Map<String, User> accounts = new HashMap<>();
         accounts = getMap();
 
+        MongoConnection mongoConnection = new MongoConnection();
         FacadeInterface facade = new Facade();
-        facade.UpdateDB(user, accounts);
+        facade.UpdateDB(user, accounts, mongoConnection);
     }
 }

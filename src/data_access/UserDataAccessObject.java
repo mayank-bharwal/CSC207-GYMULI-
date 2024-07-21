@@ -1,9 +1,6 @@
 package data_access;
 
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCursor;
 import data_access.similarityMapUpdaterFacade.Facade;
 import data_access.similarityMapUpdaterFacade.FacadeInterface;
@@ -14,7 +11,6 @@ import use_case.add_friends.AddFriendsUserDataAccessObject;
 import use_case.login.LoginUserDataAccessInterface;
 
 import use_case.recommendations.RecommendationDataAccessInterface;
-import use_case.send_message.SendMessageUserDataAccessInterface;
 import use_case.update_profile.UpdateProfileUserDataAccessInterface;
 
 import java.time.LocalDateTime;
@@ -22,7 +18,7 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.getCollectionID;
+import static data_access.readDB.GetDB.getCollectionID;
 import static data_access.userMap_ignore.getMap;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
@@ -230,9 +226,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
 
         FacadeInterface facade = new Facade();
-        //facade.UpdateDB(user, getMap());
 
         MongoConnection mongoConnection = new MongoConnection();
+        facade.UpdateDB(user, getMap(), mongoConnection);
 
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, getMap(), mongoConnection);
         //RecommendationDataAccessObject dao = new RecommendationDataAccessObject();

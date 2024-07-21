@@ -1,4 +1,4 @@
-package data_access.similarityMapUpdaterFacade.mapUpdater.readDB;
+package data_access.readDB;
 
 import data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.GetAPI;
 

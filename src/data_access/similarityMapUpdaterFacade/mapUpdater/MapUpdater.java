@@ -1,26 +1,22 @@
 package data_access.similarityMapUpdaterFacade.mapUpdater;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
+import data_access.MongoConnection;
 import org.bson.Document;
 import org.json.JSONObject;
 
-import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.*;
+import static data_access.readDB.GetDB.*;
 
 public class MapUpdater implements MapUpdaterInterface {
     @Override
-    public void updateMap(JSONObject map) {
+    public void updateMap(JSONObject map, MongoConnection mongoConnection) {
         // upload or modify dictionary present on the database
         // Connection string to MongoDB server, application is DB agnostic
 
-                String uri = getURI(); // uri.txt
-                try (MongoClient mongoClient = MongoClients.create(uri)) {
-                    MongoDatabase db = mongoClient.getDatabase(getDBName());
-                    MongoCollection<Document> collection = db.getCollection(getCollectionName());
+        if(mongoConnection.getSimilarityCollection() == null){
+            System.out.println("Similarity collection not found");
+        }
 
                     // Convert JSONObject to Document
                     Document document = Document.parse(map.toString());
@@ -33,9 +29,6 @@ public class MapUpdater implements MapUpdaterInterface {
                     }
 
                     // Replace the document if it exists, otherwise insert a new one
-                    collection.replaceOne(Filters.eq("_id", getCollectionID()), document, new ReplaceOptions().upsert(true));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+                    mongoConnection.getSimilarityCollection().replaceOne(Filters.eq("_id", getCollectionID()), document, new ReplaceOptions().upsert(true));
     }
+}
