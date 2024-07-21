@@ -3,7 +3,6 @@ package views;
 import entity.User;
 import interface_adapter.ViewModelManager;
 import interface_adapter.retrieve_chat.RetrieveChatController;
-import interface_adapter.retrieve_chat.RetrieveChatState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,5 +82,6 @@ public class MainView extends JPanel implements PropertyChangeListener {
         chatListPanel.repaint();
     }
 }
+
 
 

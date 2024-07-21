@@ -1,5 +1,6 @@
 package interface_adapter.make_chat;
 
+import entity.User;
 import use_case.make_chat.MakeChatInputBoundary;
 import use_case.make_chat.MakeChatInputData;
 import interface_adapter.ViewModelManager;
@@ -19,7 +20,10 @@ public class CreateChatController {
         MakeChatInputData inputData = new MakeChatInputData(chatName, user1, user2, LocalDateTime.now());
         makeChatInputBoundary.makeChat(inputData);
 
-        // Notify the MainView that the chats have been updated
+        User currentUser = viewModelManager.getCurrentUser();
+        currentUser.getChats().add(chatName);
+        viewModelManager.setCurrentUser(currentUser);
+
         viewModelManager.firePropertyChanged("chatsUpdated", null, null);
     }
 }
