@@ -29,11 +29,11 @@ public class SendMessageInputData {
         this.receiver = receiver1;
     }
 
-    String getMessage() {return message;}
+    public String getMessage() {return message;}
     //Time getDate() {return date;}
-    String getSender() {return sender;}
-    String getReceiver() {return receiver;}
-    String getChatName() {return ChatName;}
+    public String getSender() {return sender;}
+    public String getReceiver() {return receiver;}
+    public String getChatName() {return ChatName;}
 
 
 
