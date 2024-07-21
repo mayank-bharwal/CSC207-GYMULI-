@@ -4,9 +4,9 @@ import entity.User;
 
 public interface AccountCreationUserDataAccessInterface {
     /**
-     *
+     * saves the data of the new account
      * @param username
-     * @return
+     *
      */
     boolean AccountExists(String username);
 

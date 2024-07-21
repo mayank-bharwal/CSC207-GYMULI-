@@ -11,6 +11,13 @@ public class AccountCreationInteractor implements AccountCreationInputBoundary {
     final AccountCreationOutputBoundary accountPresenter;
     final UserFactory userFactory;
 
+    /**
+     *
+     * @param accountDataAccessObject -
+     * @param accountPresenter -
+     * @param userFactory -
+     */
+
     public AccountCreationInteractor(AccountCreationUserDataAccessInterface accountDataAccessObject,
                                      AccountCreationOutputBoundary accountPresenter,
                                      UserFactory userFactory) {
@@ -19,8 +26,12 @@ public class AccountCreationInteractor implements AccountCreationInputBoundary {
         this.userFactory = userFactory;
     }
 
-
+    /**
+     * interactor for account creation
+     * @param inputData -
+     */
     @Override
+
     public void execute(AccountCreationInputData inputData) {
 
         if (accountDataAccessObject.AccountExists(inputData.getUsername())) {
@@ -42,6 +53,7 @@ public class AccountCreationInteractor implements AccountCreationInputBoundary {
             AccountCreationOutputData outputData = new AccountCreationOutputData(user.getUsername(), date.toString(), false);
             accountPresenter.setPassView(outputData);
         }
+
     }
 
 
