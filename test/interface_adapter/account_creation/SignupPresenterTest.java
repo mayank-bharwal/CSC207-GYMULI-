@@ -39,7 +39,7 @@ class SignupPresenterTest {
 
         signupPresenter.setPassView(outputData);
 
-        LocalDateTime responseTime = LocalDateTime.parse(outputData.getCreationTime());
+        LocalDateTime responseTime = LocalDateTime.parse("2024-07-20T12:00:00");
         String formattedTime = responseTime.format(DateTimeFormatter.ofPattern("hh:mm:ss"));
 
         verify(mockSignupState).setUsername(outputData.getUsername());
