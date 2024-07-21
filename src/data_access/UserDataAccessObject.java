@@ -22,12 +22,24 @@ import java.util.stream.Collectors;
 import static data_access.readDB.GetDB.getCollectionID;
 import static data_access.userMap_ignore.getMap;
 
+/**
+ * Data Access Object for User-related operations.
+ */
+
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
         UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationDataAccessInterface {
     private MongoConnection mongoConnection;
     private MongoCollection<Document> UserCollection;
     private Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
+
+    /**
+     * Constructor for UserDataAccessObject.
+     *
+     * @param userFactory        Factory to create User objects.
+     * @param accounts           Map of User objects.
+     * @param mongoConnection    MongoConnection instance.
+     */
 
 
     public UserDataAccessObject(UserFactory userFactory, Map<String, User> accounts, MongoConnection mongoConnection) {
@@ -64,18 +76,35 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         }
     }
 
+    /**
+     * Retrieves the map of User objects.
+     *
+     * @return the map of User objects.
+     */
+
     public Map<String, User> getAccounts() {
         return accounts;
     }
+
+    /**
+     * Checks if an account exists by username.
+     *
+     * @param username the username to check.
+     * @return true if the account exists, false otherwise.
+     */
 
     @Override
     public boolean AccountExists(String username) {
         return accounts.containsKey(username);
     }
 
+    /**
+     * Saves a User object to the database.
+     *
+     * @param user the User object to save.
+     */
+
     @Override
-
-
     public void save(User user) { // will call Text API here
         Document document = new Document();
         document.append("username", user.getUsername());
@@ -93,10 +122,24 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
     }
 
+    /**
+     * Checks if a user exists by username.
+     *
+     * @param username the username to check.
+     * @return true if the user exists, false otherwise.
+     */
+
     @Override
     public boolean userExists(String username) {
         return accounts.containsKey(username);
     }
+
+    /**
+     * Adds a friend to the list of friends for both the current user and the specified friend.
+     *
+     * @param currentUser the username of the current user.
+     * @param friend      the username of the friend to add.
+     */
 
     @Override
     public void addFriend(String currentUser, String friend) {
@@ -112,11 +155,29 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         UserCollection.updateOne(filter2, update2);
     }
 
+    /**
+     * Retrieves a User object by username.
+     *
+     * @param username the username of the user to retrieve.
+     * @return the User object if found, null otherwise.
+     */
 
     @Override
     public User getUser(String username) {
         return accounts.get(username);
     }
+
+    /**
+     * Updates user information for a given username.
+     *
+     * @param oldUsername      the current username of the user.
+     * @param newUsername      the new username to set, if provided.
+     * @param password         the new password to set, if provided.
+     * @param bio              the new bio to set, if provided.
+     * @param programOfStudy   the new program of study to set, if provided.
+     * @param age              the new age to set, if provided.
+     * @param interests        the new interests to set, if provided.
+     */
 
     @Override
     public void updateUser(String oldUsername, String newUsername, String password, String bio, String programOfStudy, Integer age,
@@ -158,8 +219,15 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         user.setInterests(interests);
         user.setProgramOfStudy(programOfStudy);
 
-
     }
+
+    /**
+     * Retrieves a list of N users most similar to the given user based on similarity scores.
+     *
+     * @param user the user for whom to find similar users.
+     * @param N    the number of similar users to retrieve.
+     * @return a list of the top N most similar User objects.
+     */
 
     @Override
     public List<User> getNSimilarUsers(User user, int N) {

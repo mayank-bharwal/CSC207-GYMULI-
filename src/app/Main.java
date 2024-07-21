@@ -1,7 +1,7 @@
 package app;
 
 import data_access.ChatDataAccessObject;
-import data_access.MongoConnection;
+import data_access.readDB.MongoConnection;
 import entity.ChatFactory;
 import entity.MessageFactory;
 import interface_adapter.Login.LoginPresenter;

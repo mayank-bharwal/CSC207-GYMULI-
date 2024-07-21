@@ -14,6 +14,10 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Data Access Object for Chat-related operations.
+ */
+
 public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface, SendMessageUserDataAccessInterface,
         MakeChatUserDataAccessInterface {
 
@@ -26,6 +30,19 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
     private MongoCollection<Document> UserCollection;
     private MongoCollection<Document> MessageCollection;
     private MongoCollection<Document> ChatCollection;
+
+
+    /**
+     * Constructor for ChatDataAccessObject.
+     *
+     * @param mongoConnection       MongoConnection instance.
+     * @param messages              Map of messages.
+     * @param messageFactory        Factory to create messages.
+     * @param chats                 Map of chats.
+     * @param chatFactory           Factory to create chats.
+     * @param userDataAccessObject  UserDataAccessObject instance.
+     * Also initializes the connection to the collections.
+     */
 
     public ChatDataAccessObject(MongoConnection mongoConnection, Map<String, Message> messages, MessageFactory messageFactory,
                                 Map<String, Chat> chats, ChatFactory chatFactory,
@@ -43,6 +60,10 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
 
         loadChats();
     }
+
+    /**
+     * Loads chats from the database.
+     */
 
     private void loadChats() {
         System.out.println("Loading chats from the database...");
@@ -63,6 +84,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
                         LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
                         Message message = messageFactory.createMessage(chatName, sender, receiver, messageText, dateCreatedM);
                         messageList.add(message);
+                        messages.put(chatName, message);
                     }
                 }
 
@@ -78,11 +100,26 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         }
     }
 
+    /**
+     * Checks if a chat with the given name exists.
+     *
+     * @param chatName the name of the chat to check.
+     * @return true if the chat exists, false otherwise.
+     */
+
     @Override
     public boolean chatExistsByName(String chatName) {
         System.out.println("Checking if chat exists for chat name: " + chatName);
         return chats.containsKey(chatName);
     }
+
+
+    /**
+     * Retrieves a chat by its name.
+     *
+     * @param chatName the name of the chat to retrieve.
+     * @return the Chat object if found, null otherwise.
+     */
 
     @Override
     public Chat getChat(String chatName) {
@@ -92,6 +129,13 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         chat.getAllmessages().forEach(msg -> System.out.println("Message: " + msg.getMessage()));
         return chat;
     }
+
+
+    /**
+     * Saves a message to the database and updates the chat's message list.
+     *
+     * @param message the Message object to save.
+     */
 
     @Override
     public void saveMessage(Message message) {
@@ -125,16 +169,38 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         System.out.println("Message saved and chat updated: " + message.getMessage());
     }
 
+    /**
+     * Checks if a chat exists by its name.
+     *
+     * @param chatName the name of the chat to check.
+     * @return true if the chat exists, false otherwise.
+     */
+
     @Override
     public boolean ChatExists(String chatName) {
         return chats.containsKey(chatName);
     }
+
+    /**
+     * Checks if a user exists by their username.
+     *
+     * @param username the username to check.
+     * @return true if the user exists, false otherwise.
+     */
 
     @Override
     public boolean UserExists(String username) {
         Map<String, User> accounts = userDataAccessObject.getAccounts();
         return accounts.containsKey(username);
     }
+
+    /**
+     * Saves a chat to the database and updates the users' chat lists.
+     *
+     * @param user_1      the username of the first user.
+     * @param user_2      the username of the second user.
+     * @param chat        the Chat object to save.
+     */
 
     @Override
     public void saveChat(String user_1, String user_2, Chat chat) {
