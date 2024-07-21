@@ -49,9 +49,10 @@ public class MapGenerator implements MapGeneratorInterface {
                 User user2 = accounts.get(key2);
 
                 String text1 = user1.getBio() + " " + user1.getProgramOfStudy() + " " + String.join(" ",user1.getInterests())
-                        + " " + user1.getAge().toString();
+                        + " " + user1.getAge().toString() + " " + String.join(" ",user1.getFriends());
                 String text2 = user2.getBio() + " " + user2.getProgramOfStudy() + " " + String.join(" ",user2.getInterests())
-                        + " " + user2.getAge().toString();
+                        + " " + user2.getAge().toString() + " " + String.join(" ",user2.getFriends());
+
                 Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
                 similarityMap.put(new Tuple(key1, key2), similarityScore);
             }
