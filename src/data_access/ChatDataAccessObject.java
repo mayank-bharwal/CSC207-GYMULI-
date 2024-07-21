@@ -83,8 +83,9 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
                         Date sendDate = messageDoc.getDate("dateCreated");
                         LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
                         Message message = messageFactory.createMessage(chatName, sender, receiver, messageText, dateCreatedM);
-                        messageList.add(message);
                         messages.put(chatName, message);
+                        messageList.add(message);
+
                     }
                 }
 
@@ -93,6 +94,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
 
                 Chat chat = chatFactory.createChat(chatName, new ArrayList<>(users), noOfMembers, messageList, dateCreatedM);
                 chats.put(chatName, chat);
+
                 System.out.println("Chat loaded: " + chatName + " with messages: " + messageList.size());
             }
         } catch (Exception e) {
