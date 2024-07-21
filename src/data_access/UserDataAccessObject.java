@@ -2,6 +2,7 @@ package data_access;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import data_access.readDB.MongoConnection;
 import data_access.similarityMapUpdaterFacade.Facade;
 import data_access.similarityMapUpdaterFacade.FacadeInterface;
 import entity.*;
@@ -228,7 +229,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         FacadeInterface facade = new Facade();
 
         MongoConnection mongoConnection = new MongoConnection();
-        facade.UpdateDB(user, getMap(), mongoConnection);
+        //facade.UpdateDB(user, getMap(), mongoConnection);
 
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, getMap(), mongoConnection);
         //RecommendationDataAccessObject dao = new RecommendationDataAccessObject();

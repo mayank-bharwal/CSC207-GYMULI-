@@ -2,6 +2,7 @@ package data_access;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import data_access.readDB.MongoConnection;
 import entity.*;
 import org.bson.Document;
 import use_case.make_chat.MakeChatUserDataAccessInterface;

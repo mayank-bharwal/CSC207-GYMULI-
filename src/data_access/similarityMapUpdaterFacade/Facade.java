@@ -1,6 +1,6 @@
 package data_access.similarityMapUpdaterFacade;
 
-import data_access.MongoConnection;
+import data_access.readDB.MongoConnection;
 import data_access.similarityMapUpdaterFacade.mapGenerator.MapGenerator;
 import data_access.similarityMapUpdaterFacade.mapGenerator.MapGeneratorInterface;
 import data_access.similarityMapUpdaterFacade.mapUpdater.MapUpdater;
