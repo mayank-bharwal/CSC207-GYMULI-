@@ -147,10 +147,9 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         Map<String, User> accounts = userDataAccessObject.getAccounts();
         User user1 = accounts.get(user_1);
         User user2 = accounts.get(user_2);
+
         user1.getChats().add(chat.getChatName());
         user2.getChats().add(chat.getChatName());
-
-
 
 }
 

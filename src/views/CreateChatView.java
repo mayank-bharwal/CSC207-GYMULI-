@@ -20,14 +20,12 @@ public class CreateChatView extends JPanel implements PropertyChangeListener {
     private final CreateChatViewModel createChatViewModel;
     private final CreateChatController createChatController;
     private final ViewModelManager viewModelManager;
-    private final String currentUser;
 
-    public CreateChatView(ViewModelManager viewModelManager, CreateChatViewModel createChatViewModel, CreateChatController createChatController, String currentUser) {
+    public CreateChatView(ViewModelManager viewModelManager, CreateChatViewModel createChatViewModel, CreateChatController createChatController) {
         this.viewModelManager = viewModelManager;
         this.createChatViewModel = createChatViewModel;
         this.createChatController = createChatController;
         this.createChatViewModel.addPropertyChangeListener(this);
-        this.currentUser = currentUser;
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
@@ -82,9 +80,8 @@ public class CreateChatView extends JPanel implements PropertyChangeListener {
 
         add(formPanel, BorderLayout.CENTER);
 
-        // Action Listeners
         createChatButton.addActionListener(e -> createChatController.createChat(
-                chatNameField.getText(), currentUser, userField.getText()
+                chatNameField.getText(), viewModelManager.getCurrentUser(), userField.getText()
         ));
         cancelButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
     }
@@ -93,6 +90,7 @@ public class CreateChatView extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         CreateChatState state = createChatViewModel.getState();
         if (state.isSuccess()) {
+            System.out.println("chat created successfully");
             JOptionPane.showMessageDialog(this, "Chat created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             chatNameField.setText("");
             userField.setText("");

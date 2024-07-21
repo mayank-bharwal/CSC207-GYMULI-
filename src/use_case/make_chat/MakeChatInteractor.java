@@ -30,10 +30,10 @@ public class MakeChatInteractor implements MakeChatInputBoundary{
             makeChatPresenter.setFailView("User doesn't exist");
         } else {
             LocalDateTime date = LocalDateTime.now();
-            ArrayList<String> user = new ArrayList<>();
-            user.add(inputData.getUser_1());
-            user.add(inputData.getUser_2());
-            Chat chat = chatFactory.createChat(inputData.getChatName(), user, 2, new ArrayList<>(), date);
+            ArrayList<String> users = new ArrayList<>();
+            users.add(inputData.getUser_1());
+            users.add(inputData.getUser_2());
+            Chat chat = chatFactory.createChat(inputData.getChatName(), users, 2, new ArrayList<>(), date);
             makeChatDAO.saveChat(inputData.getUser_1(), inputData.getUser_2(), chat);
             MakeChatOutputData outputData = new MakeChatOutputData(chat, false);
             makeChatPresenter.setPassView(outputData);

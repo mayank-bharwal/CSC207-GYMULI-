@@ -8,9 +8,8 @@ import views.CreateChatView;
 
 public class CreateChatViewFactory {
     public static CreateChatView create(ViewModelManager viewModelManager, CreateChatViewModel createChatViewModel, MakeChatInputBoundary makeChatInputBoundary) {
-        String currentUser = viewModelManager.getCurrentUser();
         CreateChatController createChatController = new CreateChatController(makeChatInputBoundary);
-        return new CreateChatView(viewModelManager, createChatViewModel, createChatController, currentUser);
+        return new CreateChatView(viewModelManager, createChatViewModel, createChatController);
     }
 }
 
