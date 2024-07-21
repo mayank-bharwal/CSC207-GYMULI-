@@ -1,19 +1,16 @@
 package interface_adapter.retrieve_chat;
 
-public class RetrieveChatState {
-    private String chatName = "";
-    private String chatnameError = null;
-    private String noOfMemners;
-    private String allMessages;
-    private String creationtime;
+import entity.Message;
 
-    public RetrieveChatState(RetrieveChatState copy) {
-        chatName = copy.chatName;
-        chatnameError = copy.chatnameError;
-        noOfMemners = copy.noOfMemners;
-        allMessages = copy.allMessages;
-        creationtime = copy.creationtime;
-    }
+import java.util.ArrayList;
+import java.util.List;
+
+public class RetrieveChatState {
+    private String chatName;
+    private List<String> users = new ArrayList<>();
+    private Integer noOfMembers;
+    private List<Message> allMessages = new ArrayList<>();
+    private String error;
 
     public String getChatName() {
         return chatName;
@@ -23,42 +20,35 @@ public class RetrieveChatState {
         this.chatName = chatName;
     }
 
-    public String getChatnameError() {
-        return chatnameError;
+    public List<String> getUsers() {
+        return users;
     }
 
-    public void setChatnameError(String chatnameError) {
-        this.chatnameError = chatnameError;
+    public void setUsers(List<String> users) {
+        this.users = users;
     }
 
-    public String getNoOfMemners() {
-        return noOfMemners;
+    public Integer getNoOfMembers() {
+        return noOfMembers;
     }
 
-    public void setNoOfMemners(String noOfMemners) {
-        this.noOfMemners = noOfMemners;
+    public void setNoOfMembers(Integer noOfMembers) {
+        this.noOfMembers = noOfMembers;
     }
 
-    public String getAllMessages() {
+    public List<Message> getAllMessages() {
         return allMessages;
     }
 
-    public void setAllMessages(String allMessages) {
+    public void setAllMessages(List<Message> allMessages) {
         this.allMessages = allMessages;
     }
 
-    public String getCreationtime() {
-        return creationtime;
+    public String getError() {
+        return error;
     }
 
-    public void setCreationtime(String creationtime) {
-        this.creationtime = creationtime;
-    }
-
-    @Override
-    public String toString() {
-        return "RetrieveChatState [chatName=" + chatName + '\'' + ", chatnameError=" + chatnameError
-                + '\'' + ", noOfMemners=" + noOfMemners + '\'' + ", allMessages=" + allMessages
-                + '\'' + ", creationtime=" + creationtime + '\'' +"]";
+    public void setError(String error) {
+        this.error = error;
     }
 }

@@ -2,6 +2,7 @@ package views;
 
 import entity.User;
 import interface_adapter.ViewModelManager;
+import interface_adapter.retrieve_chat.RetrieveChatController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,12 +14,14 @@ public class MainView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "MainView";
 
     private final ViewModelManager viewModelManager;
+    private final RetrieveChatController retrieveChatController;
     private final JLabel currentUserLabel;
-    private final JPanel chatsPanel;
+    private final JPanel chatListPanel;
 
-    public MainView(ViewModelManager viewModelManager) {
+    public MainView(ViewModelManager viewModelManager, RetrieveChatController retrieveChatController) {
         this.viewModelManager = viewModelManager;
         this.viewModelManager.addPropertyChangeListener(this);
+        this.retrieveChatController = retrieveChatController;
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
@@ -30,34 +33,21 @@ public class MainView extends JPanel implements PropertyChangeListener {
 
         add(headerPanel, BorderLayout.NORTH);
 
-        JPanel mainPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-
-        chatsPanel = new JPanel();
-        chatsPanel.setLayout(new BoxLayout(chatsPanel, BoxLayout.Y_AXIS));
-        JScrollPane scrollPane = new JScrollPane(chatsPanel);
-        scrollPane.setPreferredSize(new Dimension(400, 400));
-        mainPanel.add(scrollPane, gbc);
+        chatListPanel = new JPanel(new GridBagLayout());
+        JScrollPane scrollPane = new JScrollPane(chatListPanel);
+        add(scrollPane, BorderLayout.CENTER);
 
         JButton createChatButton = new JButton("Create Chat");
         createChatButton.addActionListener(e -> viewModelManager.setActiveView(CreateChatView.viewName));
-        gbc.gridy = 1;
-        mainPanel.add(createChatButton, gbc);
-
-        add(mainPanel, BorderLayout.CENTER);
+        add(createChatButton, BorderLayout.SOUTH);
 
         updateCurrentUser();
-        updateChats();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("currentUser".equals(evt.getPropertyName())) {
             updateCurrentUser();
-            updateChats();
         } else if ("chatsUpdated".equals(evt.getPropertyName())) {
             updateChats();
         }
@@ -66,24 +56,32 @@ public class MainView extends JPanel implements PropertyChangeListener {
     private void updateCurrentUser() {
         User currentUser = viewModelManager.getCurrentUser();
         currentUserLabel.setText(currentUser != null ? currentUser.getUsername() : "Not logged in");
+        updateChats();
     }
 
     private void updateChats() {
+        chatListPanel.removeAll();
         User currentUser = viewModelManager.getCurrentUser();
-        chatsPanel.removeAll();
-
         if (currentUser != null) {
-            List<String> userChats = currentUser.getChats();
-            for (String chatName : userChats) {
+            List<String> chats = currentUser.getChats();
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(10, 10, 10, 10);
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            for (String chatName : chats) {
                 JButton chatButton = new JButton(chatName);
-                chatButton.addActionListener(e -> viewModelManager.setActiveView(ChatView.viewName));
-                chatsPanel.add(chatButton);
+                chatButton.addActionListener(e -> {
+                    retrieveChatController.retrieveChat(chatName);
+                    viewModelManager.setActiveView(ChatView.viewName);
+                });
+                chatListPanel.add(chatButton, gbc);
+                gbc.gridy++;
             }
         }
-
-        chatsPanel.revalidate();
-        chatsPanel.repaint();
+        chatListPanel.revalidate();
+        chatListPanel.repaint();
     }
 }
+
 
 
