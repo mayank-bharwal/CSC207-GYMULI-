@@ -197,14 +197,21 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
             for (String key : doc.keySet()) {
 
-                if (key.equals("_id")) continue; // Skip the _id field
+                if (key == null || key.equals("_id")) continue; // Skip the _id field
 
                 String[] users = key.replace("(", "").replace(")", "").split(", ");
 
                 if (users.length == 2) {
                     String user1 = users[0];
                     String user2 = users[1];
-                    double score = doc.getDouble(key);
+                    Double scoreWrapper = doc.getDouble(key);
+
+                    if (scoreWrapper == null) {
+                        System.out.println("Null score for key: " + key);
+                        continue;
+                    }
+
+                    double score = scoreWrapper.doubleValue();
 
                     if (user1.equals(username) || user2.equals(username)) {
                         String otherUser = user1.equals(username) ? user2 : user1;
@@ -229,13 +236,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
             }
 
             return topNUsers;
-        //catch(Exception e)
-
-    {
-        System.out.println("An error occurred while connecting to MongoDB" + e.getMessage());
-    }
+        }
         return new ArrayList<>();
-}
+    }
 
 
     public static void main(String[] args) {
@@ -249,9 +252,32 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         //RecommendationDataAccessObject dao = new RecommendationDataAccessObject();
 
         User user = userDataAccessObject.getUser("Alice");
-        List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user, 3);
-        similarUsers.forEach(u -> System.out.println(u.getUsername()));
+        if (user != null) {
+            List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user, 3);
+            similarUsers.forEach(u -> System.out.println(u.getUsername()));
+        }else {
+            System.out.println("User 'Alice' not found.");
+        }
+//        List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user, 3);
+//        similarUsers.forEach(u -> System.out.println(u.getUsername()));
     }
 
-}
 
+    private static class UserSimilarity {
+        private final String username;
+        private final double score;
+
+        public UserSimilarity(String username, double score) {
+            this.username = username;
+            this.score = score;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public double getScore() {
+            return score;
+        }
+    }
+}
