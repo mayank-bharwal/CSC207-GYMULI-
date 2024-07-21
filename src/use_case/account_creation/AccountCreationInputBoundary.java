@@ -3,7 +3,8 @@ package use_case.account_creation;
 public interface AccountCreationInputBoundary {
     /**
      *
-     * @param inputData
+     * @param inputData -
      */
     void execute(AccountCreationInputData inputData);
+
 }
