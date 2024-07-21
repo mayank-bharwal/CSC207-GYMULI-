@@ -248,7 +248,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
 
         FacadeInterface facade = new Facade();
-        facade.UpdateDB(user, getMap());
+        //facade.UpdateDB(user, getMap());
 
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, getMap(), messages, messageFactory);
         //RecommendationDataAccessObject dao = new RecommendationDataAccessObject();
@@ -256,31 +256,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         User user1 = userDataAccessObject.getUser("Alice");
         if (user1 != null) {
             List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user1,3);
-            similarUsers.forEach(u -> System.out.println(u.getUsername() + " " + u.getPassword()));
+            similarUsers.forEach(u -> System.out.println(u));
         } else {
             System.out.println("User 'Alice' not found.");
         }
-//        List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user, 3);
-//        similarUsers.forEach(u -> System.out.println(u.getUsername()));
     }
 }
-
-
-//    private static class UserSimilarity {
-//        private final String username;
-//        private final double score;
-//
-//        public UserSimilarity(String username, double score) {
-//            this.username = username;
-//            this.score = score;
-//        }
-//
-//        public String getUsername() {
-//            return username;
-//        }
-//
-//        public double getScore() {
-//            return score;
-//        }
-//    }
-//}
