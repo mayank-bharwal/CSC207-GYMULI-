@@ -38,6 +38,11 @@ public class AccountCreationInputData {
         this.time = time;
         this.age = age;
     }
+
+    /**
+     *
+     * @return the necessary fields input by user
+     */
     // need to decide access modifiers for each of the following
     //mainly during implementation of other programs
     //I (Liban) made it public for now so I could finish my tests

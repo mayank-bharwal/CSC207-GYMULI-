@@ -8,6 +8,7 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 
 public class SendMessageInputData {
+
     private String ChatName;
     private String message;
     final private String sender;
@@ -15,7 +16,16 @@ public class SendMessageInputData {
     //final private Time date;
     //private Boolean sent_status;
 
+    /**
+     *
+     * @param ChatName
+     * @param message
+     * @param now
+     * @param sender
+     * @param receiver
+     */
     public SendMessageInputData(String ChatName, String message, LocalDateTime now, String sender, String receiver) {
+
         this.message = message;
         //this.date = date;
         this.sender = sender;
@@ -24,17 +34,14 @@ public class SendMessageInputData {
 
     }
 
-    public SendMessageInputData(String chatName, String message, LocalDateTime now, String sender, String receiver, String sender1, String receiver1) {
-        this.sender = sender1;
-        this.receiver = receiver1;
-    }
-
     String getMessage() {return message;}
     //Time getDate() {return date;}
     String getSender() {return sender;}
     String getReceiver() {return receiver;}
     String getChatName() {return ChatName;}
 
-
+    /**
+     * @returns the requested information
+     */
 
 }

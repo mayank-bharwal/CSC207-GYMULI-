@@ -7,9 +7,9 @@ public class AccountCreationOutputData {
 
     /**
      *
-     * @param username
-     * @param creationTime
-     * @param failView
+     * @param username - user identifier
+     * @param creationTime - time of creation
+     * @param failView -
      */
 
     public AccountCreationOutputData(String username, String creationTime, boolean failView ) {
@@ -18,6 +18,11 @@ public class AccountCreationOutputData {
         this.failView = failView;
 
     }
+
+    /**
+     *
+     * @return the username and time of creation of account
+     */
     public String getUsername() {
         return username;
     }
