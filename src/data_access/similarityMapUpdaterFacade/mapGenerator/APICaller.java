@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit;
 import static data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.GetAPI.getAPI;
 import static data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.GetAPI.getBackupAPI;
 
-public class APICaller {
+public class APICaller implements APICallerInterface {
 
-    public Float getSimilarityScore(String text1, String text2) {
+    public float getSimilarityScore(String text1, String text2) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS) // Increase timeout to 60 seconds
                 .writeTimeout(60, TimeUnit.SECONDS)

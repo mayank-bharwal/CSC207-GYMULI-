@@ -230,7 +230,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
 
         FacadeInterface facade = new Facade();
-        facade.UpdateDB(user, getMap());
+        //facade.UpdateDB(user, getMap());
 
         MongoConnection mongoConnection = new MongoConnection();
 
