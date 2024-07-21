@@ -7,8 +7,8 @@ import use_case.update_profile.UpdateProfileOutputData;
 
 public class UpdateProfilePresenter implements UpdateProfileOutputBoundary {
 
-    private final UpdateProfileViewModel updateProfileViewModel;
-    private final ViewModelManager viewModelManager;
+    private UpdateProfileViewModel updateProfileViewModel;
+    private ViewModelManager viewModelManager;
 
     public UpdateProfilePresenter(UpdateProfileViewModel updateProfileViewModel,
                                   ViewModelManager viewModelManager) {
@@ -26,11 +26,13 @@ public class UpdateProfilePresenter implements UpdateProfileOutputBoundary {
 
         updateProfileViewModel.setError(null);
 
+        updateProfileViewModel.firePropertyChanged("updateSuccess", null, "Profile successfully updated!");
         viewModelManager.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String error) {
         updateProfileViewModel.setError(error);
+        updateProfileViewModel.firePropertyChanged("updateError", null, error);
     }
 }

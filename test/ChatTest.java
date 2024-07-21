@@ -55,7 +55,7 @@ public class ChatTest {
         messages.add(message2);
 
         chatFactory = new ChatFactory();
-        chat = chatFactory.createChat("Test Chat", users, users.size(), messages);
+//        chat = chatFactory.createChat("Test Chat", users, users.size(), messages);
     }
 
     @Test
@@ -101,8 +101,6 @@ public class ChatTest {
         User newUser = userFactory.createUser("Alice", "newPassword", "In Wonderland", 24,
                 "Chemistry", newInterests, newFriends, newChats, LocalDateTime.now());
         newUsers.add(newUser);
-
-        chat.setUsers(newUsers);
         assertEquals(newUsers, chat.getUsers());
     }
 
@@ -160,7 +158,7 @@ public class ChatTest {
 
     @Test
     void testSetUsersWithEmptyList() {
-        ArrayList<User> emptyUsers = new ArrayList<>();
+        ArrayList<String> emptyUsers = new ArrayList<>();
         assertThrows(IllegalArgumentException.class, () -> {
             chat.setUsers(emptyUsers);
         });

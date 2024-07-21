@@ -15,6 +15,7 @@ public class UserTest {
     private User user;
     private List<String> interests;
     private List<String> friends;
+    private List<String> chats;
     private LocalDateTime dateCreated;
     private UserFactory userFactory;
 
@@ -28,10 +29,12 @@ public class UserTest {
         friends = new ArrayList<>();
         friends.add("Barry");
 
+        chats = new ArrayList<>();
+
         dateCreated = LocalDateTime.now();
 
         user = userFactory.createUser("Jasmine", "password", "(Demo)", 21,
-                "Computer Science", interests, friends, dateCreated);
+                "Computer Science", interests, friends, chats, dateCreated);
     }
 
     @Test

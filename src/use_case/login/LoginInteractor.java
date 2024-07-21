@@ -1,38 +1,36 @@
 package use_case.login;
 
-public class LoginInteractor implements LoginInputBoundary{
+import entity.User;
 
-    private LoginOutputBoundary outputBoundary;
-    private LoginUserDataAccessInterface UserDAO;
+public class LoginInteractor implements LoginInputBoundary {
 
-    public LoginInteractor(LoginOutputBoundary outputBoundary, LoginUserDataAccessInterface UserDAO) {
+    private final LoginOutputBoundary outputBoundary;
+    private final LoginUserDataAccessInterface userDAO;
+
+    public LoginInteractor(LoginOutputBoundary outputBoundary, LoginUserDataAccessInterface userDAO) {
         this.outputBoundary = outputBoundary;
-        this.UserDAO = UserDAO;
+        this.userDAO = userDAO;
     }
 
     @Override
-
     public void execute(LoginInputData loginInputData) {
         String username = loginInputData.getUsername();
         String inputPassword = loginInputData.getPassword();
 
-        if (UserDAO.userExists(username)) {
-            String password = UserDAO.getUser(username).getPassword();
-            if (password.equals(inputPassword)) {
-                LoginOutputData loginOutputData = new LoginOutputData(username);
+        if (userDAO.userExists(username)) {
+            User user = userDAO.getUser(username);
+            if (user.getPassword().equals(inputPassword)) {
+                LoginOutputData loginOutputData = new LoginOutputData(user);
                 outputBoundary.showSuccessScreen(loginOutputData);
                 System.out.println("Successfully logged in");
             } else {
-
-                System.out.println("incorrect password");
+                System.out.println("Incorrect password");
                 outputBoundary.showFailureScreen("Incorrect Password");
             }
         } else {
             System.out.println("User not found");
             outputBoundary.showFailureScreen("User not found");
         }
-
-
-
     }
 }
+

@@ -2,13 +2,14 @@ package entity;
 
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Chat {
      private String chatName;
      private ArrayList<String> users = new ArrayList<>();
      private Integer noOfMembers;
      private ArrayList<Message> allmessages = new ArrayList<>();
-     final private LocalDateTime time;
+     private LocalDateTime time;
 
      /**
       * Requires:
@@ -18,7 +19,7 @@ public class Chat {
       * @param allmessages - display all messages in the chat
       */
 
-     Chat(String chatName, ArrayList<String> users, Integer noOfMembers, ArrayList<Message> allmessages) {
+     Chat(String chatName, ArrayList<String> users, Integer noOfMembers, ArrayList<Message> allmessages, LocalDateTime time) {
           this.chatName = chatName;
           this.users = users;
           this.noOfMembers = noOfMembers;

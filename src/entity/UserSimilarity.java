@@ -17,4 +17,7 @@ public class UserSimilarity {
         return score;
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> main

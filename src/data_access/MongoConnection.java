@@ -9,6 +9,7 @@ import entity.User;
 import org.bson.Document;
 
 import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.getCollectionName;
+import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.getURI;
 
 public class MongoConnection {
 
@@ -19,7 +20,7 @@ public class MongoConnection {
     private MongoCollection<Document> MessageCollection = database.getCollection("messages");
     private MongoCollection<Document> UserCollection = database.getCollection("users");
     private MongoCollection<Document> ChatCollection = database.getCollection("chats");
-    private MongoCollection<Document> similarityCollection = database.getCollection(getCollectionName());
+    MongoCollection<Document> similarityCollection = database.getCollection(getCollectionName());
 
 
     public MongoCollection<Document> getMessageCollection() {
@@ -37,4 +38,7 @@ public class MongoConnection {
     public MongoCollection<Document> getSimilarityCollection() {
         return similarityCollection;
     }
+
+
+
 }

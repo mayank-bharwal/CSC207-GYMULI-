@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit;
 import static data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.GetAPI.getAPI;
 import static data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.GetAPI.getBackupAPI;
 
-public class APICaller implements APICallerInterface {
+public class APICaller {
 
-    public float getSimilarityScore(String text1, String text2) {
+    public Float getSimilarityScore(String text1, String text2) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS) // Increase timeout to 60 seconds
                 .writeTimeout(60, TimeUnit.SECONDS)
@@ -29,7 +29,7 @@ public class APICaller implements APICallerInterface {
             if (!response.isSuccessful()) {
                 System.out.println("Primary API failed, Trying the backup API");
                 String backupUrl = getBackupAPI(text1, text2);
-
+                System.out.println("Backup API URL: " + backupUrl);
                 request = new Request.Builder()
                         .url(backupUrl)
                         .build();
@@ -45,7 +45,7 @@ public class APICaller implements APICallerInterface {
 
             // Extract and return the similarity score if it exists
             if (responseBody.has("similarity")) {
-                return (float) responseBody.getDouble("similarity") + 0.01f; // to ensure every user is 1% similar
+                return (float) responseBody.getDouble("similarity") + 0.01f;
             } else {
                 throw new JSONException("Response does not contain 'similarity' field");
             }
