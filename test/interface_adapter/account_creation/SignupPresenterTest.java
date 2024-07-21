@@ -19,14 +19,14 @@ class SignupPresenterTest {
     private SignupPresenter signupPresenter;
     private ViewModelManager mockViewModelManager;
     private SignupViewModel mockSignupViewModel;
-    private LoginViewModel mockLoginViewModel;
+    //private LoginViewModel mockLoginViewModel;
 
     @BeforeEach
     void setUp() {
         mockViewModelManager = Mockito.mock(ViewModelManager.class);
         mockSignupViewModel = Mockito.mock(SignupViewModel.class);
-        mockLoginViewModel = Mockito.mock(LoginViewModel.class);
-        signupPresenter = new SignupPresenter(mockViewModelManager, mockSignupViewModel, mockLoginViewModel);
+       //mockLoginViewModel = Mockito.mock(LoginViewModel.class);
+        signupPresenter = new SignupPresenter(mockViewModelManager, mockSignupViewModel);
     }
 
     @Test
