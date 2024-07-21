@@ -30,6 +30,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
     public ChatDataAccessObject(MongoConnection mongoConnection, Map<String, Message> messages, MessageFactory messageFactory,
                                 Map<String, Chat> chats, ChatFactory chatFactory,
                                 UserDataAccessObject userDataAccessObject) {
+        System.out.println("Initializing ChatDataAccessObject...");
         this.mongoConnection = mongoConnection;
         this.messages = messages;
         this.messageFactory = messageFactory;
@@ -41,18 +42,18 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         this.userDataAccessObject = userDataAccessObject;
 
         loadChats();
-        loadMessages();
     }
 
     private void loadChats() {
+        System.out.println("Loading chats from the database...");
         try (MongoCursor<Document> chatCursor = ChatCollection.find().iterator()) {
             while (chatCursor.hasNext()) {
                 Document chatDoc = chatCursor.next();
                 String chatName = chatDoc.getString("chatName");
                 List<String> users = chatDoc.getList("users", String.class);
                 Integer noOfMembers = chatDoc.getInteger("noOfMembers");
-                List<Message> messageList = new ArrayList<>();
                 List<Document> messageDocs = chatDoc.getList("allMessages", Document.class);
+                ArrayList<Message> messageList = new ArrayList<>();
                 if (messageDocs != null) {
                     for (Document messageDoc : messageDocs) {
                         String sender = messageDoc.getString("username");
@@ -68,7 +69,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
                 Date sendDate = chatDoc.getDate("time");
                 LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
 
-                Chat chat = chatFactory.createChat(chatName, new ArrayList<>(users), noOfMembers, new ArrayList<>(messageList), dateCreatedM);
+                Chat chat = chatFactory.createChat(chatName, new ArrayList<>(users), noOfMembers, messageList, dateCreatedM);
                 chats.put(chatName, chat);
                 System.out.println("Chat loaded: " + chatName + " with messages: " + messageList.size());
             }
@@ -77,39 +78,18 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         }
     }
 
-    private void loadMessages() {
-        try (MongoCursor<Document> messageCursor = MessageCollection.find().iterator()) {
-            while (messageCursor.hasNext()) {
-                Document messageDoc = messageCursor.next();
-                String chatName = messageDoc.getString("chatName");
-                String sender = messageDoc.getString("username");
-                String receiver = messageDoc.getString("receiver");
-                String messageText = messageDoc.getString("message");
-                Date sendDate = messageDoc.getDate("dateCreated");
-
-                LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
-
-                Message message = messageFactory.createMessage(chatName, sender, receiver, messageText, dateCreatedM);
-                messages.put(chatName, message);
-
-                Chat chat = chats.get(chatName);
-                if (chat != null) {
-                    chat.getAllmessages().add(message);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public boolean chatExistsByName(String chatName) {
+        System.out.println("Checking if chat exists for chat name: " + chatName);
         return chats.containsKey(chatName);
     }
 
     @Override
     public Chat getChat(String chatName) {
+        System.out.println("Getting chat for chat name: " + chatName);
         Chat chat = chats.get(chatName);
+        System.out.println("Retrieved chat: " + chatName + " with messages: " + chat.getAllmessages().size());
+        chat.getAllmessages().forEach(msg -> System.out.println("Message: " + msg.getMessage()));
         return chat;
     }
 
@@ -142,6 +122,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         ChatCollection.updateOne(chatFilter, chatUpdate);
 
         chats.put(chat.getChatName(), chat);
+        System.out.println("Message saved and chat updated: " + message.getMessage());
     }
 
     @Override
@@ -157,6 +138,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
 
     @Override
     public void saveChat(String user_1, String user_2, Chat chat) {
+        System.out.println("Saving chat: " + chat.getChatName());
         Document document = new Document();
         document.append("chatName", chat.getChatName());
         document.append("users", new ArrayList<>(chat.getUsers()));
