@@ -12,7 +12,7 @@ import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.get
 
 public class MongoConnection {
 
-
+    // mongodb+srv://gymuli07:csc207gymuli@cluster0.zjadzk8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
     private String uri = "mongodb+srv://UmerFarooqui:RealMadrid123Canon@cluster0.vbtnfad.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     private MongoClient mongoClient = MongoClients.create(uri);
     private MongoDatabase database = mongoClient.getDatabase("GYMULI");

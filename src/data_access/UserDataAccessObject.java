@@ -10,6 +10,7 @@ import data_access.similarityMapUpdaterFacade.FacadeInterface;
 import entity.*;
 import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
+import use_case.add_friends.AddFriendsUserDataAccessObject;
 import use_case.login.LoginUserDataAccessInterface;
 
 import use_case.recommendations.RecommendationDataAccessInterface;
@@ -21,32 +22,25 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.*;
 import static data_access.similarityMapUpdaterFacade.mapUpdater.readDB.GetDB.getCollectionID;
 import static data_access.userMap_ignore.getMap;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
-        SendMessageUserDataAccessInterface, UpdateProfileUserDataAccessInterface, RecommendationDataAccessInterface {
-
-//    String uri = getURI();
-//    MongoClient mongoClient = MongoClients.create(uri);
-//    MongoDatabase database = mongoClient.getDatabase(getDBName());
-//    MongoCollection<Document> MessageCollection = database.getCollection("messages");
-//    MongoCollection<Document> UserCollection = database.getCollection("users");
-//    MongoCollection<Document> similarityCollection = database.getCollection(getCollectionName());
-    private MongoClient mongoConnection;
-    private Map<String, User> accounts = new HashMap<>();
+        UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationDataAccessInterface {
+    private MongoConnection mongoConnection;
+    private MongoCollection<Document> UserCollection;
+    private  Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
-    private Map<String, Message> messages = new HashMap<>();
-    private MessageFactory messageFactory;
 
 
-    public UserDataAccessObject(UserFactory userFactory, Map<String, User> accounts, Map<String, Message> messages, MessageFactory messageFactory) {
+
+    public UserDataAccessObject(UserFactory userFactory, Map<String, User> accounts, MongoConnection mongoConnection) {
 
         this.userFactory = userFactory;
         this.accounts = accounts;
-        this.messages = messages;
-        this.messageFactory = messageFactory;
+        this.mongoConnection = mongoConnection;
+        this.UserCollection = mongoConnection.getUserCollection();
+
 
         try (MongoCursor<Document> cursor = UserCollection.find().iterator()) {
             while (cursor.hasNext()) {
@@ -69,33 +63,17 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                 User user = userFactory.createUser(username, password, bio, age, programOfStudy, interests, friends, chats, dateCreated);
                 accounts.put(username, user);
 
-                try (MongoCursor<Document> messageCursor = MessageCollection.find().iterator()) {
-                    while (messageCursor.hasNext()) {
-                        Document messageDoc = messageCursor.next();
-                        String chatName = messageDoc.getString("chatName");
-                        String sender = messageDoc.getString("username");
-                        String receiver = messageDoc.getString("receiver");
-                        String messageText = messageDoc.getString("message");
-                        Date sendDate = messageDoc.getDate("dateCreated");
-
-                        LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
-
-                        Message message = messageFactory.createMessage(chatName, sender, receiver, messageText, dateCreatedM);
-                        messages.put(chatName, message);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
 
             }
         }
     }
 
-    @Override
-    public boolean AccountExists(String username) {
-        return accounts.containsKey(username);
+    public Map<String, User> getAccounts() {
+        return accounts;
     }
+
+    @Override
+    public boolean AccountExists(String username) {return accounts.containsKey(username);}
 
     @Override
 
@@ -123,29 +101,27 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
     @Override
-    public void saveMessage(Message message) {
-        Document document = new Document();
-        document.append("chatName", message.getChatName());
-        document.append("username", message.getSender());
-        document.append("receiver", message.getReceiver());
-        document.append("message", message.getMessage());
-        document.append("dateCreated", LocalDateTime.now());
-        MessageCollection.insertOne(document);
+    public void addFriend(String currentUser, String friend) {
+        accounts.get(currentUser).getFriends().add(friend);
+        accounts.get(friend).getFriends().add(currentUser);
 
-        messages.put(message.getChatName(), message);
+        Document filter = new Document("username", currentUser);
+        Document update = new Document("$push", new Document("friends", friend));
+        UserCollection.updateOne(filter, update);
+
+        Document filter2 = new Document("username", friend);
+        Document update2 = new Document("$push", new Document("friends", currentUser));
+        UserCollection.updateOne(filter2, update2);
     }
+
 
     @Override
     public User getUser(String username) {
         return accounts.get(username);
     }
 
-    public Map<String, User> getAccounts() {
-        return accounts;
-    }
-
     @Override
-    public void updateUser(String oldUsername, String newUsername, String password, String bio, String programOfStudy, Integer age,
+    public void updateUser(String oldUsername ,String newUsername, String password, String bio, String programOfStudy, Integer age,
                            List<String> interests) { // maybe call text api here too
 
         Document filter = new Document("username", oldUsername);
@@ -190,7 +166,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     @Override
     public List<User> getNSimilarUsers(User user, int N) {
 
-        Document doc = similarityCollection.find(new Document("_id", getCollectionID())).first();
+        Document doc = mongoConnection.getSimilarityCollection().find(new Document("_id", getCollectionID())).first();
 
         if (doc != null) {
             List<UserSimilarity> userSimilarities = new ArrayList<>();
@@ -253,9 +229,11 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                 new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
 
         FacadeInterface facade = new Facade();
-        //facade.UpdateDB(user, getMap());
+        facade.UpdateDB(user, getMap());
 
-        UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, getMap(), messages, messageFactory);
+        MongoConnection mongoConnection = new MongoConnection();
+
+        UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, getMap(),mongoConnection);
         //RecommendationDataAccessObject dao = new RecommendationDataAccessObject();
 
         User user1 = userDataAccessObject.getUser("Alice");
@@ -266,4 +244,5 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
             System.out.println("User 'Alice' not found.");
         }
     }
+
 }

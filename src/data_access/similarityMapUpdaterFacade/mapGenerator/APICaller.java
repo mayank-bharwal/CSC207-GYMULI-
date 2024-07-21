@@ -12,7 +12,7 @@ import static data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.GetAPI
 
 public class APICaller implements APICallerInterface {
 
-    public Double getSimilarityScore(String text1, String text2) {
+    public float getSimilarityScore(String text1, String text2) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS) // Increase timeout to 60 seconds
                 .writeTimeout(60, TimeUnit.SECONDS)
@@ -45,7 +45,7 @@ public class APICaller implements APICallerInterface {
 
             // Extract and return the similarity score if it exists
             if (responseBody.has("similarity")) {
-                return (Double) responseBody.getDouble("similarity") + 0.01; // to ensure every user is 1% similar
+                return (float) responseBody.getDouble("similarity") + 0.01f; // to ensure every user is 1% similar
             } else {
                 throw new JSONException("Response does not contain 'similarity' field");
             }
