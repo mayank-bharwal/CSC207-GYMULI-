@@ -16,8 +16,8 @@ public class LoginPresenter implements LoginOutputBoundary {
 
     @Override
     public void showSuccessScreen(LoginOutputData user) {
+        viewModelManager.setCurrentUser(user.getUser()); // Use the User object
         viewModelManager.setActiveView(MainView.viewName);
-        viewModelManager.setCurrentUser(user.getUsername());
         viewModelManager.firePropertyChanged();
     }
 

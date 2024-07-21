@@ -1,12 +1,14 @@
 package interface_adapter;
 
+import entity.User;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class ViewModelManager {
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private String activeView;
-    private String currentUser;
+    private User currentUser;
 
     public void setActiveView(String activeView) {
         String oldView = this.activeView;
@@ -18,13 +20,13 @@ public class ViewModelManager {
         return activeView;
     }
 
-    public void setCurrentUser(String currentUser) {
-        String oldUser = this.currentUser;
+    public void setCurrentUser(User currentUser) {
+        User oldUser = this.currentUser;
         this.currentUser = currentUser;
         pcs.firePropertyChange("currentUser", oldUser, currentUser);
     }
 
-    public String getCurrentUser() {
+    public User getCurrentUser() {
         return currentUser;
     }
 
@@ -38,6 +40,10 @@ public class ViewModelManager {
 
     public void firePropertyChanged() {
         pcs.firePropertyChange("activeView", null, this.activeView);
+    }
+
+    public void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
+        pcs.firePropertyChange(propertyName, oldValue, newValue);
     }
 }
 

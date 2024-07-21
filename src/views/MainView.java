@@ -1,17 +1,20 @@
 package views;
 
+import entity.User;
 import interface_adapter.ViewModelManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 public class MainView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "MainView";
 
     private final ViewModelManager viewModelManager;
     private final JLabel currentUserLabel;
+    private final JPanel chatsPanel;
 
     public MainView(ViewModelManager viewModelManager) {
         this.viewModelManager = viewModelManager;
@@ -32,7 +35,12 @@ public class MainView extends JPanel implements PropertyChangeListener {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridx = 0;
         gbc.gridy = 0;
-        mainPanel.add(new JLabel("Chats will be displayed here"), gbc);
+
+        chatsPanel = new JPanel();
+        chatsPanel.setLayout(new BoxLayout(chatsPanel, BoxLayout.Y_AXIS));
+        JScrollPane scrollPane = new JScrollPane(chatsPanel);
+        scrollPane.setPreferredSize(new Dimension(400, 400));
+        mainPanel.add(scrollPane, gbc);
 
         JButton createChatButton = new JButton("Create Chat");
         createChatButton.addActionListener(e -> viewModelManager.setActiveView(CreateChatView.viewName));
@@ -42,18 +50,40 @@ public class MainView extends JPanel implements PropertyChangeListener {
         add(mainPanel, BorderLayout.CENTER);
 
         updateCurrentUser();
+        updateChats();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("currentUser".equals(evt.getPropertyName())) {
             updateCurrentUser();
+            updateChats();
+        } else if ("chatsUpdated".equals(evt.getPropertyName())) {
+            updateChats();
         }
     }
 
     private void updateCurrentUser() {
-        String currentUser = viewModelManager.getCurrentUser();
-        currentUserLabel.setText(currentUser != null ? currentUser : "Not logged in");
+        User currentUser = viewModelManager.getCurrentUser();
+        currentUserLabel.setText(currentUser != null ? currentUser.getUsername() : "Not logged in");
+    }
+
+    private void updateChats() {
+        User currentUser = viewModelManager.getCurrentUser();
+        chatsPanel.removeAll();
+
+        if (currentUser != null) {
+            List<String> userChats = currentUser.getChats();
+            for (String chatName : userChats) {
+                JButton chatButton = new JButton(chatName);
+                chatButton.addActionListener(e -> viewModelManager.setActiveView(ChatView.viewName));
+                chatsPanel.add(chatButton);
+            }
+        }
+
+        chatsPanel.revalidate();
+        chatsPanel.repaint();
     }
 }
+
 
