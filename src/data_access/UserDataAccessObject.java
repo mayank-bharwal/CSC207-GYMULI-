@@ -217,7 +217,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { // TESTING PURPOSES ONLY, REDUNDANT MAIN METHOD
         // Example usage
         UserFactory userFactory = new CommonUserFactory();
         Map<String, Message> messages = new HashMap<>();
