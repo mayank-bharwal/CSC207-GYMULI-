@@ -28,12 +28,13 @@ import static data_access.userMap_ignore.getMap;
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
         SendMessageUserDataAccessInterface, UpdateProfileUserDataAccessInterface, RecommendationDataAccessInterface {
 
-    String uri = getURI();
-    MongoClient mongoClient = MongoClients.create(uri);
-    MongoDatabase database = mongoClient.getDatabase(getDBName());
-    MongoCollection<Document> MessageCollection = database.getCollection("messages");
-    MongoCollection<Document> UserCollection = database.getCollection("users");
-    MongoCollection<Document> similarityCollection = database.getCollection(getCollectionName());
+//    String uri = getURI();
+//    MongoClient mongoClient = MongoClients.create(uri);
+//    MongoDatabase database = mongoClient.getDatabase(getDBName());
+//    MongoCollection<Document> MessageCollection = database.getCollection("messages");
+//    MongoCollection<Document> UserCollection = database.getCollection("users");
+//    MongoCollection<Document> similarityCollection = database.getCollection(getCollectionName());
+    private MongoClient mongoConnection;
     private Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
     private Map<String, Message> messages = new HashMap<>();
@@ -137,6 +138,10 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     @Override
     public User getUser(String username) {
         return accounts.get(username);
+    }
+
+    public Map<String, User> getAccounts() {
+        return accounts;
     }
 
     @Override
