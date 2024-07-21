@@ -205,7 +205,8 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
             List<User> topNUsers = new ArrayList<>();
             for (String topUsername : topNUsernames) {
                 User similarUser = getUser(topUsername);
-                if (similarUser != null & !similarUser.getUsername().equals(username)) {
+                assert similarUser != null;
+                if (!similarUser.getUsername().equals(username)) {
                     topNUsers.add(similarUser);
                 }
             }
