@@ -18,7 +18,7 @@ public class RecommendationsPresenter implements RecommendationsOutputBoundary {
     public void showSuccessScreen(RecommendationsOutputData recommendationsOutputData){
         RecommendationsState recommendationsState = new RecommendationsState();
         recommendationsState.setUsers(recommendationsOutputData.getSimilarUsers()); // list
-        recommendationsViewModel.setState(recommendationsState);
+        recommendationsViewModel.setRecommendationsState(recommendationsState);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class RecommendationsPresenter implements RecommendationsOutputBoundary {
 
         RecommendationsState recommendationsState = new RecommendationsState();
         recommendationsState.setrecommendationError(errorMessage);
-        recommendationsViewModel.setState(recommendationsState);
+        recommendationsViewModel.setRecommendationsState(recommendationsState);
     }
 
 }
