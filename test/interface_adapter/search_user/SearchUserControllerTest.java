@@ -10,17 +10,27 @@ import use_case.search_user.SearchUserInputData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
+/**
+ * This class tests the functionality of the SearchUserController class.
+ */
 public class SearchUserControllerTest {
 
     private SearchUserController searchUserController;
     private SearchUserInputBoundary mockSearchUserInputBoundary;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         mockSearchUserInputBoundary = Mockito.mock(SearchUserInputBoundary.class);
         searchUserController = new SearchUserController(mockSearchUserInputBoundary);
     }
 
+    /**
+     * Tests the search_user method of SearchUserController.
+     * It verifies that the method correctly captures the input data and passes it to the input boundary.
+     */
     @Test
     void testSearchUser() {
         String username = "Jasmine";

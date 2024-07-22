@@ -13,12 +13,18 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
+/**
+ * This class tests the functionality of the UpdateProfileController class.
+ */
 class UpdateProfileControllerTest {
 
     private UpdateProfileController updateProfileController;
     private UpdateProfileInputBoundary mockUpdateProfileInputBoundary;
     private UpdateProfileOutputBoundary mockUpdateProfileOutputBoundary;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         mockUpdateProfileInputBoundary = Mockito.mock(UpdateProfileInputBoundary.class);
@@ -26,6 +32,10 @@ class UpdateProfileControllerTest {
         updateProfileController = new UpdateProfileController(mockUpdateProfileInputBoundary, mockUpdateProfileOutputBoundary);
     }
 
+    /**
+     * Tests the update method of UpdateProfileController.
+     * It verifies that the method correctly captures the input data and passes it to the input boundary.
+     */
     @Test
     void testUpdate() {
         String username = "Jasmine";

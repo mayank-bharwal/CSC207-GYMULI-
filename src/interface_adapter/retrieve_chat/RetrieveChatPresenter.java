@@ -26,4 +26,11 @@ public class RetrieveChatPresenter implements RetrieveChatOutputBoundary {
         state.setError(error);
         retrieveChatViewModel.setState(state);
     }
+
+    @Override
+    public void presentChat(RetrieveChatOutputData outputData) {
+        retrieveChatViewModel.presentChat(outputData);
+    }
+
+
 }

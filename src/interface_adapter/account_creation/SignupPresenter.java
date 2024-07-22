@@ -5,7 +5,7 @@ import interface_adapter.ViewModelManager;
 import use_case.account_creation.AccountCreationOutputBoundary;
 import use_case.account_creation.AccountCreationOutputData;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class SignupPresenter implements AccountCreationOutputBoundary {
@@ -21,24 +21,23 @@ public class SignupPresenter implements AccountCreationOutputBoundary {
 
     @Override
     public void setPassView(AccountCreationOutputData user) {
-        if (user == null || user.getCreationTime() == null) {
-            throw new NullPointerException("AccountCreationOutputData or its creationTime is null");
-        }
+        LocalDateTime responseTime = LocalDateTime.parse(user.getCreationTime());
+        user.setCreationTime(responseTime.format(DateTimeFormatter.ofPattern("hh:mm:ss")));
 
-        LocalTime responseTime = LocalTime.parse(user.getCreationTime(), DateTimeFormatter.ISO_LOCAL_TIME);
-        user.setCreationTime(responseTime.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        SignupState signupState = signupViewModel.getState();
+        signupState.setUsername(user.getUsername());
+        signupState.setError(null);
+        signupViewModel.setState(signupState);
+        signupViewModel.firePropertyChanged();
 
-        signupViewModel.setUsername(user.getUsername());
-        signupViewModel.setError(null);
-        signupViewModel.firePropertyChanged("updateSuccess", null, "Account successfully created!");
-
-        viewModelManager.setActiveView("LoginView");
-        viewModelManager.firePropertyChanged();
+        signupViewModel.firePropertyChanged("success", null, "Account successfully created!");
     }
 
     @Override
     public void setFailView(String error) {
-        signupViewModel.setError(error);
+        SignupState signupState = signupViewModel.getState();
+        signupState.setError(error);
+        signupViewModel.setState(signupState);
         signupViewModel.firePropertyChanged("generalError", null, error);
     }
 }
