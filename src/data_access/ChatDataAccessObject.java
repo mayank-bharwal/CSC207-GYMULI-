@@ -15,6 +15,12 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Data Access Object (DAO) for managing chat and message data in a MongoDB database.
+ * This class handles interactions with the database to retrieve, store, and update chat and message information.
+ * It implements the interfaces for retrieving chats, sending messages, and making chats.
+ */
+
 public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface, SendMessageUserDataAccessInterface,
         MakeChatUserDataAccessInterface {
 
@@ -27,6 +33,17 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
     private MongoCollection<Document> UserCollection;
     private MongoCollection<Document> MessageCollection;
     private MongoCollection<Document> ChatCollection;
+
+    /**
+     * Constructs a new ChatDataAccessObject.
+     *
+     * @param mongoConnection          The MongoDB connection instance.
+     * @param messages                  A map of messages keyed by chat name.
+     * @param messageFactory            The factory used to create Message objects.
+     * @param chats                     A map of chats keyed by chat name.
+     * @param chatFactory               The factory used to create Chat objects.
+     * @param userDataAccessObject      The UserDataAccessObject for user-related data operations.
+     */
 
     public ChatDataAccessObject(MongoConnection mongoConnection, Map<String, Message> messages, MessageFactory messageFactory,
                                 Map<String, Chat> chats, ChatFactory chatFactory,
@@ -89,11 +106,25 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         }
     }
 
+    /**
+     * Checks if a chat exists by its name.
+     *
+     * @param chatName The name of the chat to check.
+     * @return True if the chat exists, otherwise false.
+     */
+
     @Override
     public boolean chatExistsByName(String chatName) {
         System.out.println("Checking if chat exists for chat name: " + chatName);
         return chats.containsKey(chatName);
     }
+
+    /**
+     * Retrieves a chat by its name.
+     *
+     * @param chatName The name of the chat to retrieve.
+     * @return The Chat object if found, otherwise null.
+     */
 
     @Override
     public Chat getChat(String chatName) {
@@ -156,6 +187,12 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
 
     }
 
+    /**
+     * Saves a message to the database and updates the in-memory data structures.
+     *
+     * @param message The Message object to save.
+     */
+
     @Override
     public void saveMessage(Message message) {
         // Convert Message object to Document
@@ -176,9 +213,6 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         Document update = new Document("$push", new Document("allMessages", messageDocument));
         ChatCollection.updateOne(filter, update);
     }
-
-
-
 
         // Get the chat object and update its allMessages list
 //        Chat chat = chats.get(message.getChatName());
@@ -205,16 +239,38 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
 //        }
 //    }
 
+    /**
+     * Checks if a chat exists by its name.
+     *
+     * @param chatName The name of the chat to check.
+     * @return True if the chat exists, otherwise false.
+     */
+
     @Override
     public boolean ChatExists(String chatName) {
         return chats.containsKey(chatName);
     }
+
+    /**
+     * Checks if a user exists by their username.
+     *
+     * @param username The username of the user to check.
+     * @return True if the user exists, otherwise false.
+     */
 
     @Override
     public boolean UserExists(String username) {
         Map<String, User> accounts = userDataAccessObject.getAccounts();
         return accounts.containsKey(username);
     }
+
+    /**
+     * Saves a chat to the database and updates the in-memory data structures and user collections.
+     *
+     * @param user_1 The username of the first user.
+     * @param user_2 The username of the second user.
+     * @param chat   The Chat object to save.
+     */
 
     @Override
     public void saveChat(String user_1, String user_2, Chat chat) {
