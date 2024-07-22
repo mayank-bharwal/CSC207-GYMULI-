@@ -13,11 +13,17 @@ import java.util.ArrayList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * This class tests the functionality of the CreateChatPresenter class.
+ */
 class CreateChatPresenterTest {
     private CreateChatPresenter createChatPresenter;
     private CreateChatViewModel mockCreateChatViewModel;
     private ChatFactory chatFactory;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         mockCreateChatViewModel = Mockito.mock(CreateChatViewModel.class);
@@ -25,6 +31,10 @@ class CreateChatPresenterTest {
         chatFactory = new ChatFactory();
     }
 
+    /**
+     * Tests the setPassView method of CreateChatPresenter.
+     * It verifies that the method correctly updates the view model upon successful chat creation.
+     */
     @Test
     void testSetPassView() {
         Chat chat = chatFactory.createChat("Test Chat", new ArrayList<>(), 0, new ArrayList<>(), LocalDateTime.now());
@@ -41,6 +51,10 @@ class CreateChatPresenterTest {
         verify(mockCreateChatViewModel).firePropertyChanged();
     }
 
+    /**
+     * Tests the setFailView method of CreateChatPresenter.
+     * It verifies that the method correctly updates the view model with the appropriate error message upon chat creation failure.
+     */
     @Test
     void testSetFailView() {
         String error = "Error creating chat";

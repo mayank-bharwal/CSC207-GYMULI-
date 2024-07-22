@@ -17,12 +17,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * This class tests the functionality of the CreateChatController class.
+ */
 class CreateChatControllerTest {
     private CreateChatController createChatController;
     private MakeChatInputBoundary mockMakeChatInputBoundary;
     private ViewModelManager mockViewModelManager;
     private User mockCurrentUser;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         mockMakeChatInputBoundary = Mockito.mock(MakeChatInputBoundary.class);
@@ -31,6 +37,11 @@ class CreateChatControllerTest {
         createChatController = new CreateChatController(mockMakeChatInputBoundary, mockViewModelManager);
     }
 
+    /**
+     * Tests the createChat method of CreateChatController.
+     * It verifies that the createChat method correctly captures the input data, invokes the input boundary,
+     * updates the current user's chats, and fires the appropriate property change events.
+     */
     @Test
     void testCreateChat() {
         String chatName = "Test Chat";

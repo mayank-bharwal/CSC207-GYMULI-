@@ -14,16 +14,26 @@ import java.util.List;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * This class tests the functionality of the RetrieveChatPresenter class.
+ */
 class RetrieveChatPresenterTest {
     private RetrieveChatPresenter retrieveChatPresenter;
     private RetrieveChatViewModel mockRetrieveChatViewModel;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         mockRetrieveChatViewModel = Mockito.mock(RetrieveChatViewModel.class);
         retrieveChatPresenter = new RetrieveChatPresenter(mockRetrieveChatViewModel);
     }
 
+    /**
+     * Tests the prepareSuccessView method of RetrieveChatPresenter.
+     * It verifies that the method correctly updates the view model upon successful chat retrieval.
+     */
     @Test
     void testPrepareSuccessView() {
         // Create a mock RetrieveChatOutputData object
@@ -48,6 +58,10 @@ class RetrieveChatPresenterTest {
         verify(mockRetrieveChatViewModel).setState(expectedState);
     }
 
+    /**
+     * Tests the prepareFailView method of RetrieveChatPresenter.
+     * It verifies that the method correctly updates the view model with the appropriate error message upon chat retrieval failure.
+     */
     @Test
     void testPrepareFailView() {
         String error = "Error retrieving chat";

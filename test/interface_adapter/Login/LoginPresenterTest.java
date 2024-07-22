@@ -11,12 +11,18 @@ import entity.User;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * This class tests the functionality of the LoginPresenter class.
+ */
 class LoginPresenterTest {
     private LoginPresenter loginPresenter;
     private LoginViewModel mockLoginViewModel;
     private ViewModelManager mockViewModelManager;
     private LoginOutputData mockLoginOutputData;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         mockLoginViewModel = Mockito.mock(LoginViewModel.class);
@@ -25,6 +31,10 @@ class LoginPresenterTest {
         loginPresenter = new LoginPresenter(mockLoginViewModel, mockViewModelManager);
     }
 
+    /**
+     * Tests the showSuccessScreen method of LoginPresenter.
+     * It verifies that the method correctly updates the view model manager upon successful login.
+     */
     @Test
     void testShowSuccessScreen() {
         User mockUser = Mockito.mock(User.class);
@@ -37,6 +47,10 @@ class LoginPresenterTest {
         verify(mockViewModelManager).firePropertyChanged();
     }
 
+    /**
+     * Tests the showFailureScreen method of LoginPresenter.
+     * It verifies that the method correctly updates the view model with the appropriate error message upon login failure.
+     */
     @Test
     void testShowFailureScreen() {
         String error = "Login failed";

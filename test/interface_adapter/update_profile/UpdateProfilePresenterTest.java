@@ -10,11 +10,17 @@ import java.util.Arrays;
 
 import static org.mockito.Mockito.verify;
 
+/**
+ * This class tests the functionality of the UpdateProfilePresenter class.
+ */
 class UpdateProfilePresenterTest {
     private UpdateProfilePresenter updateProfilePresenter;
     private UpdateProfileViewModel mockUpdateProfileViewModel;
     private ViewModelManager mockViewModelManager;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         mockUpdateProfileViewModel = Mockito.mock(UpdateProfileViewModel.class);
@@ -22,6 +28,10 @@ class UpdateProfilePresenterTest {
         updateProfilePresenter = new UpdateProfilePresenter(mockUpdateProfileViewModel, mockViewModelManager);
     }
 
+    /**
+     * Tests the prepareSuccessView method of UpdateProfilePresenter.
+     * It verifies that the method correctly updates the view model upon successful profile update.
+     */
     @Test
     void testPrepareSuccessView() {
         UpdateProfileOutputData outputData = new UpdateProfileOutputData("Jasmine", "password",
@@ -41,6 +51,10 @@ class UpdateProfilePresenterTest {
         verify(mockViewModelManager).firePropertyChanged();
     }
 
+    /**
+     * Tests the prepareFailView method of UpdateProfilePresenter.
+     * It verifies that the method correctly updates the view model with the appropriate error message upon profile update failure.
+     */
     @Test
     void testPrepareFailView() {
         String error = "An error occurred";
