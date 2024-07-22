@@ -26,7 +26,7 @@ The repo is structured as:
 -   `src` contains the app, entity, interface adapters, data access, target, views, and use case directory.
 -   `test` contains the test directory.
 
-##How to make it work
+## How to make it work
 1. Go to sign up and create a user.
 2. Log in with that user.
 3. You can create a chat using an existing user.
