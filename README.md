@@ -22,5 +22,5 @@ Key features include:
 The repo is structured as:
 
 -   `.idea` contains the core of the repository.
--   `src` contains the app, entity, interface adaptors, data access, target, views, and use case directory.
+-   `src` contains the app, entity, interface adapters, data access, target, views, and use case directory.
 -   `test` contains the test directory.
