@@ -38,3 +38,6 @@ The repo is structured as:
 -RealMadrid123Canon
 Open the cluster and check the DATABASE GYMULI.
 Also if the app does not run because of a MongoSocket error just open mongoDB and it should prompt you to add the IP adress to mongo. This issue is fixed it should not happen but just in case.
+
+username: test1 pwd:test1
+username: test2 pwd:test2
