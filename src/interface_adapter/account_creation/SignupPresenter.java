@@ -1,5 +1,6 @@
 package interface_adapter.account_creation;
 
+import interface_adapter.Login.LoginViewModel;
 import interface_adapter.ViewModelManager;
 import use_case.account_creation.AccountCreationOutputBoundary;
 import use_case.account_creation.AccountCreationOutputData;
@@ -10,12 +11,12 @@ import java.time.format.DateTimeFormatter;
 public class SignupPresenter implements AccountCreationOutputBoundary {
     private final SignupViewModel signupViewModel;
     private final ViewModelManager viewModelManager;
-    //private final LoginViewModel loginViewModel;
+    private final LoginViewModel loginViewModel;
 
-    public SignupPresenter(ViewModelManager viewModelManager, SignupViewModel signupViewModel) {
+    public SignupPresenter(ViewModelManager viewModelManager, SignupViewModel signupViewModel, LoginViewModel loginViewModel) {
         this.viewModelManager = viewModelManager;
         this.signupViewModel = signupViewModel;
-        //this.loginViewModel = loginViewModel;
+        this.loginViewModel = loginViewModel;
     }
 
     @Override
