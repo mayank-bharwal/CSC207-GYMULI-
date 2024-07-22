@@ -105,7 +105,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
                     System.out.println("Timer triggered");
                     retrieveChatViewModel.triggerUpdate();
                 }
-            }, 0, 3000);
+            }, 0, 1000);
         }
     }
 

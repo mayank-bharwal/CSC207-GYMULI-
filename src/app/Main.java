@@ -28,7 +28,6 @@ import use_case.make_chat.MakeChatInteractor;
 import use_case.retrieve_chat.RetrieveChatInputBoundary;
 import use_case.retrieve_chat.RetrieveChatInteractor;
 import use_case.retrieve_chat.RetrieveChatOutputBoundary;
-import use_case.retrieve_chat.RetrieveChatUserDataAccessInterface;
 import use_case.send_message.SendMessageInteractor;
 import views.MainView;
 import views.LoginView;
@@ -62,13 +61,12 @@ public class Main {
         LoginViewModel loginViewModel = new LoginViewModel();
         SignupViewModel signupViewModel = new SignupViewModel();
         CreateChatViewModel createChatViewModel = new CreateChatViewModel();
-        RetrieveChatViewModel retrieveChatViewModel = new RetrieveChatViewModel();
 
         MongoConnection mongoConnection = new MongoConnection();
 
         UserFactory userFactory = new CommonUserFactory();
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, new HashMap<>(), mongoConnection);
-        ChatDataAccessObject chatDataAccessObject = new ChatDataAccessObject(new MongoConnection(), new HashMap<>(), new MessageFactory(), new HashMap<>(), new ChatFactory(), userDataAccessObject);
+        ChatDataAccessObject chatDataAccessObject = new ChatDataAccessObject(mongoConnection, new HashMap<>(), new MessageFactory(), new HashMap<>(), new ChatFactory(), userDataAccessObject);
 
         AccountCreationOutputBoundary accountCreationOutputBoundary = new SignupPresenter(viewModelManager, signupViewModel, loginViewModel);
         AccountCreationInputBoundary accountCreationInputBoundary = new AccountCreationInteractor(userDataAccessObject, accountCreationOutputBoundary, userFactory);
@@ -82,9 +80,11 @@ public class Main {
         LoginView loginView = LoginViewFactory.create(viewModelManager, loginViewModel, loginInputBoundary);
         views.add(loginView, loginView.viewName);
 
-        RetrieveChatOutputBoundary retrieveChatPresenter = new RetrieveChatPresenter(retrieveChatViewModel);
+        RetrieveChatViewModel retrieveChatViewModel = new RetrieveChatViewModel();
+        RetrieveChatPresenter retrieveChatPresenter = new RetrieveChatPresenter(retrieveChatViewModel);
         RetrieveChatInputBoundary retrieveChatInteractor = new RetrieveChatInteractor(retrieveChatPresenter, chatDataAccessObject);
         RetrieveChatController retrieveChatController = new RetrieveChatController(retrieveChatInteractor);
+        retrieveChatViewModel.setRetrieveChatInteractor(retrieveChatInteractor);
 
         MainView mainView = MainViewFactory.create(viewModelManager, retrieveChatController);
         views.add(mainView, MainView.viewName);
