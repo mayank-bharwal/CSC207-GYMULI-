@@ -100,32 +100,57 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         System.out.println("Getting chat for chat name: " + chatName);
         Document filter = new Document("chatName", chatName);
         FindIterable<Document> chatDocuments = ChatCollection.find(filter);
-        List<Document> msgL = new ArrayList<>();
-        List<String> msgs = new ArrayList<>();
+        Document chatDocument = chatDocuments.first();
+
+        String cN = chatDocument.getString("chatName");
+        List<String> users = chatDocument.getList("users", String.class);
+        Integer noOfMembers = chatDocument.getInteger("noOfMembers");
+        List<Document> messageDocs = chatDocument.getList("allMessages", Document.class);
+        List<Message> chatMessages = messageDocs.stream()
+                .map(doc -> {
+                    String msgChatName = doc.getString("chatName");
+                    String sender = doc.getString("username");
+                    String receiver = doc.getString("receiver");
+                    String messageText = doc.getString("message");
+                    Date sendDate = doc.getDate("dateCreated");
+                    LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
+                    return messageFactory.createMessage(msgChatName, sender, receiver, messageText, dateCreatedM);
+                }).collect(Collectors.toList());
+        Date sendDate = chatDocument.getDate("time");
+
+        LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
+
+        return chatFactory.createChat(cN, new ArrayList<>(users), noOfMembers, new ArrayList<>(chatMessages), dateCreatedM);
 
 
 
-        for (Document chatDocument : chatDocuments) {
-            // Extract the list of message documents
-             msgL = (List<Document>) chatDocument.get("allMessages");
 
-        }
-
-        for (Document msg: msgL) {
-
-            String msgChatName = msg.getString("chatName");
-            String sender = msg.getString("username");
-            String receiver = msg.getString("receiver");
-            String messageText = msg.getString("message");
-            Date sendDate = msg.getDate("dateCreated");
-            LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
-            Message m = messageFactory.createMessage(msgChatName, sender, receiver, messageText, dateCreatedM);
-
-            chats.get(chatName).getAllmessages().add(m);
-
-        }
-
-        return chats.get(chatName);
+//        List<Document> msgL = new ArrayList<>();
+//        List<String> msgs = new ArrayList<>();
+//
+//
+//
+//        for (Document chatDocument : chatDocuments) {
+//            // Extract the list of message documents
+//             msgL = (List<Document>) chatDocument.get("allMessages");
+//
+//        }
+//
+//        for (Document msg: msgL) {
+//
+//            String msgChatName = msg.getString("chatName");
+//            String sender = msg.getString("username");
+//            String receiver = msg.getString("receiver");
+//            String messageText = msg.getString("message");
+//            Date sendDate = msg.getDate("dateCreated");
+//            LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
+//            Message m = messageFactory.createMessage(msgChatName, sender, receiver, messageText, dateCreatedM);
+//
+//            chats.get(chatName).getAllmessages().add(m);
+//
+//        }
+//
+//        return chats.get(chatName);
 
 
 
