@@ -30,6 +30,9 @@ public class SignupPresenter implements AccountCreationOutputBoundary {
         signupViewModel.setState(signupState);
         signupViewModel.firePropertyChanged();
 
+        viewModelManager.setActiveView("LoginView");
+        viewModelManager.firePropertyChanged();
+
         signupViewModel.firePropertyChanged("success", null, "Account successfully created!");
     }
 

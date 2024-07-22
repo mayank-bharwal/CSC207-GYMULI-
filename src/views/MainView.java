@@ -8,7 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MainView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "MainView";
@@ -64,11 +66,12 @@ public class MainView extends JPanel implements PropertyChangeListener {
         User currentUser = viewModelManager.getCurrentUser();
         if (currentUser != null) {
             List<String> chats = currentUser.getChats();
+            Set<String> uniqueChats = new HashSet<>(chats);
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.insets = new Insets(10, 10, 10, 10);
             gbc.gridx = 0;
             gbc.gridy = 0;
-            for (String chatName : chats) {
+            for (String chatName : uniqueChats) {
                 JButton chatButton = new JButton(chatName);
                 chatButton.addActionListener(e -> {
                     retrieveChatController.retrieveChat(chatName);
@@ -82,6 +85,5 @@ public class MainView extends JPanel implements PropertyChangeListener {
         chatListPanel.repaint();
     }
 }
-
 
 
