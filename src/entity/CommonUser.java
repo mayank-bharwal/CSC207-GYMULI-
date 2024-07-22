@@ -106,7 +106,7 @@ public class CommonUser implements User {
 
     @Override
     public void setChats(List<String> chats) {
-
+        this.chats = new ArrayList<>(chats);
     }
 
     @Override

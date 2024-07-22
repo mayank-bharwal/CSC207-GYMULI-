@@ -1,7 +1,9 @@
 package data_access;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import data_access.readDB.MongoConnection;
 import entity.*;
 import org.bson.Document;
 import use_case.make_chat.MakeChatUserDataAccessInterface;
@@ -96,7 +98,37 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
     @Override
     public Chat getChat(String chatName) {
         System.out.println("Getting chat for chat name: " + chatName);
+        Document filter = new Document("chatName", chatName);
+        FindIterable<Document> chatDocuments = ChatCollection.find(filter);
+        List<Document> msgL = new ArrayList<>();
+        List<String> msgs = new ArrayList<>();
+
+
+
+        for (Document chatDocument : chatDocuments) {
+            // Extract the list of message documents
+             msgL = (List<Document>) chatDocument.get("allMessages");
+
+        }
+
+        for (Document msg: msgL) {
+
+            String msgChatName = msg.getString("chatName");
+            String sender = msg.getString("username");
+            String receiver = msg.getString("receiver");
+            String messageText = msg.getString("message");
+            Date sendDate = msg.getDate("dateCreated");
+            LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
+            Message m = messageFactory.createMessage(msgChatName, sender, receiver, messageText, dateCreatedM);
+
+            chats.get(chatName).getAllmessages().add(m);
+
+        }
+
         return chats.get(chatName);
+
+
+
     }
 
     @Override
