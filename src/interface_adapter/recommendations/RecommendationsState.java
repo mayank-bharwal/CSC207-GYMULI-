@@ -2,19 +2,13 @@ package interface_adapter.recommendations;
 
 import entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecommendationsState {
 
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
     private String recommendationError = null;
-
-    public RecommendationsState(RecommendationsState copy) {
-        users = copy.users;
-        recommendationError = copy.recommendationError;
-    }
-
-    public RecommendationsState() {};
 
     public String getRecommendationError() {return recommendationError;}
 
