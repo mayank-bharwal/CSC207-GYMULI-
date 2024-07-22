@@ -91,6 +91,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         accounts.put(user.getUsername(), user);
 
+        FacadeInterface Facade = new Facade();
+        Facade.UpdateDB(user, accounts, mongoConnection);
+
     }
 
     @Override
@@ -157,6 +160,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         user.setBio(bio);
         user.setInterests(interests);
         user.setProgramOfStudy(programOfStudy);
+
+        FacadeInterface Facade = new Facade();
+        Facade.UpdateDB(user, accounts, mongoConnection);
 
 
     }
