@@ -34,7 +34,7 @@ The repo is structured as:
 5. Currently we dont have the implementation for the other user to instantly see a created chat. For that you would have to run the app again.
 6. Otherwise everything else is working perfectly. The two users can send messages and  the messages are rendered in the chat instantly.
 
-#MongoDB credentials so that you can check how the databases is updated
+# MongoDB credentials so that you can check how the databases is updated
 https://www.mongodb.com
 
 Username- umer.farooqui@mail.utoronto.ca
