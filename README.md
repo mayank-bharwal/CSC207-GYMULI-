@@ -37,8 +37,8 @@ The repo is structured as:
 #MongoDB credentials so that you can check how the databases is updated
 https://www.mongodb.com
 
--umer.farooqui@mail.utoronto.ca
--RealMadrid123Canon
+Username- umer.farooqui@mail.utoronto.ca
+password -RealMadrid123Canon
 Open the cluster and check the DATABASE GYMULI.
 Also if the app does not run because of a MongoSocket error just open mongoDB and it should prompt you to add the IP adress to mongo. This issue is fixed it should not happen but just in case.
 
