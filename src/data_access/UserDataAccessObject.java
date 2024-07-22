@@ -307,8 +307,8 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         User user1 = userDataAccessObject.getUser("Alice");
         if (user1 != null) {
-            List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user1, 3);
-            similarUsers.forEach(u -> System.out.println(u));
+            List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user1, 5);
+            similarUsers.forEach(u -> System.out.println(u.getUsername()));
         } else {
             System.out.println("User 'Alice' not found.");
         }
