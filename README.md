@@ -35,6 +35,8 @@ The repo is structured as:
 6. Otherwise everything else is working perfectly. The two users can send messages and  the messages are rendered in the chat instantly.
 
 #MongoDB credentials so that you can check how the databases is updated
+https://www.mongodb.com
+
 -umer.farooqui@mail.utoronto.ca
 -RealMadrid123Canon
 Open the cluster and check the DATABASE GYMULI.
