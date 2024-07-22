@@ -28,12 +28,17 @@ import use_case.make_chat.MakeChatInteractor;
 import use_case.retrieve_chat.RetrieveChatInputBoundary;
 import use_case.retrieve_chat.RetrieveChatInteractor;
 import use_case.retrieve_chat.RetrieveChatOutputBoundary;
+import use_case.retrieve_chat.RetrieveChatUserDataAccessInterface;
+import use_case.send_message.SendMessageInteractor;
 import views.MainView;
 import views.LoginView;
 import views.SignupView;
 import views.ChatView;
 import views.CreateChatView;
 import views.ViewManager;
+import interface_adapter.send_message.SendMessageController;
+import interface_adapter.send_message.SendMessagePresenter;
+import interface_adapter.send_message.SendMessageViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,7 +89,12 @@ public class Main {
         MainView mainView = MainViewFactory.create(viewModelManager, retrieveChatController);
         views.add(mainView, MainView.viewName);
 
-        ChatView chatView = ChatViewFactory.create(viewModelManager, retrieveChatViewModel);
+        SendMessageViewModel sendMessageViewModel = new SendMessageViewModel();
+        SendMessagePresenter sendMessagePresenter = new SendMessagePresenter(sendMessageViewModel);
+        SendMessageInteractor sendMessageInteractor = new SendMessageInteractor(chatDataAccessObject, sendMessagePresenter, new MessageFactory());
+        SendMessageController sendMessageController = new SendMessageController(sendMessageInteractor);
+
+        ChatView chatView = ChatViewFactory.create(viewModelManager, sendMessageController, sendMessageViewModel, retrieveChatViewModel);
         views.add(chatView, ChatView.viewName);
 
         CreateChatPresenter createChatPresenter = new CreateChatPresenter(createChatViewModel);

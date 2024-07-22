@@ -1,6 +1,7 @@
 package entity;
 // import jdk.vm.ci.meta.Local;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class Message {
@@ -54,4 +55,5 @@ public class Message {
     public void setMessage(String message) {
           this.message = message;
     }
+
 }
