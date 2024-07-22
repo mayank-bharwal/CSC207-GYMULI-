@@ -15,17 +15,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 
+/**
+ * This class tests the functionality of the SignupController class.
+ */
 public class SignupControllerTest {
 
     private SignupController signupController;
     private AccountCreationInputBoundary mockAccountCreationInputBoundary;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         mockAccountCreationInputBoundary = Mockito.mock(AccountCreationInputBoundary.class);
         signupController = new SignupController(mockAccountCreationInputBoundary);
     }
 
+    /**
+     * Tests the execute method of SignupController.
+     * It verifies that the execute method correctly captures the input data and passes it to the input boundary.
+     */
     @Test
     void testExecute() {
         String username = "Jasmine";

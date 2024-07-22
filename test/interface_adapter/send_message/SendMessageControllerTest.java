@@ -12,16 +12,26 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
+/**
+ * This class tests the functionality of the SendMessageController class.
+ */
 class SendMessageControllerTest {
     private SendMessageController sendMessageController;
     private SendMessageInputBoundary mockSendMessageInputBoundary;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         mockSendMessageInputBoundary = Mockito.mock(SendMessageInputBoundary.class);
         sendMessageController = new SendMessageController(mockSendMessageInputBoundary);
     }
 
+    /**
+     * Tests the execute method of SendMessageController.
+     * It verifies that the method correctly captures the input data and passes it to the input boundary.
+     */
     @Test
     void testExecute() {
         String chatName = "Chat";
@@ -41,5 +51,4 @@ class SendMessageControllerTest {
         assertEquals(sender, capturedData.getSender());
         assertEquals(receiver, capturedData.getReceiver());
     }
-
 }

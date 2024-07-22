@@ -10,16 +10,26 @@ import use_case.add_friends.AddFriendsInputData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
+/**
+ * This class tests the functionality of the AddFriendsController class.
+ */
 class AddFriendsControllerTest {
     private AddFriendsController addFriendsController;
     private AddFriendsInputBoundary mockAddFriendsInputBoundary;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         mockAddFriendsInputBoundary = Mockito.mock(AddFriendsInputBoundary.class);
         addFriendsController = new AddFriendsController(mockAddFriendsInputBoundary);
     }
 
+    /**
+     * Tests the add method of AddFriendsController.
+     * It verifies that the add method correctly captures the input data and passes it to the input boundary.
+     */
     @Test
     void testAdd() {
         String currentUser = "Alice";

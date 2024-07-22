@@ -15,20 +15,29 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
+/**
+ * This class tests the functionality of the SignupPresenter class.
+ */
 class SignupPresenterTest {
     private SignupPresenter signupPresenter;
     private ViewModelManager mockViewModelManager;
     private SignupViewModel mockSignupViewModel;
-    //private LoginViewModel mockLoginViewModel;
+    private LoginViewModel mockLoginViewModel;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         mockViewModelManager = Mockito.mock(ViewModelManager.class);
         mockSignupViewModel = Mockito.mock(SignupViewModel.class);
-       //mockLoginViewModel = Mockito.mock(LoginViewModel.class);
-        signupPresenter = new SignupPresenter(mockViewModelManager, mockSignupViewModel);
+        signupPresenter = new SignupPresenter(mockViewModelManager, mockSignupViewModel, mockLoginViewModel);
     }
 
+    /**
+     * Tests the setPassView method of SignupPresenter.
+     * It verifies that the method correctly updates the view model and view model manager upon successful account creation.
+     */
     @Test
     void testSetPassView() {
         AccountCreationOutputData outputData = new AccountCreationOutputData("Jasmine",
@@ -53,6 +62,10 @@ class SignupPresenterTest {
         assertEquals(formattedTime, outputData.getCreationTime());
     }
 
+    /**
+     * Tests the setFailView method of SignupPresenter.
+     * It verifies that the method correctly updates the view model with the appropriate error message upon account creation failure.
+     */
     @Test
     void testSetFailView() {
         String error = "Username already exists";
