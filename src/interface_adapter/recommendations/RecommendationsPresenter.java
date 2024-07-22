@@ -17,6 +17,7 @@ public class RecommendationsPresenter implements RecommendationsOutputBoundary {
     @Override
     public void showSuccessScreen(RecommendationsOutputData recommendationsOutputData){
 
+
     }
 
     @Override
