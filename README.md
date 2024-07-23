@@ -15,8 +15,9 @@ Key features include:
 ## How to run
 
 1. Download the ZIP file of the repository by clicking on the green code button.
-2. In your IDE of choice, navigate to the "Main" class in the app subfolder of src and press the run button.
-3. The Recommendation use case is implemented on console for Phase1, please UserDataAccessObject.main() to check it.
+2. You can clone it and it would prompt you to add Maven dependancy. Do that, the project uses Maven.
+3. In your IDE of choice, navigate to the "Main" class in the app subfolder of src and press the run button.
+4. The Recommendation use case is implemented on console for Phase1, please UserDataAccessObject.main() to check it.
 
 ## File Structure
 
