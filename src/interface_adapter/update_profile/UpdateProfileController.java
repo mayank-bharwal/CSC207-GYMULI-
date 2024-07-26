@@ -10,11 +10,10 @@ import java.util.List;
 
 public class UpdateProfileController {
     private final UpdateProfileInputBoundary updateProfileInputBoundary;
-    private final UpdateProfileOutputBoundary updateProfileOutputBoundary;
+    ;
 
-    public UpdateProfileController(UpdateProfileInputBoundary updateProfileInputBoundary, UpdateProfileOutputBoundary updateProfileOutputBoundary) {
+    public UpdateProfileController(UpdateProfileInputBoundary updateProfileInputBoundary) {
         this.updateProfileInputBoundary = updateProfileInputBoundary;
-        this.updateProfileOutputBoundary = updateProfileOutputBoundary;
     }
 
     public void update(String username, String password, String currentUsername,

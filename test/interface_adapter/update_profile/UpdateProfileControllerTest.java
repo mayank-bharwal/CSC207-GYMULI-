@@ -29,7 +29,7 @@ class UpdateProfileControllerTest {
     void setUp() {
         mockUpdateProfileInputBoundary = Mockito.mock(UpdateProfileInputBoundary.class);
         mockUpdateProfileOutputBoundary = Mockito.mock(UpdateProfileOutputBoundary.class);
-        updateProfileController = new UpdateProfileController(mockUpdateProfileInputBoundary, mockUpdateProfileOutputBoundary);
+        updateProfileController = new UpdateProfileController(mockUpdateProfileInputBoundary);
     }
 
     /**
