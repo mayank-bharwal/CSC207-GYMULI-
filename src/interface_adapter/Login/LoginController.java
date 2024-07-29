@@ -13,6 +13,7 @@ public class LoginController {
     public void login(String username, String password) {
         LoginInputData loginInputData = new LoginInputData(username, password);
         loginInputBoundary.execute(loginInputData);
+
     }
 }
 

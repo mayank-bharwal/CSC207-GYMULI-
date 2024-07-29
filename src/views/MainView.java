@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 public class MainView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "MainView";
 
@@ -32,6 +33,11 @@ public class MainView extends JPanel implements PropertyChangeListener {
         currentUserLabel = new JLabel();
         headerPanel.add(new JLabel("Logged in as: "));
         headerPanel.add(currentUserLabel);
+        headerPanel.add(Box.createHorizontalGlue());
+
+        JButton editProfileButton =  new JButton("Edit Profile");
+        editProfileButton.addActionListener(e -> viewModelManager.setActiveView(UpdateProfileView.viewName));
+        headerPanel.add(editProfileButton);
 
         add(headerPanel, BorderLayout.NORTH);
 

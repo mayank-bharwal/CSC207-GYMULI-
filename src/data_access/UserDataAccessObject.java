@@ -221,6 +221,8 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         user.setBio(bio);
         user.setInterests(interests);
         user.setProgramOfStudy(programOfStudy);
+
+        System.out.println("user updated");
     }
 
     /**

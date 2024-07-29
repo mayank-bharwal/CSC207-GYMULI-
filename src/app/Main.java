@@ -15,6 +15,8 @@ import interface_adapter.recommendations.RecommendationsViewModel;
 import interface_adapter.retrieve_chat.RetrieveChatController;
 import interface_adapter.retrieve_chat.RetrieveChatPresenter;
 import interface_adapter.retrieve_chat.RetrieveChatViewModel;
+import interface_adapter.update_profile.UpdateProfilePresenter;
+import interface_adapter.update_profile.UpdateProfileViewModel;
 import use_case.account_creation.AccountCreationInputBoundary;
 import use_case.account_creation.AccountCreationInteractor;
 import use_case.account_creation.AccountCreationOutputBoundary;
@@ -34,12 +36,10 @@ import use_case.retrieve_chat.RetrieveChatInputBoundary;
 import use_case.retrieve_chat.RetrieveChatInteractor;
 import use_case.retrieve_chat.RetrieveChatOutputBoundary;
 import use_case.send_message.SendMessageInteractor;
-import views.MainView;
-import views.LoginView;
-import views.SignupView;
-import views.ChatView;
-import views.CreateChatView;
-import views.ViewManager;
+import use_case.update_profile.UpdateProfileInputBoundary;
+import use_case.update_profile.UpdateProfileInteractor;
+import use_case.update_profile.UpdateProfileOutputBoundary;
+import views.*;
 import interface_adapter.send_message.SendMessageController;
 import interface_adapter.send_message.SendMessagePresenter;
 import interface_adapter.send_message.SendMessageViewModel;
@@ -66,6 +66,7 @@ public class Main {
         LoginViewModel loginViewModel = new LoginViewModel();
         SignupViewModel signupViewModel = new SignupViewModel();
         CreateChatViewModel createChatViewModel = new CreateChatViewModel();
+        UpdateProfileViewModel updateProfileViewModel = new UpdateProfileViewModel();
 
         MongoConnection mongoConnection = new MongoConnection();
 
@@ -107,8 +108,16 @@ public class Main {
         CreateChatView createChatView = CreateChatViewFactory.create(viewModelManager, createChatViewModel, makeChatInputBoundary);
         views.add(createChatView, CreateChatView.viewName);
 
+        UpdateProfileOutputBoundary updateProfilePresenter = new UpdateProfilePresenter(updateProfileViewModel, viewModelManager);
+        UpdateProfileInputBoundary updateProfileInputBoundary = new UpdateProfileInteractor(userDataAccessObject, updateProfilePresenter);
+        UpdateProfileView updateProfileView = UpdateProfileViewFactory.create(viewModelManager, updateProfileViewModel, updateProfileInputBoundary);
+        views.add(updateProfileView, UpdateProfileView.viewName);
+
+
         viewModelManager.setActiveView(loginView.viewName);
         viewModelManager.firePropertyChanged();
+
+
 
         application.pack();
         application.setVisible(true);
