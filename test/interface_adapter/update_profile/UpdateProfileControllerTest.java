@@ -20,7 +20,6 @@ class UpdateProfileControllerTest {
 
     private UpdateProfileController updateProfileController;
     private UpdateProfileInputBoundary mockUpdateProfileInputBoundary;
-    private UpdateProfileOutputBoundary mockUpdateProfileOutputBoundary;
 
     /**
      * Sets up the test environment before each test method.
@@ -28,7 +27,6 @@ class UpdateProfileControllerTest {
     @BeforeEach
     void setUp() {
         mockUpdateProfileInputBoundary = Mockito.mock(UpdateProfileInputBoundary.class);
-        mockUpdateProfileOutputBoundary = Mockito.mock(UpdateProfileOutputBoundary.class);
         updateProfileController = new UpdateProfileController(mockUpdateProfileInputBoundary);
     }
 
@@ -38,16 +36,16 @@ class UpdateProfileControllerTest {
      */
     @Test
     void testUpdate() {
-        String username = "Jasmine";
-        String password = "newPassword";
         String currentUsername = "jasmine";
         String currentPassword = "currentPassword";
+        String username = "Jasmine";
+        String password = "newPassword";
         String bio = "(Demo)";
         Integer age = 21;
         String programOfStudy = "Computer Science";
         ArgumentCaptor<UpdateProfileInputData> captor = ArgumentCaptor.forClass(UpdateProfileInputData.class);
 
-        updateProfileController.update(username, password, currentUsername, currentPassword, bio, age, programOfStudy,
+        updateProfileController.update(currentUsername, currentPassword, username, password, bio, age, programOfStudy,
                 Arrays.asList("Reading", "Running"));
 
         verify(mockUpdateProfileInputBoundary).execute(captor.capture());

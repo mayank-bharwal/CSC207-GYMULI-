@@ -9,6 +9,7 @@ import interface_adapter.ViewModelManager;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * This class tests the functionality of the UpdateProfilePresenter class.
@@ -35,20 +36,20 @@ class UpdateProfilePresenterTest {
     @Test
     void testPrepareSuccessView() {
         UpdateProfileOutputData outputData = new UpdateProfileOutputData("Jasmine", "password",
-                "(Demo)", "Computer Science", 21, Arrays.asList("Reading", "Running"),
-                false);
+                "(Demo)", "Computer Science", 21, Arrays.asList("Reading", "Running"), false);
+
+        // Create a mock UpdateProfileState
+        UpdateProfileState mockState = Mockito.mock(UpdateProfileState.class);
+        when(mockUpdateProfileViewModel.getState()).thenReturn(mockState);
 
         updateProfilePresenter.prepareSuccessView(outputData);
 
-        verify(mockUpdateProfileViewModel).setUsername(outputData.getUsername());
-        verify(mockUpdateProfileViewModel).setBio(outputData.getBio());
-        verify(mockUpdateProfileViewModel).setAge(outputData.getAge());
-        verify(mockUpdateProfileViewModel).setProgramOfStudy(outputData.getProgramOfStudy());
-        verify(mockUpdateProfileViewModel).setInterests(outputData.getInterests());
-        verify(mockUpdateProfileViewModel).setError(null);
-        verify(mockUpdateProfileViewModel).firePropertyChanged("updateSuccess", null,
-                "Profile successfully updated!");
-        verify(mockViewModelManager).firePropertyChanged();
+        verify(mockState).setUsername(outputData.getUsername());
+        verify(mockState).setError(null);
+        verify(mockUpdateProfileViewModel).setState(mockState);
+        verify(mockUpdateProfileViewModel).firePropertyChanged();
+        verify(mockViewModelManager, Mockito.times(2)).firePropertyChanged();
+        verify(mockUpdateProfileViewModel).firePropertyChanged("updateSuccess", null, "Profile successfully updated!");
     }
 
     /**
@@ -59,9 +60,13 @@ class UpdateProfilePresenterTest {
     void testPrepareFailView() {
         String error = "An error occurred";
 
+        UpdateProfileState mockState = Mockito.mock(UpdateProfileState.class);
+        when(mockUpdateProfileViewModel.getState()).thenReturn(mockState);
+
         updateProfilePresenter.prepareFailView(error);
 
-        verify(mockUpdateProfileViewModel).setError(error);
-        verify(mockUpdateProfileViewModel).firePropertyChanged("updateError", null, error);
+        verify(mockState).setError(error);
+        verify(mockUpdateProfileViewModel).setState(mockState);
+        verify(mockUpdateProfileViewModel).firePropertyChanged("generalError", null, error);
     }
 }

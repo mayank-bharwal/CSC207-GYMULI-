@@ -2,6 +2,7 @@ package interface_adapter.retrieve_chat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import use_case.retrieve_chat.RetrieveChatOutputData;
 import entity.Message;
@@ -11,13 +12,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * This class tests the functionality of the RetrieveChatPresenter class.
  */
-class RetrieveChatPresenterTest {
+public class RetrieveChatPresenterTest {
     private RetrieveChatPresenter retrieveChatPresenter;
     private RetrieveChatViewModel mockRetrieveChatViewModel;
 
@@ -49,13 +50,14 @@ class RetrieveChatPresenterTest {
 
         retrieveChatPresenter.prepareSuccessView(chatInfo);
 
-        RetrieveChatState expectedState = new RetrieveChatState();
-        expectedState.setChatName(chatInfo.getChatName());
-        expectedState.setUsers(chatInfo.getUsers());
-        expectedState.setNoOfMembers(chatInfo.getNoOfmembers());
-        expectedState.setAllMessages(chatInfo.getAllMessages());
+        ArgumentCaptor<RetrieveChatState> captor = ArgumentCaptor.forClass(RetrieveChatState.class);
+        verify(mockRetrieveChatViewModel).setState(captor.capture());
+        RetrieveChatState capturedState = captor.getValue();
 
-        verify(mockRetrieveChatViewModel).setState(expectedState);
+        assertEquals(chatInfo.getChatName(), capturedState.getChatName());
+        assertEquals(chatInfo.getUsers(), capturedState.getUsers());
+        assertEquals(chatInfo.getNoOfmembers(), capturedState.getNoOfMembers());
+        assertEquals(chatInfo.getAllMessages(), capturedState.getAllMessages());
     }
 
     /**
@@ -68,9 +70,10 @@ class RetrieveChatPresenterTest {
 
         retrieveChatPresenter.prepareFailView(error);
 
-        RetrieveChatState expectedState = new RetrieveChatState();
-        expectedState.setError(error);
+        ArgumentCaptor<RetrieveChatState> captor = ArgumentCaptor.forClass(RetrieveChatState.class);
+        verify(mockRetrieveChatViewModel).setState(captor.capture());
+        RetrieveChatState capturedState = captor.getValue();
 
-        verify(mockRetrieveChatViewModel).setState(expectedState);
+        assertEquals(error, capturedState.getError());
     }
 }
