@@ -48,7 +48,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
+/**
+ * Main application class for GYMULI.
+ */
+
 public class Main {
+
+    /**
+     * Entry point of the application.
+     *
+     * @param args Command line arguments.
+     */
+
     public static void main(String[] args) {
 
         JFrame application = new JFrame("GYMULI");
@@ -68,7 +79,7 @@ public class Main {
         CreateChatViewModel createChatViewModel = new CreateChatViewModel();
         UpdateProfileViewModel updateProfileViewModel = new UpdateProfileViewModel();
 
-        MongoConnection mongoConnection = new MongoConnection();
+        MongoConnection mongoConnection = new MongoConnection(); //added MongoConnection
 
         UserFactory userFactory = new CommonUserFactory();
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, new HashMap<>(), mongoConnection);

@@ -46,6 +46,14 @@ public class UpdateProfileView  extends JPanel implements ActionListener, Proper
     private final JButton clearButton;
     private final JButton backButton;
 
+    /**
+     * Constructs an UpdateProfileView.
+     *
+     * @param updateProfileViewModel The view model for the update profile view.
+     * @param Controller             The controller for updating profiles.
+     * @param viewModelManager       The manager for the view models.
+     */
+
     public UpdateProfileView(UpdateProfileViewModel updateProfileViewModel, UpdateProfileController Controller,
                              ViewModelManager viewModelManager){
         this.updateProfileViewModel = updateProfileViewModel;
@@ -271,6 +279,18 @@ public class UpdateProfileView  extends JPanel implements ActionListener, Proper
 
     }
 
+    /**
+     * Adds a labeled field to the given panel.
+     *
+     * @param panel      The panel to add the field to.
+     * @param gbc        The GridBagConstraints for the layout.
+     * @param label      The label for the field.
+     * @param field      The field component.
+     * @param errorLabel The error label for the field.
+     * @param y          The y position in the layout.
+     * @param size       The preferred size of the field.
+     */
+
     private void addField(JPanel panel, GridBagConstraints gbc, String label, JComponent field, JLabel errorLabel, int y, Dimension size) {
         gbc.gridx = 0;
         gbc.gridy = y;
@@ -299,6 +319,9 @@ public class UpdateProfileView  extends JPanel implements ActionListener, Proper
 
     }
 
+    /**
+     * Clears all input fields.
+     */
 
     private void clearFields() {
         usernameField.setText("");
