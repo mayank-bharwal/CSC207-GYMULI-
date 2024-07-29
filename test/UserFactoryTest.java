@@ -73,6 +73,41 @@ public class UserFactoryTest {
         when(userFactory.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(),
                 Mockito.eq(""), Mockito.anyList(), Mockito.anyList(), Mockito.anyList(), Mockito.any(LocalDateTime.class)))
                 .thenThrow(new IllegalArgumentException("Program of Study cannot be empty"));
+
+        when(userFactory.createUser(Mockito.eq(" "), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(),
+                Mockito.anyString(), Mockito.anyList(), Mockito.anyList(), Mockito.anyList(),
+                Mockito.any(LocalDateTime.class)))
+                .thenThrow(new IllegalArgumentException("Username cannot be whitespace"));
+
+        when(userFactory.createUser(Mockito.anyString(), Mockito.eq(" "), Mockito.anyString(), Mockito.anyInt(),
+                Mockito.anyString(), Mockito.anyList(), Mockito.anyList(), Mockito.anyList(),
+                Mockito.any(LocalDateTime.class)))
+                .thenThrow(new IllegalArgumentException("Password cannot be whitespace"));
+
+        when(userFactory.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.eq(" "), Mockito.anyInt(),
+                Mockito.anyString(), Mockito.anyList(), Mockito.anyList(), Mockito.anyList(),
+                Mockito.any(LocalDateTime.class)))
+                .thenThrow(new IllegalArgumentException("Bio cannot be whitespace"));
+
+        when(userFactory.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(),
+                Mockito.eq(" "), Mockito.anyList(), Mockito.anyList(), Mockito.anyList(),
+                Mockito.any(LocalDateTime.class)))
+                .thenThrow(new IllegalArgumentException("Program of Study cannot be whitespace"));
+
+        when(userFactory.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(),
+                Mockito.anyString(), Mockito.eq(Collections.emptyList()), Mockito.anyList(), Mockito.anyList(),
+                Mockito.any(LocalDateTime.class)))
+                .thenThrow(new IllegalArgumentException("Interests cannot be empty"));
+
+        when(userFactory.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(),
+                Mockito.anyString(), Mockito.anyList(), Mockito.eq(Collections.emptyList()), Mockito.anyList(),
+                Mockito.any(LocalDateTime.class)))
+                .thenThrow(new IllegalArgumentException("Friends cannot be empty"));
+
+        when(userFactory.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(),
+                Mockito.anyString(), Mockito.eq(Collections.emptyList()), Mockito.eq(Collections.emptyList()),
+                Mockito.anyList(), Mockito.any(LocalDateTime.class)))
+                .thenThrow(new IllegalArgumentException("Interests and Friends cannot be empty"));
     }
 
     @Test
@@ -199,22 +234,22 @@ public class UserFactoryTest {
     @Test
     void testCreateUserWithWhitespaceStrings() {
         assertThrows(IllegalArgumentException.class, () -> {
-            userFactory.createUser(" ", "password", "(Demo)", 21, "Computer Science",
+            userFactory.createUser(" ", "password", "(Demo)", age, "Computer Science",
                     interests, friends, chats, date);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
-            userFactory.createUser("Jasmine", " ", "(Demo)", 21, "Computer Science",
+            userFactory.createUser("Jasmine", " ", "(Demo)", age, "Computer Science",
                     interests, friends, chats, date);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
-            userFactory.createUser("Jasmine", "password", " ", 21, "Computer Science",
+            userFactory.createUser("Jasmine", "password", " ", age, "Computer Science",
                     interests, friends, chats, date);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
-            userFactory.createUser("Jasmine", "password", "(Demo)", 21, " ",
+            userFactory.createUser("Jasmine", "password", "(Demo)", age, " ",
                     interests, friends, chats, date);
         });
     }
