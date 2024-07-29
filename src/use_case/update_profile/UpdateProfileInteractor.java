@@ -25,6 +25,8 @@ public class UpdateProfileInteractor implements UpdateProfileInputBoundary {
     @Override
     public void execute(UpdateProfileInputData updateProfileInputData) {
 
+        System.out.println("interactor called");
+
         String currentUsername = updateProfileInputData.getCurrentUsername();
         String currentPassword = updateProfileInputData.getCurrentPassword();
         String username = updateProfileInputData.getUsername();
@@ -36,8 +38,10 @@ public class UpdateProfileInteractor implements UpdateProfileInputBoundary {
 
         if (!updateProfileUserDataAccessInterface.userExists(currentUsername) ) {
             updateProfileOutputBoundary.prepareFailView("Wrong Username");
+
         } else if (!Objects.equals(updateProfileUserDataAccessInterface.getUser(currentUsername).getPassword(), currentPassword)) {
             updateProfileOutputBoundary.prepareFailView("Wrong Password");
+
         }
 
         else if (username == null || username.trim().isEmpty() ||
@@ -50,8 +54,10 @@ public class UpdateProfileInteractor implements UpdateProfileInputBoundary {
             // Handle the case where one or more fields are empty or null
             updateProfileOutputBoundary.prepareFailView("All fields must be filled.");
 
+
         } else if(updateProfileUserDataAccessInterface.userExists(username) && !username.equals(currentUsername)) {
             updateProfileOutputBoundary.prepareFailView("Username taken.");
+
         }
         else {
             // Proceed with the rest of your logic if all fields are valid
@@ -59,6 +65,7 @@ public class UpdateProfileInteractor implements UpdateProfileInputBoundary {
                     username,password,bio,programOfStudy,age,interests,false
             );
             updateProfileUserDataAccessInterface.updateUser(currentUsername ,username, password, bio, programOfStudy, age, interests);
+            System.out.println(" success");
             updateProfileOutputBoundary.prepareSuccessView(updateProfileOutputData);
 
         }

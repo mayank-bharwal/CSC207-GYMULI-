@@ -1,15 +1,15 @@
 package interface_adapter.update_profile;
 
 import interface_adapter.ViewModel;
-import org.springframework.data.mongodb.core.query.Update;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.List;
-import javax.swing.*;
 
 public class UpdateProfileViewModel extends ViewModel {
-    UpdateProfileState updateProfileState = new UpdateProfileState();
+    UpdateProfileState state = new UpdateProfileState();
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
     public static final String CLEAR_BUTTON_LABEL = "Clear";
     public static final String TITLE_LABEL = "Update Profile";
     public static final String CURRENT_USERNAME_LABEL = "Enter current username";
@@ -26,18 +26,18 @@ public class UpdateProfileViewModel extends ViewModel {
     public static final String UPDATE_BUTTON_LABEL = "Update";
     public static final String CANCEL_UPDATE_BUTTON_LABEL = "Cancel";
 
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public UpdateProfileState getState() {
-        return updateProfileState;
+        return state;
     }
 
-    public void setUpdateProfileState(UpdateProfileState updateProfileState) {
-        this.updateProfileState = updateProfileState;
+    public void setState(UpdateProfileState state) {
+        this.state = state;
     }
+
 
     public void firePropertyChanged() {
-        support.firePropertyChange("state", null, this.updateProfileState);
+        support.firePropertyChange("state", null, this.state);
     }
 
     public void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
@@ -51,51 +51,6 @@ public class UpdateProfileViewModel extends ViewModel {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         support.removePropertyChangeListener(listener);
     }
-    //the following is for testing
 
-    private String currentUsername;
-    private String currentPassword;
-    private String username;
-    private String password;
-    private Integer age;
-    private String bio;
-    private String programOfStudy;
-    private List<String> interests;
-    private String error;
 
-    public void setUsername(String username) {
-        String oldUsername = this.username;
-        this.username = username;
-        firePropertyChanged("username", oldUsername, username);
-    }
-
-    public void setBio(String bio) {
-        String oldBio = this.bio;
-        this.bio = bio;
-        firePropertyChanged("bio", oldBio, bio);
-    }
-
-    public void setAge(Integer age) {
-        Integer oldAge = this.age;
-        this.age = age;
-        firePropertyChanged("age", oldAge, age);
-    }
-
-    public void setProgramOfStudy(String programOfStudy) {
-        String oldProgramOfStudy = this.programOfStudy;
-        this.programOfStudy = programOfStudy;
-        firePropertyChanged("programOfStudy", oldProgramOfStudy, programOfStudy);
-    }
-
-    public void setInterests(List<String> interests) {
-        List<String> oldInterests = this.interests;
-        this.interests = interests;
-        firePropertyChanged("interests", oldInterests, interests);
-    }
-
-    public void setError(String error) {
-        String oldError = this.error;
-        this.error = error;
-        firePropertyChanged("error", oldError, error);
-    }
 }

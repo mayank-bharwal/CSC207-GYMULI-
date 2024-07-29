@@ -38,6 +38,7 @@ import use_case.retrieve_chat.RetrieveChatOutputBoundary;
 import use_case.send_message.SendMessageInteractor;
 import use_case.update_profile.UpdateProfileInputBoundary;
 import use_case.update_profile.UpdateProfileInteractor;
+import use_case.update_profile.UpdateProfileOutputBoundary;
 import views.*;
 import interface_adapter.send_message.SendMessageController;
 import interface_adapter.send_message.SendMessagePresenter;
@@ -107,7 +108,7 @@ public class Main {
         CreateChatView createChatView = CreateChatViewFactory.create(viewModelManager, createChatViewModel, makeChatInputBoundary);
         views.add(createChatView, CreateChatView.viewName);
 
-        UpdateProfilePresenter updateProfilePresenter = new UpdateProfilePresenter(updateProfileViewModel, viewModelManager);
+        UpdateProfileOutputBoundary updateProfilePresenter = new UpdateProfilePresenter(updateProfileViewModel, viewModelManager);
         UpdateProfileInputBoundary updateProfileInputBoundary = new UpdateProfileInteractor(userDataAccessObject, updateProfilePresenter);
         UpdateProfileView updateProfileView = UpdateProfileViewFactory.create(viewModelManager, updateProfileViewModel, updateProfileInputBoundary);
         views.add(updateProfileView, UpdateProfileView.viewName);

@@ -8,12 +8,11 @@ public class UpdateProfileState {
     private String password = "";
     private String bio = "";
     private Integer age = null;
+    private String programOfStudy;
     private String interest1 = "";
     private String interest2 = "";
     private String interest3 = "";
-    private String currentusernameError = null;
-    private String currentpasswordError = null;
-    private String usernameError = null;
+    private String Error = null;
 
     public UpdateProfileState(UpdateProfileState copy){
 
@@ -22,13 +21,12 @@ public class UpdateProfileState {
         username = copy.username;
         password = copy.password;
         bio = copy.bio;
+        programOfStudy = copy.programOfStudy;
         age = copy.age;
         interest1 = copy.interest1;
         interest2 = copy.interest2;
         interest3 = copy.interest3;
-        currentusernameError = copy.currentusernameError;
-        currentpasswordError = copy.currentpasswordError;
-        usernameError = copy.usernameError;
+        Error = copy.Error;
 
     }
 
@@ -106,28 +104,20 @@ public class UpdateProfileState {
         this.interest3 = interest3;
     }
 
-    public String getCurrentusernameError() {
-        return currentusernameError;
+    public String getProgramOfStudy() {
+        return programOfStudy;
     }
 
-    public void setCurrentusernameError(String currentusernameError) {
-        this.currentusernameError = currentusernameError;
+    public void setProgramOfStudy(String programOfStudy) {
+        this.programOfStudy = programOfStudy;
     }
 
-    public String getCurrentpasswordError() {
-        return currentpasswordError;
+    public String getError() {
+        return Error;
     }
 
-    public void setCurrentpasswordError(String currentpasswordError) {
-        this.currentpasswordError = currentpasswordError;
-    }
-
-    public String getUsernameError() {
-        return usernameError;
-    }
-
-    public void setUsernameError(String usernameError) {
-        this.usernameError = usernameError;
+    public void setError(String Error) {
+        this.Error = Error;
     }
 }
 
