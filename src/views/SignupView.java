@@ -15,6 +15,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
+/**
+ * A view for signing up new users.
+ */
+
 public class SignupView extends JPanel implements ActionListener, PropertyChangeListener {
     public static final String viewName = "sign up";
 
@@ -25,6 +29,14 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final JButton signUp;
     private final JButton clear;
     private final JButton login;
+
+    /**
+     * Constructs a SignupView.
+     *
+     * @param controller The controller for the signup process.
+     * @param signupViewModel The view model for the signup view.
+     * @param viewModelManager The manager for the view models.
+     */
 
     public SignupView(SignupController controller, SignupViewModel signupViewModel, ViewModelManager viewModelManager) {
         this.signupController = controller;

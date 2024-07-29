@@ -12,6 +12,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * A view that represents the main user interface after a user has logged in.
+ * It displays the current user, a list of available chats, and provides options
+ * to edit the profile or create a new chat.
+ */
+
 
 public class MainView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "MainView";
@@ -21,6 +27,13 @@ public class MainView extends JPanel implements PropertyChangeListener {
     private final JLabel currentUserLabel;
     private final JPanel chatListPanel;
 
+
+    /**
+     * Constructs a MainView with the specified ViewModelManager and RetrieveChatController.
+     *
+     * @param viewModelManager the manager that handles view models and manages state
+     * @param retrieveChatController the controller responsible for retrieving chat data
+     */
     public MainView(ViewModelManager viewModelManager, RetrieveChatController retrieveChatController) {
         this.viewModelManager = viewModelManager;
         this.viewModelManager.addPropertyChangeListener(this);
@@ -61,11 +74,21 @@ public class MainView extends JPanel implements PropertyChangeListener {
         }
     }
 
+    /**
+     * Updates the display of the current user.
+     * Also triggers an update of the chat list.
+     */
+
     private void updateCurrentUser() {
         User currentUser = viewModelManager.getCurrentUser();
         currentUserLabel.setText(currentUser != null ? currentUser.getUsername() : "Not logged in");
         updateChats();
     }
+
+    /**
+     * Updates the list of chats displayed in the main view.
+     * Clears the current list and repopulates it based on the current user's chats.
+     */
 
     private void updateChats() {
         chatListPanel.removeAll();
