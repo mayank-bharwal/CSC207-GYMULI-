@@ -92,7 +92,18 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 1;
         JTextField programOfStudyField = signupViewModel.programOfStudyInputField;
+
+
+
         formPanel.add(programOfStudyField, gbc);
+
+
+
+
+
+
+
+
 
         signupViewModel.programOfStudyInputField.addKeyListener(new KeyListener() {
             @Override
