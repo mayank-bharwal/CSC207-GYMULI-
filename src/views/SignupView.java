@@ -92,14 +92,29 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 1;
         JTextField programOfStudyField = signupViewModel.programOfStudyInputField;
-
-
-
         formPanel.add(programOfStudyField, gbc);
 
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        JLabel bioLabel = new JLabel("Bio");
+        formPanel.add(bioLabel, gbc);
 
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 1;
+        JTextArea bioTextArea = signupViewModel.bioInputField;
+        formPanel.add(bioTextArea, gbc);
 
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        JLabel ageLabel = new JLabel("Age:");
+        formPanel.add(ageLabel, gbc);
 
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 1;
+        JTextField ageField = signupViewModel.ageInputField;
+        formPanel.add(ageField, gbc);
 
 
 
@@ -123,7 +138,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
         gbc.anchor = GridBagConstraints.EAST;
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         JLabel interest1Label = new JLabel("Interest 1:");
         formPanel.add(interest1Label, gbc);
 
@@ -132,9 +147,11 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         JTextField interest1Field = signupViewModel.interest1InputField;
         formPanel.add(interest1Field, gbc);
 
+
+
         gbc.anchor = GridBagConstraints.EAST;
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 8;
         JLabel interest2Label = new JLabel("Interest 2:");
         formPanel.add(interest2Label, gbc);
 
@@ -145,7 +162,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
         gbc.anchor = GridBagConstraints.EAST;
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 9;
         JLabel interest3Label = new JLabel("Interest 3:");
         formPanel.add(interest3Label, gbc);
 
@@ -156,7 +173,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;
-        gbc.gridy = 8;
+        gbc.gridy = 10;
         gbc.gridwidth = 2;
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);

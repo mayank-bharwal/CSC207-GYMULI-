@@ -17,6 +17,9 @@ public class SignupViewModel extends ViewModel {
     public static final String INTEREST1_LABEL = "Interest 1";
     public static final String INTEREST2_LABEL = "Interest 2";
     public static final String INTEREST3_LABEL = "Interest 3";
+    public static final String BIO_LABEL = "Bio";
+    public static final String AGE_LABEL = "Age";
+
 
     public static final String SIGNUP_BUTTON_LABEL = "Sign up";
 
@@ -30,6 +33,8 @@ public class SignupViewModel extends ViewModel {
     public final JTextField interest1InputField = new JTextField(20);
     public final JTextField interest2InputField = new JTextField(20);
     public final JTextField interest3InputField = new JTextField(20);
+    public final JTextArea bioInputField = new JTextArea(3, 20);
+    public final JTextField ageInputField = new JTextField( 20);
 
     public final JLabel titleLabel = new JLabel(TITLE_LABEL);
     public final JLabel usernameLabel = new JLabel(USERNAME_LABEL);
