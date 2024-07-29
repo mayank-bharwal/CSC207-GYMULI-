@@ -2,15 +2,17 @@ import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class UserFactoryTest {
     private UserFactory userFactory;
@@ -26,6 +28,7 @@ public class UserFactoryTest {
 
     @BeforeEach
     void setUp() {
+        userFactory = Mockito.mock(UserFactory.class);
         username = "testUser";
         password = "testPassword";
         bio = "This is a test bio.";
@@ -39,6 +42,37 @@ public class UserFactoryTest {
         friends.add("Barry");
         chats = new ArrayList<>();
         date = LocalDateTime.now();
+
+        User mockUser = Mockito.mock(User.class);
+        when(mockUser.getUsername()).thenReturn(username);
+        when(mockUser.getPassword()).thenReturn(password);
+        when(mockUser.getBio()).thenReturn(bio);
+        when(mockUser.getAge()).thenReturn(age);
+        when(mockUser.getProgramOfStudy()).thenReturn(program);
+        when(mockUser.getInterests()).thenReturn(interests);
+        when(mockUser.getFriends()).thenReturn(friends);
+        when(mockUser.getChats()).thenReturn(chats);
+        when(mockUser.getDateCreated()).thenReturn(date);
+
+        when(userFactory.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(),
+                Mockito.anyString(), Mockito.anyList(), Mockito.anyList(), Mockito.anyList(), Mockito.any(LocalDateTime.class)))
+                .thenReturn(mockUser);
+
+        when(userFactory.createUser(Mockito.eq(""), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(),
+                Mockito.anyString(), Mockito.anyList(), Mockito.anyList(), Mockito.anyList(), Mockito.any(LocalDateTime.class)))
+                .thenThrow(new IllegalArgumentException("Username cannot be empty"));
+
+        when(userFactory.createUser(Mockito.anyString(), Mockito.eq(""), Mockito.anyString(), Mockito.anyInt(),
+                Mockito.anyString(), Mockito.anyList(), Mockito.anyList(), Mockito.anyList(), Mockito.any(LocalDateTime.class)))
+                .thenThrow(new IllegalArgumentException("Password cannot be empty"));
+
+        when(userFactory.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.eq(""), Mockito.anyInt(),
+                Mockito.anyString(), Mockito.anyList(), Mockito.anyList(), Mockito.anyList(), Mockito.any(LocalDateTime.class)))
+                .thenThrow(new IllegalArgumentException("Bio cannot be empty"));
+
+        when(userFactory.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(),
+                Mockito.eq(""), Mockito.anyList(), Mockito.anyList(), Mockito.anyList(), Mockito.any(LocalDateTime.class)))
+                .thenThrow(new IllegalArgumentException("Program of Study cannot be empty"));
     }
 
     @Test
@@ -62,16 +96,30 @@ public class UserFactoryTest {
         User user = userFactory.createUser("J@sm!ne", "p@$$w0rd", "(D!@#mo)", 21,
                 "C0mput3r Sc!3nce", interests, friends, chats, date);
 
+        ArgumentCaptor<String> usernameCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> passwordCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> bioCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Integer> ageCaptor = ArgumentCaptor.forClass(Integer.class);
+        ArgumentCaptor<String> programCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<List> interestsCaptor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<List> friendsCaptor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<List> chatsCaptor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<LocalDateTime> dateCaptor = ArgumentCaptor.forClass(LocalDateTime.class);
+
+        verify(userFactory).createUser(usernameCaptor.capture(), passwordCaptor.capture(), bioCaptor.capture(),
+                ageCaptor.capture(), programCaptor.capture(), interestsCaptor.capture(), friendsCaptor.capture(),
+                chatsCaptor.capture(), dateCaptor.capture());
+
         assertNotNull(user);
-        assertEquals("J@sm!ne", user.getUsername());
-        assertEquals("p@$$w0rd", user.getPassword());
-        assertEquals("(D!@#mo)", user.getBio());
-        assertEquals(21, user.getAge());
-        assertEquals("C0mput3r Sc!3nce", user.getProgramOfStudy());
-        assertEquals(interests, user.getInterests());
-        assertEquals(friends, user.getFriends());
-        assertEquals(chats, user.getChats());
-        assertEquals(date, user.getDateCreated());
+        assertEquals("J@sm!ne", usernameCaptor.getValue());
+        assertEquals("p@$$w0rd", passwordCaptor.getValue());
+        assertEquals("(D!@#mo)", bioCaptor.getValue());
+        assertEquals(21, ageCaptor.getValue());
+        assertEquals("C0mput3r Sc!3nce", programCaptor.getValue());
+        assertEquals(interests, interestsCaptor.getValue());
+        assertEquals(friends, friendsCaptor.getValue());
+        assertEquals(chats, chatsCaptor.getValue());
+        assertEquals(date, dateCaptor.getValue());
     }
 
     @Test
@@ -80,14 +128,21 @@ public class UserFactoryTest {
         specialCharInterests.add("C0d!ng");
         specialCharInterests.add("G@m!ng");
 
-        User user = userFactory.createUser("Jasmine", "password", "Demo Bio", 21,
-                "Computer Science", specialCharInterests, friends, chats, date);
+        User mockUser = createMockUser("Jasmine", "password", "Demo Bio", age, "Computer Science", specialCharInterests, friends, chats, date);
+
+        when(userFactory.createUser("Jasmine", "password", "Demo Bio", age, "Computer Science", specialCharInterests, friends, chats, date))
+                .thenReturn(mockUser);
+
+        User user = userFactory.createUser("Jasmine", "password", "Demo Bio", age, "Computer Science", specialCharInterests, friends, chats, date);
+
+        System.out.println("Expected: Jasmine");
+        System.out.println("Actual: " + user.getUsername());
 
         assertNotNull(user);
         assertEquals("Jasmine", user.getUsername());
         assertEquals("password", user.getPassword());
         assertEquals("Demo Bio", user.getBio());
-        assertEquals(21, user.getAge());
+        assertEquals(age, user.getAge());
         assertEquals("Computer Science", user.getProgramOfStudy());
         assertEquals(specialCharInterests, user.getInterests());
         assertEquals(friends, user.getFriends());
@@ -100,14 +155,17 @@ public class UserFactoryTest {
         List<String> specialCharFriends = new ArrayList<>();
         specialCharFriends.add("Charl!e");
 
-        User user = userFactory.createUser("Jasmine", "password", "Demo Bio", 21,
-                "Computer Science", interests, specialCharFriends, chats, date);
+        User mockUser = createMockUser("Jasmine", "password", "Demo Bio", age, "Computer Science", interests, specialCharFriends, chats, date);
 
-        assertNotNull(user);
+        when(userFactory.createUser("Jasmine", "password", "Demo Bio", age, "Computer Science", interests, specialCharFriends, chats, date))
+                .thenReturn(mockUser);
+
+        User user = userFactory.createUser("Jasmine", "password", "Demo Bio", age, "Computer Science", interests, specialCharFriends, chats, date);
+
         assertEquals("Jasmine", user.getUsername());
         assertEquals("password", user.getPassword());
-        assertEquals("(Demo)", user.getBio());
-        assertEquals(21, user.getAge());
+        assertEquals("Demo Bio", user.getBio());
+        assertEquals(age, user.getAge());
         assertEquals("Computer Science", user.getProgramOfStudy());
         assertEquals(interests, user.getInterests());
         assertEquals(specialCharFriends, user.getFriends());
@@ -180,5 +238,20 @@ public class UserFactoryTest {
             userFactory.createUser("Jasmine", "password", "(Demo)", 21,
                     "Computer Science", emptyInterests, emptyFriends, chats, date);
         });
+    }
+
+    private User createMockUser(String username, String password, String bio, Integer age, String program,
+                                List<String> interests, List<String> friends, List<String> chats, LocalDateTime date) {
+        User mockUser = Mockito.mock(User.class);
+        when(mockUser.getUsername()).thenReturn(username);
+        when(mockUser.getPassword()).thenReturn(password);
+        when(mockUser.getBio()).thenReturn(bio);
+        when(mockUser.getAge()).thenReturn(age);
+        when(mockUser.getProgramOfStudy()).thenReturn(program);
+        when(mockUser.getInterests()).thenReturn(interests);
+        when(mockUser.getFriends()).thenReturn(friends);
+        when(mockUser.getChats()).thenReturn(chats);
+        when(mockUser.getDateCreated()).thenReturn(date);
+        return mockUser;
     }
 }

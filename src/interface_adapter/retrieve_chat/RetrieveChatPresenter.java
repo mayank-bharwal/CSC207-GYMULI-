@@ -31,6 +31,4 @@ public class RetrieveChatPresenter implements RetrieveChatOutputBoundary {
     public void presentChat(RetrieveChatOutputData outputData) {
         retrieveChatViewModel.presentChat(outputData);
     }
-
-
 }
