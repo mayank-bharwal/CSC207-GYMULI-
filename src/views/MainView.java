@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 public class MainView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "MainView";
 
@@ -29,15 +28,28 @@ public class MainView extends JPanel implements PropertyChangeListener {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
 
-        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        currentUserLabel = new JLabel();
-        headerPanel.add(new JLabel("Logged in as: "));
-        headerPanel.add(currentUserLabel);
-        headerPanel.add(Box.createHorizontalGlue());
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        JPanel userInfoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-        JButton editProfileButton =  new JButton("Edit Profile");
+        currentUserLabel = new JLabel();
+        userInfoPanel.add(new JLabel("Logged in as: "));
+        userInfoPanel.add(currentUserLabel);
+        userInfoPanel.add(Box.createHorizontalGlue());
+
+        JButton editProfileButton = new JButton("Edit Profile");
         editProfileButton.addActionListener(e -> viewModelManager.setActiveView(UpdateProfileView.viewName));
-        headerPanel.add(editProfileButton);
+        userInfoPanel.add(editProfileButton);
+
+        headerPanel.add(userInfoPanel, BorderLayout.EAST);
+
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.addActionListener(e -> {
+            viewModelManager.setActiveView(LoginView.viewName);
+        });
+
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        leftPanel.add(logoutButton);
+        headerPanel.add(leftPanel, BorderLayout.WEST);
 
         add(headerPanel, BorderLayout.NORTH);
 
@@ -91,5 +103,6 @@ public class MainView extends JPanel implements PropertyChangeListener {
         chatListPanel.repaint();
     }
 }
+
 
 
