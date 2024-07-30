@@ -120,8 +120,8 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         accounts.put(user.getUsername(), user);
 
-        //FacadeInterface Facade = new Facade();
-        //Facade.UpdateDB(user, accounts, mongoConnection);
+        FacadeInterface Facade = new Facade();
+        Facade.UpdateDB(user, accounts, mongoConnection);
 
     }
 
@@ -223,6 +223,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         user.setProgramOfStudy(programOfStudy);
 
         System.out.println("user updated");
+
     }
 
     /**
@@ -305,7 +306,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         //facade.UpdateDB(user, getMap(), mongoConnection);
 
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, getMap(), mongoConnection);
-        //RecommendationDataAccessObject dao = new RecommendationDataAccessObject();
 
         User user1 = userDataAccessObject.getUser("Alice");
         if (user1 != null) {
