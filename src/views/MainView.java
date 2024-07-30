@@ -68,6 +68,14 @@ public class MainView extends JPanel implements PropertyChangeListener {
         leftPanel.add(logoutButton);
         headerPanel.add(leftPanel, BorderLayout.WEST);
 
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.setPreferredSize(new Dimension(100, 30));
+        refreshButton.addActionListener(e -> updateChats());
+        JPanel refreshPanel = new JPanel();
+        refreshPanel.add(refreshButton);
+        headerPanel.add(refreshPanel, BorderLayout.CENTER);
+
+
         add(headerPanel, BorderLayout.NORTH);
 
         chatListPanel = new JPanel(new GridBagLayout());
@@ -108,6 +116,7 @@ public class MainView extends JPanel implements PropertyChangeListener {
 
     private void updateChats() {
         chatListPanel.removeAll();
+        System.out.println("update chat called");
         User currentUser = viewModelManager.getCurrentUser();
         if (currentUser != null) {
             List<String> chats = currentUser.getChats();
