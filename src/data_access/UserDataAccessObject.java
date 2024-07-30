@@ -120,8 +120,8 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         accounts.put(user.getUsername(), user);
 
-        FacadeInterface Facade = new Facade();
-        Facade.UpdateDB(user, accounts, mongoConnection);
+//        FacadeInterface Facade = new Facade();
+//        Facade.UpdateDB(user, accounts, mongoConnection);
 
     }
 
