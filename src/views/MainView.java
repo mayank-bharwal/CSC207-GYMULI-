@@ -19,9 +19,6 @@ import java.util.Set;
  * to edit the profile or create a new chat.
  */
 
-
-
-
 public class MainView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "MainView";
 
@@ -29,7 +26,6 @@ public class MainView extends JPanel implements PropertyChangeListener {
     private final RetrieveChatController retrieveChatController;
     private final JLabel currentUserLabel;
     private final JPanel chatListPanel;
-
 
     /**
      * Constructs a MainView with the specified ViewModelManager and RetrieveChatController.
@@ -53,9 +49,13 @@ public class MainView extends JPanel implements PropertyChangeListener {
         userInfoPanel.add(currentUserLabel);
         userInfoPanel.add(Box.createHorizontalGlue());
 
-        JButton editProfileButton = new JButton("Edit Profile");
-        editProfileButton.addActionListener(e -> viewModelManager.setActiveView(UpdateProfileView.viewName));
-        userInfoPanel.add(editProfileButton);
+        String imagePath = "images/profilepicdefault.png";
+        ImageIcon profileIcon = new ImageIcon(imagePath);
+
+        JButton profileIconButton = new JButton(profileIcon);
+        profileIconButton.setPreferredSize(new Dimension(50, 50));
+        profileIconButton.addActionListener(e -> viewModelManager.setActiveView(ProfileView.viewName));
+        userInfoPanel.add(profileIconButton);
 
         headerPanel.add(userInfoPanel, BorderLayout.EAST);
 
@@ -94,7 +94,6 @@ public class MainView extends JPanel implements PropertyChangeListener {
      * Updates the display of the current user.
      * Also triggers an update of the chat list.
      */
-
     private void updateCurrentUser() {
         User currentUser = viewModelManager.getCurrentUser();
         currentUserLabel.setText(currentUser != null ? currentUser.getUsername() : "Not logged in");
@@ -105,7 +104,6 @@ public class MainView extends JPanel implements PropertyChangeListener {
      * Updates the list of chats displayed in the main view.
      * Clears the current list and repopulates it based on the current user's chats.
      */
-
     private void updateChats() {
         chatListPanel.removeAll();
         User currentUser = viewModelManager.getCurrentUser();
@@ -130,6 +128,4 @@ public class MainView extends JPanel implements PropertyChangeListener {
         chatListPanel.repaint();
     }
 }
-
-
 
