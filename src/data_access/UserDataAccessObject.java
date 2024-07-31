@@ -118,8 +118,8 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
-        FacadeInterface Facade = new Facade();
-        Facade.UpdateDB(user, accounts, mongoConnection);
+        //FacadeInterface Facade = new Facade();
+        //Facade.UpdateDB(user, accounts, mongoConnection);
 
         accounts.put(user.getUsername(), user);
     }
