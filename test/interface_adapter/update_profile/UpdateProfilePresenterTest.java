@@ -38,7 +38,6 @@ class UpdateProfilePresenterTest {
         UpdateProfileOutputData outputData = new UpdateProfileOutputData("Jasmine", "password",
                 "(Demo)", "Computer Science", 21, Arrays.asList("Reading", "Running"), false);
 
-        // Create a mock UpdateProfileState
         UpdateProfileState mockState = Mockito.mock(UpdateProfileState.class);
         when(mockUpdateProfileViewModel.getState()).thenReturn(mockState);
 

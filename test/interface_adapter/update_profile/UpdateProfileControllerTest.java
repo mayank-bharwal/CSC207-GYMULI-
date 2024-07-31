@@ -61,3 +61,4 @@ class UpdateProfileControllerTest {
         assertEquals(Arrays.asList("Reading", "Running"), capturedInputData.getInterests());
     }
 }
+//
