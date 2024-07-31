@@ -14,6 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Test class for the UserFactory interface.
+ */
 public class UserFactoryTest {
     private UserFactory userFactory;
     private String username;
@@ -26,6 +29,9 @@ public class UserFactoryTest {
     private List<String> chats;
     private LocalDateTime date;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         userFactory = Mockito.mock(UserFactory.class);
@@ -110,6 +116,9 @@ public class UserFactoryTest {
                 .thenThrow(new IllegalArgumentException("Interests and Friends cannot be empty"));
     }
 
+    /**
+     * Tests the creation of a user with valid inputs.
+     */
     @Test
     void testCreateUser() {
         User user = userFactory.createUser(username, password, bio, age, program, interests, friends, chats, date);
@@ -126,6 +135,9 @@ public class UserFactoryTest {
         assertEquals(date, user.getDateCreated());
     }
 
+    /**
+     * Tests the creation of a user with special characters in the username, password, and bio.
+     */
     @Test
     void testCreateUserWithSpecialCharacters() {
         User user = userFactory.createUser("J@sm!ne", "p@$$w0rd", "(D!@#mo)", 21,
@@ -157,6 +169,9 @@ public class UserFactoryTest {
         assertEquals(date, dateCaptor.getValue());
     }
 
+    /**
+     * Tests the creation of a user with special characters in the interests list.
+     */
     @Test
     void testCreateUserWithSpecialCharacterInterests() {
         List<String> specialCharInterests = new ArrayList<>();
@@ -185,6 +200,9 @@ public class UserFactoryTest {
         assertEquals(date, user.getDateCreated());
     }
 
+    /**
+     * Tests the creation of a user with special characters in the friends list.
+     */
     @Test
     void testCreateUserWithSpecialCharacterFriends() {
         List<String> specialCharFriends = new ArrayList<>();
@@ -208,6 +226,9 @@ public class UserFactoryTest {
         assertEquals(date, user.getDateCreated());
     }
 
+    /**
+     * Tests the creation of a user with empty strings for various fields.
+     */
     @Test
     void testCreateUserWithEmptyStrings() {
         assertThrows(IllegalArgumentException.class, () -> {
@@ -231,6 +252,9 @@ public class UserFactoryTest {
         });
     }
 
+    /**
+     * Tests the creation of a user with whitespace strings for various fields.
+     */
     @Test
     void testCreateUserWithWhitespaceStrings() {
         assertThrows(IllegalArgumentException.class, () -> {
@@ -254,6 +278,9 @@ public class UserFactoryTest {
         });
     }
 
+    /**
+     * Tests the creation of a user with empty lists for interests and friends.
+     */
     @Test
     void testCreateUserWithEmptyInterestsAndFriends() {
         List<String> emptyInterests = Collections.emptyList();
@@ -275,6 +302,20 @@ public class UserFactoryTest {
         });
     }
 
+    /**
+     * Creates a mock user with the specified parameters.
+     *
+     * @param username the username
+     * @param password the password
+     * @param bio the bio
+     * @param age the age
+     * @param program the program of study
+     * @param interests the list of interests
+     * @param friends the list of friends
+     * @param chats the list of chats
+     * @param date the date created
+     * @return the mock user
+     */
     private User createMockUser(String username, String password, String bio, Integer age, String program,
                                 List<String> interests, List<String> friends, List<String> chats, LocalDateTime date) {
         User mockUser = Mockito.mock(User.class);
