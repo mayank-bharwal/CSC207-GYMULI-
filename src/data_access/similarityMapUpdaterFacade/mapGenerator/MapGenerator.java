@@ -30,10 +30,10 @@ public class MapGenerator implements MapGeneratorInterface {
         Map<Tuple, Float> similarityMap = new HashMap<>();
         accounts.forEach((key, value) -> {
             String text1 = user.getBio() + " " + user.getProgramOfStudy() + " " + String.join(" ",user.getInterests())
-                    + " " + user.getAge().toString() + " " + String.join(" ",user.getFriends());
+                     + " " + String.join(" ",user.getFriends());
 
             String text2 = value.getBio() + " " + value.getProgramOfStudy() + " " + String.join(" ",value.getInterests())
-                    + " " + value.getAge().toString() + " " + String.join(" ",value.getFriends());
+                    + " " + String.join(" ",value.getFriends());
 
             Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
             similarityMap.put(new Tuple(user.getUsername(), key), similarityScore);
@@ -49,9 +49,9 @@ public class MapGenerator implements MapGeneratorInterface {
                 User user2 = accounts.get(key2);
 
                 String text1 = user1.getBio() + " " + user1.getProgramOfStudy() + " " + String.join(" ",user1.getInterests())
-                        + " " + user1.getAge().toString() + " " + String.join(" ",user1.getFriends());
+                        + " " + String.join(" ",user1.getFriends());
                 String text2 = user2.getBio() + " " + user2.getProgramOfStudy() + " " + String.join(" ",user2.getInterests())
-                        + " " + user2.getAge().toString() + " " + String.join(" ",user2.getFriends());
+                        + " " + String.join(" ",user2.getFriends());
 
                 Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
                 similarityMap.put(new Tuple(key1, key2), similarityScore);

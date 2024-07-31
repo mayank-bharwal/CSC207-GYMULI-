@@ -1,1 +1,1 @@
-https://api.dandelion.eu/datatxt/sim/v1/
+https://twinword-text-similarity-v1.p.rapidapi.com/similarity/?text1=%s&text2=%s

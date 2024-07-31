@@ -49,7 +49,7 @@ public class Facade implements FacadeInterface {
         accounts = getMap();
 
         MongoConnection mongoConnection = new MongoConnection();
-        FacadeInterface facade = new Facade();
+        Facade facade = new Facade();
         facade.UpdateDB(user, accounts, mongoConnection);
     }
 }

@@ -37,6 +37,9 @@ public class MongoConnection {
         return similarityCollection;
     }
 
-
+    public static void main(String[] args) {
+        MongoConnection mongoConnection = new MongoConnection();
+        System.out.println(mongoConnection.getSimilarityCollection().toString());
+    }
 
 }

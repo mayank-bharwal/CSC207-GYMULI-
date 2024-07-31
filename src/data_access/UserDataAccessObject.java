@@ -118,11 +118,10 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
+        FacadeInterface Facade = new Facade();
+        Facade.UpdateDB(user, accounts, mongoConnection);
+
         accounts.put(user.getUsername(), user);
-
-//        FacadeInterface Facade = new Facade();
-//        Facade.UpdateDB(user, accounts, mongoConnection);
-
     }
 
     /**
@@ -222,6 +221,12 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         user.setInterests(interests);
         user.setProgramOfStudy(programOfStudy);
 
+        Map<String, User> acct = new HashMap<>(accounts);
+        acct.remove(user.getUsername());
+
+        FacadeInterface Facade = new Facade();
+        Facade.UpdateDB(user, acct, mongoConnection);
+
         System.out.println("user updated");
 
     }
@@ -303,7 +308,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         FacadeInterface facade = new Facade();
 
         MongoConnection mongoConnection = new MongoConnection();
-        //facade.UpdateDB(user, getMap(), mongoConnection);
+        facade.UpdateDB(user, getMap(), mongoConnection);
 
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, getMap(), mongoConnection);
 
