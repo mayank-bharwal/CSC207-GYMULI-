@@ -37,10 +37,11 @@ public class ViewModelManager {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         pcs.removePropertyChangeListener(listener);
     }
-
     public void firePropertyChanged() {
         pcs.firePropertyChange("activeView", null, this.activeView);
     }
+
+
 
     public void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
         pcs.firePropertyChange(propertyName, oldValue, newValue);

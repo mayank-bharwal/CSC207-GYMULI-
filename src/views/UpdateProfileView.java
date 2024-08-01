@@ -1,5 +1,6 @@
 package views;
 
+import entity.User;
 import interface_adapter.ViewModelManager;
 import interface_adapter.account_creation.SignupController;
 import interface_adapter.account_creation.SignupState;
@@ -89,6 +90,8 @@ public class UpdateProfileView  extends JPanel implements ActionListener, Proper
         addField(formPanel, gbc, UpdateProfileViewModel.INTEREST1_LABEL, interest1Field = new JTextField(), null, 7, textFieldSize);
         addField(formPanel, gbc, UpdateProfileViewModel.INTEREST2_LABEL, interest2Field = new JTextField(), null, 8, textFieldSize);
         addField(formPanel, gbc, UpdateProfileViewModel.INTEREST3_LABEL, interest3Field = new JTextField(), null, 9, textFieldSize);
+
+
 
         currentUsernameField.addKeyListener(new KeyListener() {
             @Override
@@ -272,6 +275,11 @@ public class UpdateProfileView  extends JPanel implements ActionListener, Proper
                         interest2Field.getText(),
                         interest3Field.getText()
                 ));
+
+            if (currentState.getError() == null) { // Assume no error means success
+                viewModelManager.firePropertyChanged("profileUpdated", null, currentState.getUsername());
+            }
+
         });
         clearButton.addActionListener(e -> clearFields());
         backButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
@@ -344,11 +352,14 @@ public class UpdateProfileView  extends JPanel implements ActionListener, Proper
         System.out.println("Error handling");
 
         if ("activeView".equals(evt.getPropertyName())) {
+            System.out.println("Active view changed to: " + evt.getNewValue());
             if (viewModelManager.getActiveView().equals(viewName)) {
                 CardLayout cl = (CardLayout) getParent().getLayout();
                 cl.show(getParent(), viewName);
-            }
-        }
+                prePopulate();
+
+
+        }}
         if ("generalError".equals(evt.getPropertyName())) {
             String errorMessage = updateProfileViewModel.getState().getError();
             System.out.println(322);
@@ -359,9 +370,40 @@ public class UpdateProfileView  extends JPanel implements ActionListener, Proper
             }
         }
         if ("updateSuccess".equals(evt.getPropertyName())) {
-            JOptionPane.showMessageDialog(this, "Account successfully updated!", "Update Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Account successfully updated! Login Again", "Update Success", JOptionPane.INFORMATION_MESSAGE);
+            viewModelManager.setActiveView(LoginView.viewName);
         }
 
+
+
+
+
+    }
+
+    private void prePopulate() {
+        User currentUser = viewModelManager.getCurrentUser();
+        if (currentUser != null) {
+            currentUsernameField.setText(currentUser.getUsername() != null ? currentUser.getUsername() : "");
+            bioField.setText(currentUser.getBio() != null ? currentUser.getBio() : "");
+            ageField.setText(currentUser.getAge() != null ? currentUser.getAge().toString() : "");
+            programOfStudyField.setText(currentUser.getProgramOfStudy() != null ? currentUser.getProgramOfStudy() : "");
+
+            // Assuming the interests are stored as a list of strings
+            if (currentUser.getInterests() != null) {
+                if (!currentUser.getInterests().isEmpty()) {
+                    interest1Field.setText(currentUser.getInterests().get(0) != null ? currentUser.getInterests().get(0) : "");
+                }
+                if (currentUser.getInterests().size() > 1) {
+                    interest2Field.setText(currentUser.getInterests().get(1) != null ? currentUser.getInterests().get(1) : "");
+                }
+                if (currentUser.getInterests().size() > 2) {
+                    interest3Field.setText(currentUser.getInterests().get(2) != null ? currentUser.getInterests().get(2) : "");
+                }
+            }
+        } else {
+            // Handle case where currentUser is null
+            System.out.println("Current user is null.");
+        }
     }
 }
 
