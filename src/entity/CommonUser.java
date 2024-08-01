@@ -3,7 +3,9 @@ package entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The CommonUser class represents a user with a username, password, bio, program of study, age, interests, friends, chats, and the date the account was created.
+ */
 public class CommonUser implements User {
     private String username;
     private String password;
@@ -16,19 +18,18 @@ public class CommonUser implements User {
     private LocalDateTime dateCreated;
 
     /**
-     *Requires: password is valid
-     * @param username
-     * @param password
-     * @param bio
-     * @param age
-     * @param programOfStudy
-     * @param interests
-     * @param friends
-     * @param chats
-     * @param dateCreated
+     * Constructs a new CommonUser with the specified username, password, bio, age, program of study, interests, friends, chats, and date created.
+     *
+     * @param username       the username of the user
+     * @param password       the password of the user
+     * @param bio            the bio of the user
+     * @param age            the age of the user
+     * @param programOfStudy the program of study of the user
+     * @param interests      the list of interests of the user
+     * @param friends        the list of friends of the user
+     * @param chats          the list of chats of the user
+     * @param dateCreated    the date the user account was created
      */
-
-
     CommonUser(String username, String password, String bio, Integer age, String programOfStudy,
                       List<String> interests, List<String> friends, List<String> chats, LocalDateTime dateCreated) {
         this.username = username;
@@ -40,8 +41,14 @@ public class CommonUser implements User {
         this.friends = friends;
         this.chats = chats;
         this.dateCreated = dateCreated;
-
     }
+
+
+    /**
+     * Gets the Username of the user
+     *
+     * @return the username of the user
+     */
     @Override
     public String getUsername() {
         return username;

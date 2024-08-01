@@ -3,7 +3,9 @@ package entity;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.util.List;
-
+/**
+ * The Chat class represents a chat with a name, list of users, number of members, list of messages, and a timestamp.
+ */
 public class Chat {
      private String chatName;
      private ArrayList<String> users = new ArrayList<>();
@@ -11,14 +13,16 @@ public class Chat {
      private ArrayList<Message> allmessages = new ArrayList<>();
      private LocalDateTime time;
 
-     /**
-      * Requires:
-      * @param chatName -name of chatroom
-      * @param users - the people using chat
-      * @param noOfMembers - number of users
-      * @param allmessages - display all messages in the chat
-      */
 
+     /**
+      * Constructs a new Chat with the specified name, users, number of members, messages, and timestamp.
+      *
+      * @param chatName    the name of the chat
+      * @param users       the list of users in the chat
+      * @param noOfMembers the number of members in the chat
+      * @param allmessages the list of messages in the chat
+      * @param time        the time the chat was created
+      */
      Chat(String chatName, ArrayList<String> users, Integer noOfMembers, ArrayList<Message> allmessages, LocalDateTime time) {
           this.chatName = chatName;
           this.users = users;
@@ -26,6 +30,11 @@ public class Chat {
           this.allmessages = allmessages;
           this.time = LocalDateTime.now();
      }
+     /**
+      * Gets the name of the chat.
+      *
+      * @return the name of the chat
+      */
 
      public String getChatName() {return chatName;}
 
