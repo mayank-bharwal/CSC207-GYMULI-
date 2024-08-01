@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCursor;
 import data_access.readDB.MongoConnection;
 import data_access.apiCallFacade.Facade;
 import data_access.apiCallFacade.FacadeInterface;
+import static com.mongodb.client.model.Filters.eq;
 import entity.*;
 import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
@@ -76,6 +77,44 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
             }
         }
     }
+
+     public void userUpdate(String user){
+
+        User cU = accounts.get(user);
+        Document queryResult = UserCollection.find(eq("username", user)).first();
+
+        String username = queryResult.getString("username");
+        String password = queryResult.getString("password");
+        String bio = queryResult.getString("bio");
+        Integer age = queryResult.getInteger("age");
+        String programOfStudy = queryResult.getString("programOfStudy");
+        List<String> interests = (List<String>) queryResult.get("interests");
+        List<String> friends = (List<String>) queryResult.get("friends");
+        List<String> chats = (List<String>) queryResult.get("chats");
+        Date date = queryResult.getDate("dateCreated");
+
+         LocalDateTime dateCreated = date.toInstant()
+                 .atZone(ZoneId.systemDefault())
+                 .toLocalDateTime();
+
+         cU.setChats(chats);
+
+         System.out.println("work done");
+
+
+//         user.setUsername(username);
+//         user.setPassword(password);
+//         user.setBio(bio);
+//         user.setAge(age);
+//         user.setProgramOfStudy(programOfStudy);
+//         user.setInterests(interests);
+//         user.setFriends(friends);
+//         user.setChats(chats);
+//         user.setDateCreated(dateCreated);
+
+
+     }
+
 
     /**
      * Retrieves the map of User objects.

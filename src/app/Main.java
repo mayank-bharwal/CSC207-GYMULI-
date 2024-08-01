@@ -86,7 +86,7 @@ public class Main {
         RetrieveChatController retrieveChatController = new RetrieveChatController(retrieveChatInteractor);
         retrieveChatViewModel.setRetrieveChatInteractor(retrieveChatInteractor);
 
-        MainView mainView = MainViewFactory.create(viewModelManager, retrieveChatController);
+        MainView mainView = MainViewFactory.create(viewModelManager, retrieveChatController, userDataAccessObject);
         views.add(mainView, MainView.viewName);
 
         SendMessageViewModel sendMessageViewModel = new SendMessageViewModel();

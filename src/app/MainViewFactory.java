@@ -2,6 +2,7 @@ package app;
 
 import interface_adapter.ViewModelManager;
 import interface_adapter.retrieve_chat.RetrieveChatController;
+import data_access.UserDataAccessObject;
 import views.MainView;
 
 /**
@@ -17,7 +18,8 @@ public class MainViewFactory {
      * @return a new instance of {@link MainView}.
      */
 
-    public static MainView create(ViewModelManager viewModelManager, RetrieveChatController retrieveChatController) {
-        return new MainView(viewModelManager, retrieveChatController);
+    public static MainView create(ViewModelManager viewModelManager, RetrieveChatController retrieveChatController,
+                                  UserDataAccessObject userDataAccessObject) {
+        return new MainView(viewModelManager, retrieveChatController, userDataAccessObject);
     }
 }

@@ -3,6 +3,7 @@ package views;
 import entity.User;
 import interface_adapter.ViewModelManager;
 import interface_adapter.retrieve_chat.RetrieveChatController;
+import data_access.UserDataAccessObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,7 @@ public class MainView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "MainView";
 
     private final ViewModelManager viewModelManager;
+    private UserDataAccessObject userDataAccessObject;
     private final RetrieveChatController retrieveChatController;
     private final JLabel currentUserLabel;
     private final JPanel chatListPanel;
@@ -33,10 +35,12 @@ public class MainView extends JPanel implements PropertyChangeListener {
      * @param viewModelManager the manager that handles view models and manages state
      * @param retrieveChatController the controller responsible for retrieving chat data
      */
-    public MainView(ViewModelManager viewModelManager, RetrieveChatController retrieveChatController) {
+    public MainView(ViewModelManager viewModelManager, RetrieveChatController retrieveChatController,
+                    UserDataAccessObject userDataAccessObject) {
         this.viewModelManager = viewModelManager;
         this.viewModelManager.addPropertyChangeListener(this);
         this.retrieveChatController = retrieveChatController;
+        this.userDataAccessObject = userDataAccessObject;
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
@@ -81,7 +85,11 @@ public class MainView extends JPanel implements PropertyChangeListener {
 
         JButton refreshButton = new JButton("Refresh");
         refreshButton.setPreferredSize(new Dimension(100, 30));
-        refreshButton.addActionListener(e -> updateChats());
+        refreshButton.addActionListener(e -> {
+            userDataAccessObject.userUpdate(viewModelManager.getCurrentUser().getUsername());
+            updateChats();
+            System.out.println(viewModelManager.getCurrentUser().getChats());
+        });
         JPanel refreshPanel = new JPanel();
         refreshPanel.add(refreshButton);
         headerPanel.add(refreshPanel, BorderLayout.CENTER);
