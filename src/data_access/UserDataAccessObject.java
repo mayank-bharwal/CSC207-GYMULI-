@@ -224,8 +224,8 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         Map<String, User> acct = new HashMap<>(accounts);
         acct.remove(user.getUsername());
 
-        FacadeInterface Facade = new Facade();
-        Facade.UpdateDB(user, acct, mongoConnection);
+        //FacadeInterface Facade = new Facade();
+        //Facade.UpdateDB(user, acct, mongoConnection);
 
         System.out.println("user updated");
 

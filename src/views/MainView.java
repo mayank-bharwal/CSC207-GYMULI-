@@ -49,13 +49,22 @@ public class MainView extends JPanel implements PropertyChangeListener {
         userInfoPanel.add(currentUserLabel);
         userInfoPanel.add(Box.createHorizontalGlue());
 
+        JButton editProfileButton = new JButton("Edit Profile");
+        editProfileButton.addActionListener(e -> viewModelManager.setActiveView(UpdateProfileView.viewName));
+
+
         String imagePath = "images/profilepicdefault.png";
         ImageIcon profileIcon = new ImageIcon(imagePath);
 
         JButton profileIconButton = new JButton(profileIcon);
         profileIconButton.setPreferredSize(new Dimension(50, 50));
         profileIconButton.addActionListener(e -> viewModelManager.setActiveView(ProfileView.viewName));
-        userInfoPanel.add(profileIconButton);
+
+        JPanel profileButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
+        profileButtonPanel.add(profileIconButton);
+        profileButtonPanel.add(editProfileButton);
+
+        userInfoPanel.add(profileButtonPanel);
 
         headerPanel.add(userInfoPanel, BorderLayout.EAST);
 
@@ -95,7 +104,9 @@ public class MainView extends JPanel implements PropertyChangeListener {
             updateCurrentUser();
         } else if ("chatsUpdated".equals(evt.getPropertyName())) {
             updateChats();
-        }
+        } else if ("profileUpdated".equals(evt.getPropertyName())) {
+            updateCurrentUser();}
+
     }
 
     /**
