@@ -108,11 +108,11 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     @Override
     public void save(User user) { // will call Text API here
         Document document = new Document();
-        document.append("username", facade.filter(user.getUsername()));
+        document.append("username", user.getUsername());
         document.append("password", user.getPassword());
-        document.append("bio", facade.filter(user.getBio()));
+        document.append("bio", user.getBio());
         document.append("age", user.getAge());
-        document.append("programOfStudy", facade.filter(user.getProgramOfStudy()));
+        document.append("programOfStudy", user.getProgramOfStudy());
         document.append("interests", user.getInterests());
         document.append("friends", user.getFriends());
         document.append("chats", user.getChats());
