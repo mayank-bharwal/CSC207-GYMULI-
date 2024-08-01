@@ -1,4 +1,4 @@
-package data_access.similarityMapUpdaterFacade.mapGenerator;
+package data_access.apiCallFacade.apiCaller;
 
 import entity.User;
 import org.json.JSONObject;

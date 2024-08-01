@@ -9,6 +9,5 @@ public interface SendMessageUserDataAccessInterface{
       * @param message - text input by user
       */
      void saveMessage(Message message);
-
-
+     String filter(String message);
 }
