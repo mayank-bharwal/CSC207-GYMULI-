@@ -71,6 +71,8 @@ public class MainView extends JPanel implements PropertyChangeListener {
         JButton logoutButton = new JButton("Logout");
         logoutButton.addActionListener(e -> {
             viewModelManager.setActiveView(LoginView.viewName);
+            viewModelManager.setCurrentUser(null);
+            System.out.println();
         });
 
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));

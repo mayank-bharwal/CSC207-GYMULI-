@@ -370,7 +370,8 @@ public class UpdateProfileView  extends JPanel implements ActionListener, Proper
             }
         }
         if ("updateSuccess".equals(evt.getPropertyName())) {
-            JOptionPane.showMessageDialog(this, "Account successfully updated!", "Update Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Account successfully updated! Login Again", "Update Success", JOptionPane.INFORMATION_MESSAGE);
+            viewModelManager.setActiveView(LoginView.viewName);
         }
 
 
