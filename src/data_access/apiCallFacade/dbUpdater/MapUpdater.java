@@ -1,4 +1,4 @@
-package data_access.similarityMapUpdaterFacade.mapUpdater;
+package data_access.apiCallFacade.dbUpdater;
 
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;

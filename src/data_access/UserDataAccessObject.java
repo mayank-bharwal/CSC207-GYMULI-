@@ -3,8 +3,8 @@ package data_access;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import data_access.readDB.MongoConnection;
-import data_access.similarityMapUpdaterFacade.Facade;
-import data_access.similarityMapUpdaterFacade.FacadeInterface;
+import data_access.apiCallFacade.Facade;
+import data_access.apiCallFacade.FacadeInterface;
 import entity.*;
 import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
@@ -32,6 +32,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     private MongoCollection<Document> UserCollection;
     private Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
+    private FacadeInterface facade;
 
     /**
      * Constructor for UserDataAccessObject.
@@ -118,8 +119,8 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
-        //FacadeInterface Facade = new Facade();
-        //Facade.UpdateDB(user, accounts, mongoConnection);
+
+        //facade.UpdateDB(user, accounts, mongoConnection);
 
         accounts.put(user.getUsername(), user);
     }
@@ -216,16 +217,16 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
 
-        accounts.put(newUsername, newUser);
-        accounts.remove(oldUsername);
+        accounts.put(newUsername, newUser); // 3
+        accounts.remove(oldUsername);// 1
 
 
 
 
 
 
-        //FacadeInterface Facade = new Facade();
-        //Facade.UpdateDB(user, acct, mongoConnection);
+
+        //facade.UpdateDB(user, acct, mongoConnection);// 2
 
         System.out.println("user updated");
         System.out.println(accounts.get(newUsername).getUsername());

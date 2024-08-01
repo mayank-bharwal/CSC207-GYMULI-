@@ -1,4 +1,4 @@
-package data_access.similarityMapUpdaterFacade.mapGenerator;
+package data_access.apiCallFacade.apiCaller;
 
 import okhttp3.*;
 import org.json.*;
@@ -6,7 +6,7 @@ import org.json.*;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static data_access.similarityMapUpdaterFacade.mapGenerator.readAPI.GetAPI.*;
+import static data_access.apiCallFacade.apiCaller.readAPI.GetAPI.*;
 
 public class APICaller implements APICallerInterface {
     static OkHttpClient client = new OkHttpClient.Builder()
@@ -15,6 +15,7 @@ public class APICaller implements APICallerInterface {
             .readTimeout(60, TimeUnit.SECONDS)
             .build();
 
+    @Override
     public float getSimilarityScore(String text1, String text2) {
 
         String URL = getAPI(text1, text2);
@@ -59,10 +60,40 @@ public class APICaller implements APICallerInterface {
         }
     }
 
-        public static void main (String[]args){
+    @Override
+    public String filterProfanity(String text1) {
+
+        Request request = new Request.Builder()
+                .url(getProfanityAPI(text1))
+                .get()
+                .addHeader("X-Api-Key", getProfKey())
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (!response.isSuccessful()) {
+                System.out.println("Profanity API failed"+ response.body().string());
+                return text1;
+            }else{
+                JSONObject responseBody = new JSONObject(response.body().string());
+                if (responseBody.has("censored")) {
+                    return responseBody.getString("censored");
+                } else {
+                    System.out.println("Response does not contain 'censored' field");
+                    return text1;
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void main (String[]args){
             APICaller apicaller = new APICaller();
-            Float score = apicaller.getSimilarityScore("Mike tyson Loves Boxing $$$$ ##@@9881989^^&&!!!++]{{", "My dog tyson");
-            System.out.println("Similarity Score: " + score);
+            //Float score = apicaller.getSimilarityScore("Mike tyson Loves Boxing $$$$ ##@@9881989^^&&!!!++]{{", "My dog tyson");
+            //System.out.println("Similarity Score: " + score);
+
+            System.out.println(apicaller.filterProfanity("Damn, Mike Tyson is a boxer and shit"));
         }
     }
 

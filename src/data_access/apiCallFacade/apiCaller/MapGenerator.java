@@ -1,4 +1,4 @@
-package data_access.similarityMapUpdaterFacade.mapGenerator;
+package data_access.apiCallFacade.apiCaller;
 
 /* Sample Return JSON object
 {

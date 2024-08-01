@@ -1,4 +1,4 @@
-package data_access.similarityMapUpdaterFacade.mapUpdater;
+package data_access.apiCallFacade.dbUpdater;
 
 import data_access.readDB.MongoConnection;
 import org.json.JSONObject;

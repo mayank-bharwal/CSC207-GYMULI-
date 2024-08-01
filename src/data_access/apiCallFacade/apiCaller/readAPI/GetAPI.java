@@ -1,14 +1,8 @@
-package data_access.similarityMapUpdaterFacade.mapGenerator.readAPI;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.json.JSONObject;
+package data_access.apiCallFacade.apiCaller.readAPI;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class GetAPI {
 
@@ -20,14 +14,21 @@ public class GetAPI {
     private static final String API_BODY;
     private static final String API_KEY;
 
-    static {
-        API = readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapGenerator/readAPI/API_files/API_");
-        API_TOKEN = readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapGenerator/readAPI/API_files/API_key_2");
-        BACKUP_TOKEN = readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapGenerator/readAPI/API_files/API_key_3");
+    private static final String API_PROF;
 
-        API_URL = readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapGenerator/readAPI/API_files/API_uri");
-        API_KEY = readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapGenerator/readAPI/API_files/API_key");
-        API_BODY = readTokenFromFile("src/data_access/similarityMapUpdaterFacade/mapGenerator/readAPI/API_files/API_body");
+    private static final String PROF_KEY;
+
+    static {
+        API = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_");
+        API_TOKEN = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_key_2");
+        BACKUP_TOKEN = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_key_3");
+
+        API_URL = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_uri");
+        API_KEY = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_key");
+        API_BODY = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_body");
+
+        API_PROF = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/Prof_API");
+        PROF_KEY = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/Prof_Key");
     }
 
     public static String readTokenFromFile(String fileName) {
@@ -55,6 +56,14 @@ public class GetAPI {
         return String.format(API_URL, text1.replaceAll("[^a-zA-Z ]", ""), text2.replaceAll("[^a-zA-Z ]", ""));
     }
 
+    public static String getProfanityAPI(String text1) {
+        return String.format(API_PROF + text1);
+    }
+
+    public static String getProfKey(){
+        return PROF_KEY;
+    }
+
     public static String getKey(){
         return API_KEY;
     }
@@ -65,5 +74,6 @@ public class GetAPI {
 
     public static void main(String[] args) {
         //System.out.println(callAPI("Mike tyson Loves Boxing", "My dog is named Tyson"));
+        System.out.println(getProfKey());
     }
 }

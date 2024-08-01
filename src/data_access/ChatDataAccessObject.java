@@ -3,7 +3,9 @@ package data_access;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import data_access.apiCallFacade.Facade;
 import data_access.readDB.MongoConnection;
+import data_access.apiCallFacade.FacadeInterface;
 import entity.*;
 import org.bson.Document;
 import use_case.make_chat.MakeChatUserDataAccessInterface;
@@ -33,6 +35,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
     private MongoCollection<Document> UserCollection;
     private MongoCollection<Document> MessageCollection;
     private MongoCollection<Document> ChatCollection;
+    private FacadeInterface facade = new Facade();
 
     /**
      * Constructs a new ChatDataAccessObject.
@@ -309,6 +312,16 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         List<String> user2Chats = new ArrayList<>(user2.getChats());
         user2Chats.add(chat.getChatName());
         user2.setChats(user2Chats);
+    }
+    @Override
+    public String filter(String message){
+        if(message!=null && !message.isEmpty()){
+            return facade.filter(message);
+        } else {
+            boolean Error = true;
+            System.out.println(Error);
+            return message;
+        }
     }
 }
 
