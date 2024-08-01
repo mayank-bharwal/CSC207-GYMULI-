@@ -32,7 +32,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     private MongoCollection<Document> UserCollection;
     private Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
-    private FacadeInterface facade;
+    private FacadeInterface facade = new Facade();
 
     /**
      * Constructor for UserDataAccessObject.
@@ -108,11 +108,11 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     @Override
     public void save(User user) { // will call Text API here
         Document document = new Document();
-        document.append("username", user.getUsername());
+        document.append("username", facade.filter(user.getUsername()));
         document.append("password", user.getPassword());
-        document.append("bio", user.getBio());
+        document.append("bio", facade.filter(user.getBio()));
         document.append("age", user.getAge());
-        document.append("programOfStudy", user.getProgramOfStudy());
+        document.append("programOfStudy", facade.filter(user.getProgramOfStudy()));
         document.append("interests", user.getInterests());
         document.append("friends", user.getFriends());
         document.append("chats", user.getChats());
