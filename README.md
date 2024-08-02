@@ -1,5 +1,6 @@
-# CSC207-GYMULI
+# Welcome to YapNet - Social Media Messenger
 
+## CSC207-GYMULI
 ## Overview
 
 The project involves creating a social app for UofT students to connect based on shared interests.
