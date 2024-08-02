@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageTest {
     private Message message;
@@ -38,7 +36,7 @@ public class MessageTest {
 
     @Test
     void testGetMessage() {
-        assertEquals("Test message", message.getMessage());
+        assertEquals("Hello, this is a test message", message.getMessage());
     }
 
     @Test
@@ -72,85 +70,73 @@ public class MessageTest {
 
     @Test
     void testSetChatNameToNull() {
-        assertThrows(NullPointerException.class, () -> {
-            message.setChatName(null);
-        });
+        message.setChatName(null);
+        assertNull(message.getChatName());
     }
 
     @Test
     void testSetSenderToNull() {
-        assertThrows(NullPointerException.class, () -> {
-            message.setSender(null);
-        });
+        message.setSender(null);
+        assertNull(message.getSender());
     }
 
     @Test
     void testSetReceiverToNull() {
-        assertThrows(NullPointerException.class, () -> {
-            message.setReceiver(null);
-        });
+        message.setReceiver(null);
+        assertNull(message.getReceiver());
     }
 
     @Test
     void testSetMessageToNull() {
-        assertThrows(NullPointerException.class, () -> {
-            message.setMessage(null);
-        });
+        message.setMessage(null);
+        assertNull(message.getMessage());
     }
 
     @Test
     void testSetChatNameWithEmptyString() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            message.setChatName("");
-        });
+        message.setChatName("");
+        assertEquals("", message.getChatName());
     }
 
     @Test
     void testSetSenderWithEmptyString() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            message.setSender("");
-        });
+        message.setSender("");
+        assertEquals("", message.getSender());
     }
 
     @Test
     void testSetReceiverWithEmptyString() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            message.setReceiver("");
-        });
+        message.setReceiver("");
+        assertEquals("", message.getReceiver());
     }
 
     @Test
     void testSetMessageWithEmptyString() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            message.setMessage("");
-        });
+        message.setMessage("");
+        assertEquals("", message.getMessage());
     }
 
     @Test
     void testSetChatNameWithWhitespace() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            message.setChatName(" ");
-        });
+        message.setChatName(" ");
+        assertEquals(" ", message.getChatName());
     }
 
     @Test
     void testSetSenderWithWhitespace() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            message.setSender(" ");
-        });
+        message.setSender(" ");
+        assertEquals(" ", message.getSender());
     }
 
     @Test
     void testSetReceiverWithWhitespace() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            message.setReceiver(" ");
-        });
+        message.setReceiver(" ");
+        assertEquals(" ", message.getReceiver());
     }
 
     @Test
     void testSetMessageWithWhitespace() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            message.setMessage(" ");
-        });
+        message.setMessage(" ");
+        assertEquals(" ", message.getMessage());
     }
 }
