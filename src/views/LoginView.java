@@ -38,7 +38,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        JLabel title = loginViewModel.titleLabel;
+        JLabel title = new JLabel("Welcome to YapNet");//loginViewModel.titleLabel;
         title.setFont(new Font("Arial", Font.BOLD, 24));
         title.setHorizontalAlignment(SwingConstants.CENTER);
 
