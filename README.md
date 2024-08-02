@@ -10,7 +10,7 @@ Key features include:
 - Friend Management: Add, remove, or block friends. 
 - Profile Management: Add or update profile information. 
 - Group Chats: Create and participate in group chats. 
-- User Recommendations: Find users with similar interests.
+- User Recommendations: Find similarusers with similar interests.
 
 ## How to run
 
@@ -33,7 +33,7 @@ The repo is structured as:
 3. You can create a chat using an existing user.
 4. You can send messages by clicking on the chat.
 5. Currently we dont have the implementation for the other user to instantly see a created chat. For that you would have to run the app again.
-6. Otherwise everything else is working perfectly. The two users can send messages and  the messages are rendered in the chat instantly.
+6. Otherwise everything else is working perfectly. The two similarusers can send messages and  the messages are rendered in the chat instantly.
 
 # MongoDB credentials so that you can check how the databases is updated
 https://www.mongodb.com
@@ -46,6 +46,6 @@ Database -> Browse Collections -> GYMULI
 Open the cluster and check the DATABASE GYMULI.
 Also if the app does not run because of a MongoSocket error just open mongoDB and it should prompt you to add the IP adress to mongo. This issue is fixed it should not happen but just in case.
 
-These are the existing users.
+These are the existing similarusers.
 username: test1 pwd:test1
 username: test2 pwd:test2

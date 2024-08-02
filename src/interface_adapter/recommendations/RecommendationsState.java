@@ -7,13 +7,18 @@ import java.util.List;
 
 public class RecommendationsState {
 
-    private List<User> users = new ArrayList<>();
+    private List<User> Similarusers = new ArrayList<>();
     private String recommendationError = null;
 
-    public String getRecommendationError() {return recommendationError;}
+    public RecommendationsState(RecommendationsState copy){
+        Similarusers = copy.Similarusers;
+        recommendationError = copy.recommendationError;
+    }
+    public RecommendationsState() {}
 
-    public List<User> getSimilarUsers() {return users;}
+    public String getRecommendationError() {return recommendationError;}
+    public List<User> getSimilarUsers() {return Similarusers;}
 
     public void setrecommendationError(String recommendationError) {this.recommendationError = recommendationError;}
-    public void setUsers(List<User> users) {this.users = users;}
+    public void setSimilarusers(List<User> similarusers) {this.Similarusers = similarusers;}
 }

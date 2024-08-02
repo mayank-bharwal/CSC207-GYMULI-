@@ -4,21 +4,21 @@ import interface_adapter.ViewModelManager;
 import use_case.recommendations.RecommendationsOutputBoundary;
 import use_case.recommendations.RecommendationsOutputData;
 
-import java.util.ArrayList;
-
 public class RecommendationsPresenter implements RecommendationsOutputBoundary {
 
     private final RecommendationsViewModel recommendationsViewModel;
+    private final ViewModelManager viewModelManager;
 
-    public RecommendationsPresenter(RecommendationsViewModel recommendationsViewModel) {
+    public RecommendationsPresenter(RecommendationsViewModel recommendationsViewModel, ViewModelManager viewModelManager) {
         this.recommendationsViewModel = recommendationsViewModel;
+        this.viewModelManager = viewModelManager;
     }
 
     @Override
     public void showSuccessScreen(RecommendationsOutputData recommendationsOutputData){
         RecommendationsState recommendationsState = new RecommendationsState();
-        recommendationsState.setUsers(recommendationsOutputData.getSimilarUsers()); // list
-        recommendationsViewModel.setRecommendationsState(recommendationsState);
+        recommendationsState.setSimilarusers(recommendationsOutputData.getSimilarUsers()); // list
+        recommendationsViewModel.setState(recommendationsState);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class RecommendationsPresenter implements RecommendationsOutputBoundary {
 
         RecommendationsState recommendationsState = new RecommendationsState();
         recommendationsState.setrecommendationError(errorMessage);
-        recommendationsViewModel.setRecommendationsState(recommendationsState);
+        recommendationsViewModel.setState(recommendationsState);
     }
 
 }
