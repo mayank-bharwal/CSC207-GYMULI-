@@ -2,11 +2,14 @@ package entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+/**
+ * The User interface represents a user with various attributes such as username, password, bio, program of study, age, interests, friends, chats, and the date the account was created.
+ */
 public interface User {
     /**
+     * Gets the username of the user.
      *
-     * @return
+     * @return the username of the user
      */
     String getUsername();
 
