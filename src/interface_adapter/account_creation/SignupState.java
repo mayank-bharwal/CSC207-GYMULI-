@@ -3,6 +3,10 @@ package interface_adapter.account_creation;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The SignupState class represents the state of the signup form.
+ * It holds the user inputs and any error messages.
+ */
 public class SignupState {
     private String username = "";
     private String password = "";
@@ -15,9 +19,17 @@ public class SignupState {
     private String interest3 = "";
     private String error = "";
 
+    /**
+     * Constructs a new SignupState with default values.
+     */
     public SignupState() {
     }
 
+    /**
+     * Gets the username.
+     *
+     * @return the username
+     */
     public String getUsername() {
         return username;
     }
@@ -92,6 +104,11 @@ public class SignupState {
         this.interest3 = interest3;
     }
 
+    /**
+     * Gets the list of interests.
+     *
+     * @return the list of interests
+     */
     public List<String> getInterests() {
         List<String> interests = new ArrayList<>();
         interests.add(interest1);
