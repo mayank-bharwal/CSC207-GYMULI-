@@ -1,5 +1,9 @@
 package interface_adapter.Login;
 
+/**
+ * The LoginState class represents the state of the login menu.
+ * It holds the user inputs and any error messages.
+ */
 public class LoginState {
 
     private String username = "";
@@ -7,6 +11,11 @@ public class LoginState {
     private String usernameError = null;
     private String passwordError = null;
 
+    /**
+     * Constructs a new LoginState by copying the state from another LoginState.
+     *
+     * @param copy the LoginState to copy from
+     */
     public LoginState(LoginState copy) {
         username = copy.username;
         password = copy.password;
@@ -14,8 +23,16 @@ public class LoginState {
         passwordError = copy.passwordError;
     }
 
+    /**
+     * Constructs a new LoginState with default values.
+     */
     public LoginState() {}
 
+    /**
+     * Gets the password of the user.
+     *
+     * @return the password of the current user
+     */
     public String getPassword() {
         return password;
     }
