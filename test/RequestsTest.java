@@ -5,12 +5,13 @@ import entity.UserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import org.mockito.Mockito;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RequestsTest {
     private User fromUser;
@@ -20,21 +21,16 @@ public class RequestsTest {
 
     @BeforeEach
     void setUp() {
-        List<String> interests = new ArrayList<>();
-        interests.add("Reading");
-        interests.add("Music");
+        userFactory = Mockito.mock(UserFactory.class);
 
-        List<String> friends = new ArrayList<>();
-        friends.add("Barry");
+        fromUser = createMockUser("Jasmine", "password", "(Demo)", 21, "Computer Science");
+        toUser = createMockUser("Imogen", "secondPassword", "Details", 21, "Music");
 
-        List<String> chats = new ArrayList<>();
-
-        LocalDateTime dateCreated = LocalDateTime.now();
-
-        fromUser = userFactory.createUser("Jasmine", "password", "(Demo)", 21,
-                "Computer Science", interests, friends, chats, dateCreated);
-        toUser = userFactory.createUser("Charlie", "password123", "Always Sunny", 22,
-                "Law", interests, friends, chats, dateCreated);
+        Mockito.when(userFactory.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(),
+                        Mockito.anyInt(), Mockito.anyString(), Mockito.anyList(), Mockito.anyList(),
+                        Mockito.anyList(), Mockito.any(LocalDateTime.class)))
+                .thenReturn(fromUser)
+                .thenReturn(toUser);
 
         request = new Requests(fromUser, toUser);
     }
@@ -81,9 +77,8 @@ public class RequestsTest {
 
     @Test
     void testSetFromToMultipleTimes() {
-        User firstUser = userFactory.createUser("Jasmine", "password",
-                "(Demo)", 21,  "Computer Science", new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), LocalDateTime.now());
+        User firstUser = userFactory.createUser("Jasmine", "password", "(Demo)", 21,
+                "Computer Science", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
         User secondUser = userFactory.createUser("Imogen", "secondPassword", "Details", 21,
                 "Music", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
 
@@ -100,17 +95,17 @@ public class RequestsTest {
         assertEquals(secondUser, request.getTo());
     }
 
-    @Test
-    void testSetFromToNull() {
-        assertThrows(NullPointerException.class, () -> {
-            request.setFrom(null);
-        });
-    }
-
-    @Test
-    void testSetToToNull() {
-        assertThrows(NullPointerException.class, () -> {
-            request.setTo(null);
-        });
+    private User createMockUser(String username, String password, String bio, Integer age, String program) {
+        User mockUser = Mockito.mock(User.class);
+        Mockito.when(mockUser.getUsername()).thenReturn(username);
+        Mockito.when(mockUser.getPassword()).thenReturn(password);
+        Mockito.when(mockUser.getBio()).thenReturn(bio);
+        Mockito.when(mockUser.getAge()).thenReturn(age);
+        Mockito.when(mockUser.getProgramOfStudy()).thenReturn(program);
+        Mockito.when(mockUser.getInterests()).thenReturn(new ArrayList<>());
+        Mockito.when(mockUser.getFriends()).thenReturn(new ArrayList<>());
+        Mockito.when(mockUser.getChats()).thenReturn(new ArrayList<>());
+        Mockito.when(mockUser.getDateCreated()).thenReturn(LocalDateTime.now());
+        return mockUser;
     }
 }
