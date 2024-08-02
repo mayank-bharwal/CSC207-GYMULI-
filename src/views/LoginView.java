@@ -5,14 +5,18 @@ import interface_adapter.Login.LoginController;
 import interface_adapter.Login.LoginState;
 import interface_adapter.Login.LoginViewModel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
 
 public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
     public static final String viewName = "LoginView";
@@ -38,13 +42,28 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        JLabel title = loginViewModel.titleLabel;
-        title.setFont(new Font("Arial", Font.BOLD, 24));
-        title.setHorizontalAlignment(SwingConstants.CENTER);
+        // Load the logo image
+        JLabel logoLabel = new JLabel();
+        try {
+            BufferedImage logoImage = ImageIO.read(new File("images/logo.png")); // Replace with your logo path
+            Image scaledImage = logoImage.getScaledInstance(90, 90, Image.SCALE_SMOOTH); // Adjust dimensions as needed
+            logoLabel.setIcon(new ImageIcon(scaledImage));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+        // Add the logo to the form panel
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
+        formPanel.add(logoLabel, gbc);
+
+        JLabel title = new JLabel("Welcome to YapNet");
+        title.setFont(new Font("Arial", Font.BOLD, 24));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+
+        gbc.gridy = 1;
         formPanel.add(title, gbc);
 
         gbc.gridwidth = 1;
@@ -52,7 +71,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
         JLabel usernameLabel = loginViewModel.usernameLabel;
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         formPanel.add(usernameLabel, gbc);
 
         gbc.anchor = GridBagConstraints.WEST;
@@ -62,7 +81,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
         gbc.anchor = GridBagConstraints.EAST;
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         JLabel passwordLabel = loginViewModel.passwordLabel;
         formPanel.add(passwordLabel, gbc);
 
@@ -73,7 +92,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.gridwidth = 2;
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         loginButton = new JButton(LoginViewModel.LOGIN_BUTTON_LABEL);
@@ -170,4 +189,3 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         }
     }
 }
-
