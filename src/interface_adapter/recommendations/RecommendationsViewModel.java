@@ -1,8 +1,6 @@
 package interface_adapter.recommendations;
 
 import interface_adapter.ViewModel;
-import interface_adapter.retrieve_chat.RetrieveChatState;
-import interface_adapter.search_user.SearchUserState;
 
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
