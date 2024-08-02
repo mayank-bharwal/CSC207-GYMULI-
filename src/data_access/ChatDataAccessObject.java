@@ -8,9 +8,14 @@ import data_access.readDB.MongoConnection;
 import data_access.apiCallFacade.FacadeInterface;
 import entity.*;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+import use_case.delete_chat.DeleteChatUserDataAccessInterafce;
 import use_case.make_chat.MakeChatUserDataAccessInterface;
 import use_case.retrieve_chat.RetrieveChatUserDataAccessInterface;
 import use_case.send_message.SendMessageUserDataAccessInterface;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.pull;
+
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -24,7 +29,7 @@ import java.util.stream.Collectors;
  */
 
 public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface, SendMessageUserDataAccessInterface,
-        MakeChatUserDataAccessInterface {
+        MakeChatUserDataAccessInterface, DeleteChatUserDataAccessInterafce {
 
     private MongoConnection mongoConnection;
     private Map<String, Message> messages = new HashMap<>();
@@ -185,6 +190,33 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
 //        }
 //
 //        return chats.get(chatName);
+
+
+
+    }
+
+    @Override
+    public void DeleteChat(String chatname) {
+        Chat ch = chats.get(chatname);
+        ArrayList<String> users = ch.getUsers();
+        for (String user: users ){
+            userDataAccessObject.getAccounts().get(user).getChats().remove(chatname);
+        }
+        chats.remove(chatname);
+
+        ChatCollection.findOneAndDelete(eq("chatName", chatname));
+
+        for (String user: users){
+            Bson filter = eq("username", user);
+            Bson update = pull("chats", chatname);
+
+            ChatCollection.updateOne(filter, update);
+        }
+
+
+
+
+
 
 
 

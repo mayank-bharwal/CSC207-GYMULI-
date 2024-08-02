@@ -19,8 +19,9 @@ public class DeleteChatInteractor implements DeleteChatInputBoundary{
         if (!deleteChatDAO.ChatExists(inputData.getChatname())) {
             deleteChatPresenter.setFailView("The chat does not exist");
         } else {
-            deleteChatDAO.DeleteChat(inputData.getChatname());
+
             Chat deletedChat =  deleteChatDAO.getChat(inputData.getChatname());
+            deleteChatDAO.DeleteChat(inputData.getChatname());
             DeleteChatOutputData outputdata = new DeleteChatOutputData(deletedChat.getChatName(), deletedChat.getUsers(), false);
             deleteChatPresenter.setPassView(outputdata);
 
