@@ -20,6 +20,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final SendMessageController sendMessageController;
     private final SendMessageViewModel sendMessageViewModel;
     private final RetrieveChatViewModel retrieveChatViewModel;
+
     private final JTextArea chatArea;
     private final JTextField messageField;
     private final JButton sendButton;
