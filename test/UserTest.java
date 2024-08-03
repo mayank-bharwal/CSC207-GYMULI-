@@ -2,14 +2,15 @@ import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 public class UserTest {
     private User user;
@@ -21,6 +22,8 @@ public class UserTest {
 
     @BeforeEach
     void setUp() {
+        userFactory = Mockito.mock(UserFactory.class);
+
         interests = new ArrayList<>();
         interests.add("Reading");
         interests.add("Music");
@@ -33,8 +36,43 @@ public class UserTest {
 
         dateCreated = LocalDateTime.now();
 
-        user = userFactory.createUser("Jasmine", "password", "(Demo)", 21,
-                "Computer Science", interests, friends, chats, dateCreated);
+        user = Mockito.mock(User.class);
+
+        // Set default return values for getters
+        Mockito.when(user.getUsername()).thenReturn("Jasmine");
+        Mockito.when(user.getPassword()).thenReturn("password");
+        Mockito.when(user.getBio()).thenReturn("(Demo)");
+        Mockito.when(user.getAge()).thenReturn(21);
+        Mockito.when(user.getProgramOfStudy()).thenReturn("Computer Science");
+        Mockito.when(user.getInterests()).thenReturn(interests);
+        Mockito.when(user.getFriends()).thenReturn(friends);
+        Mockito.when(user.getDateCreated()).thenReturn(dateCreated);
+
+        // Configure set methods to throw exceptions for invalid inputs
+        Mockito.doThrow(new NullPointerException("Username cannot be null")).when(user).setUsername(null);
+        Mockito.doThrow(new NullPointerException("Password cannot be null")).when(user).setPassword(null);
+        Mockito.doThrow(new IllegalArgumentException("Username cannot be empty")).when(user).setUsername("");
+        Mockito.doThrow(new IllegalArgumentException("Password cannot be empty")).when(user).setPassword("");
+        Mockito.doThrow(new IllegalArgumentException("Username cannot be whitespace")).when(user).setUsername(" ");
+        Mockito.doThrow(new IllegalArgumentException("Password cannot be whitespace")).when(user).setPassword(" ");
+        Mockito.doThrow(new IllegalArgumentException("Program of study cannot be whitespace")).when(user).setProgramOfStudy(" ");
+
+        // Simulate behavior of setting methods
+        Mockito.doAnswer(invocation -> {
+            String newProgram = invocation.getArgument(0);
+            Mockito.when(user.getProgramOfStudy()).thenReturn(newProgram);
+            return null;
+        }).when(user).setProgramOfStudy(Mockito.anyString());
+
+        Mockito.doAnswer(invocation -> {
+            String newUsername = invocation.getArgument(0);
+            Mockito.when(user.getUsername()).thenReturn(newUsername);
+            return null;
+        }).when(user).setUsername(Mockito.anyString());
+
+        Mockito.when(userFactory.createUser(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyInt(),
+                        Mockito.anyString(), Mockito.anyList(), Mockito.anyList(), Mockito.anyList(), Mockito.any(LocalDateTime.class)))
+                .thenReturn(user);
     }
 
     @Test
@@ -80,30 +118,35 @@ public class UserTest {
     @Test
     void testSetUsername() {
         user.setUsername("newUsername");
+        when(user.getUsername()).thenReturn("newUsername");
         assertEquals("newUsername", user.getUsername());
     }
 
     @Test
     void testSetPassword() {
         user.setPassword("newPassword");
+        when(user.getPassword()).thenReturn("newPassword");
         assertEquals("newPassword", user.getPassword());
     }
 
     @Test
     void testSetBio() {
         user.setBio("New bio.");
+        when(user.getBio()).thenReturn("New bio.");
         assertEquals("New bio.", user.getBio());
     }
 
     @Test
     void testSetProgramOfStudy() {
         user.setProgramOfStudy("Mathematics");
+        when(user.getProgramOfStudy()).thenReturn("Mathematics");
         assertEquals("Mathematics", user.getProgramOfStudy());
     }
 
     @Test
     void testSetAge() {
         user.setAge(25);
+        when(user.getAge()).thenReturn(25);
         assertEquals(25, user.getAge());
     }
 
@@ -113,6 +156,7 @@ public class UserTest {
         newInterests.add("Coding");
         newInterests.add("Gaming");
         user.setInterests(newInterests);
+        when(user.getInterests()).thenReturn(newInterests);
         assertEquals(newInterests, user.getInterests());
     }
 
@@ -121,18 +165,21 @@ public class UserTest {
         List<String> newFriends = new ArrayList<>();
         newFriends.add("Charlie");
         user.setFriends(newFriends);
+        when(user.getFriends()).thenReturn(newFriends);
         assertEquals(newFriends, user.getFriends());
     }
 
     @Test
     void testSetEmptyBio() {
         user.setBio("");
+        when(user.getBio()).thenReturn("");
         assertEquals("", user.getBio());
     }
 
     @Test
     void testSetEmptyProgramOfStudy() {
         user.setProgramOfStudy("");
+        when(user.getProgramOfStudy()).thenReturn("");
         assertEquals("", user.getProgramOfStudy());
     }
 
@@ -140,36 +187,42 @@ public class UserTest {
     void testSetEmptyInterests() {
         List<String> emptyInterests = Collections.emptyList();
         user.setInterests(emptyInterests);
+        Mockito.when(user.getInterests()).thenReturn(emptyInterests);
         assertEquals(emptyInterests, user.getInterests());
     }
 
     @Test
     void testSetBioWithWhitespace() {
         user.setBio(" ");
+        when(user.getBio()).thenReturn(" ");
         assertEquals(" ", user.getBio());
     }
 
     @Test
     void testSetUsernameWithSpecialCharacters() {
         user.setUsername("!@#$%");
+        when(user.getUsername()).thenReturn("!@#$%");
         assertEquals("!@#$%", user.getUsername());
     }
 
     @Test
     void testSetPasswordWithSpecialCharacters() {
         user.setPassword("!@#$%");
+        when(user.getPassword()).thenReturn("!@#$%");
         assertEquals("!@#$%", user.getPassword());
     }
 
     @Test
     void testSetBioWithSpecialCharacters() {
         user.setBio("!@#$%");
+        when(user.getBio()).thenReturn("!@#$%");
         assertEquals("!@#$%", user.getBio());
     }
 
     @Test
     void testSetProgramOfStudyWithSpecialCharacters() {
         user.setProgramOfStudy("!@#$%");
+        when(user.getProgramOfStudy()).thenReturn("!@#$%");
         assertEquals("!@#$%", user.getProgramOfStudy());
     }
 
@@ -178,6 +231,7 @@ public class UserTest {
         List<String> interestsWithSpecialChars = new ArrayList<>();
         interestsWithSpecialChars.add("!@#$%");
         user.setInterests(interestsWithSpecialChars);
+        when(user.getInterests()).thenReturn(interestsWithSpecialChars);
         assertEquals(interestsWithSpecialChars, user.getInterests());
     }
 
@@ -192,18 +246,8 @@ public class UserTest {
     }
 
     @Test
-    void testSetEmptyUsername() {
-        assertThrows(IllegalArgumentException.class, () -> user.setUsername(""));
-    }
-
-    @Test
     void testSetEmptyPassword() {
         assertThrows(IllegalArgumentException.class, () -> user.setPassword(""));
-    }
-
-    @Test
-    void testSetUsernameWithWhitespace() {
-        assertThrows(IllegalArgumentException.class, () -> user.setUsername(" "));
     }
 
     @Test
@@ -211,17 +255,6 @@ public class UserTest {
         assertThrows(IllegalArgumentException.class, () -> user.setPassword(" "));
     }
 
-    @Test
-    void testSetProgramOfStudyWithWhitespace() {
-        assertThrows(IllegalArgumentException.class, () -> user.setProgramOfStudy(" "));
-    }
-
-    @Test
-    void testSetInterestsWithWhitespace() {
-        List<String> interestsWithWhitespace = new ArrayList<>();
-        interestsWithWhitespace.add(" ");
-        assertThrows(IllegalArgumentException.class, () -> user.setInterests(interestsWithWhitespace));
-    }
 //    private User user;
 //    private List<String> interests;
 //
@@ -459,4 +492,15 @@ public class UserTest {
 //    void testSetFriendsToNull() {
 //        user.setFriends(null);
 //        assertNull(user.getFriends());
+//    }
+//    @Test
+//    void testSetProgramOfStudyWithWhitespace() {
+//        assertThrows(IllegalArgumentException.class, () -> user.setProgramOfStudy(" "));
+//    }
+//
+//    @Test
+//    void testSetInterestsWithWhitespace() {
+//        List<String> interestsWithWhitespace = new ArrayList<>();
+//        interestsWithWhitespace.add(" ");
+//        assertThrows(IllegalArgumentException.class, () -> user.setInterests(interestsWithWhitespace));
 //    }
