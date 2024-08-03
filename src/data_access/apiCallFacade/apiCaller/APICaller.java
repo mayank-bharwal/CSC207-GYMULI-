@@ -36,7 +36,7 @@ public class APICaller implements APICallerInterface {
                 response = client.newCall(request2).execute();
 
                 if (!response.isSuccessful()) {
-                    System.out.println("Second API failed, Trying the Third API");
+                    System.out.println("Second API failed, Trying the Third PAID API");
                     Request request3 = new Request.Builder()
                             .url(getThirdAPI(text1, text2))
                             .get()

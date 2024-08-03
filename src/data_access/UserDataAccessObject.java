@@ -159,7 +159,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         UserCollection.insertOne(document);
 
 
-        //facade.UpdateDB(user, accounts, mongoConnection);
+        facade.UpdateDB(user, accounts, mongoConnection);
 
         accounts.put(user.getUsername(), user);
     }
@@ -256,16 +256,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
 
-        accounts.put(newUsername, newUser); // 3
         accounts.remove(oldUsername);// 1
-
-
-
-
-
-
-
-        //facade.UpdateDB(user, acct, mongoConnection);// 2
+        facade.UpdateDB(user, accounts, mongoConnection);// 2
+        accounts.put(newUsername, newUser); // 3
 
         System.out.println("user updated");
         System.out.println(accounts.get(newUsername).getUsername());
