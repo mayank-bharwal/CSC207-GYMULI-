@@ -58,8 +58,6 @@ public class MainView extends JPanel implements PropertyChangeListener {
         userInfoPanel.add(currentUserLabel);
         userInfoPanel.add(Box.createHorizontalGlue());
 
-        JButton editProfileButton = new JButton("Edit Profile");
-        editProfileButton.addActionListener(e -> viewModelManager.setActiveView(UpdateProfileView.viewName));
 
         String imagePath = "images/profilepicdefault.png";
         ImageIcon profileIcon = new ImageIcon(imagePath);
@@ -70,7 +68,6 @@ public class MainView extends JPanel implements PropertyChangeListener {
 
         JPanel profileButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
         profileButtonPanel.add(profileIconButton);
-        profileButtonPanel.add(editProfileButton);
 
         userInfoPanel.add(profileButtonPanel);
 
