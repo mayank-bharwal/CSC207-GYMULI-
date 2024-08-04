@@ -27,7 +27,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static data_access.readDB.GetDB.getCollectionID;
-import static data_access.userMap_ignore.getMap;
 
 /**
  * Data Access Object for User-related operations.
@@ -62,7 +61,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         /**
          * CHANGE facade.use_paid to true when NOT TESTING
          */
-        facade.use_paid(false); // false in TESTING, true in production
+        facade.use_paid(false); // false in TESTING, true in PRODUCTION
 
 
         try (MongoCursor<Document> cursor = UserCollection.find().iterator()) {
@@ -267,14 +266,30 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         User user = accounts.get(oldUsername);
 
-        User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
+        List<String> frnds = user.getFriends();
 
-        accounts.remove(oldUsername);// 1
+        for (String f: frnds) {
+            UserCollection.updateOne(
+                    Filters.eq("username", f),
+                    Updates.pull("friends", oldUsername)
+            );
+            UserCollection.updateOne(
+                    Filters.eq("username", f),
+                    Updates.addToSet("friends", newUsername)
+            );
+
+            User fUser = accounts.get(f);
+            fUser.getFriends().remove(oldUsername);
+            fUser.getFriends().add(newUsername);
+
+        }
+
+        User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
+        accounts.remove(oldUsername);
 
         facade.UpdateDB(user, accounts, mongoConnection);// 2
 
-        accounts.put(newUsername, newUser); // 3
-
+        accounts.put(newUsername, newUser);
         System.out.println("user updated");
         System.out.println(accounts.get(newUsername).getUsername());
 
