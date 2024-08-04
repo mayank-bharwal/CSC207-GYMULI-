@@ -31,8 +31,8 @@ import static data_access.userMap_ignore.getMap;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
         UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationsDataAccessInterface,
-        RemoveFriendsUserDataAccessInterface, SearchUserDataAccessInterface
-         {
+        RemoveFriendsUserDataAccessInterface, SearchUserDataAccessInterface {
+          
     private MongoConnection mongoConnection;
     private MongoCollection<Document> UserCollection;
     private Map<String, User> accounts = new HashMap<>();
