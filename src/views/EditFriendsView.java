@@ -106,7 +106,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
                 JOptionPane.showMessageDialog(this, "Friend successfully added or deleted!", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
                 break;
             case "generalError":
-                String error = addFriendsViewModel.getState().getError();
+                String error = evt.getNewValue().toString();
                 if (error != null) {
                     JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
                 }

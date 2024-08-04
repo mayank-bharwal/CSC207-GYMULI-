@@ -17,17 +17,12 @@ public class RemoveFriendsViewModel extends ViewModel {
         this.state = state;
     }
 
-    public void firePropertyChanged() {
-        propertyChangeSupport.firePropertyChange("state", null, this.state);
-    }
-
     public void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
         propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
-
     }
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
