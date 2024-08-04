@@ -13,6 +13,7 @@ public class SearchUserController {
     }
 
     public void search_user(String username) {
+        System.out.println("Controller: Searching for user: " + username);
         SearchUserInputData searchUserInputData = new SearchUserInputData(username);
         searchUserInputBoundary.execute(searchUserInputData);
 
