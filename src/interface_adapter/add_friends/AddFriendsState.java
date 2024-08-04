@@ -1,7 +1,5 @@
 package interface_adapter.add_friends;
 
-import interface_adapter.Login.LoginState;
-
 /**
  * The AddFriendsState class represents the state of the adding friends menu.
  * It holds the user inputs and any error messages.
@@ -9,20 +7,7 @@ import interface_adapter.Login.LoginState;
 public class AddFriendsState {
     private String currentUser = "";
     private String friend = "";
-    private String friendError = null;
-
-    /**
-     * Constructs a new AddFriendsState by copying the state from another AddFriendsState.
-     *
-     * @param copy the AddFriendsState to copy from
-     */
-    public AddFriendsState(AddFriendsState copy) {
-        currentUser = copy.currentUser;
-        friend = copy.friend;
-        friendError = copy.friendError;
-
-    }
-
+    private String error = null;
     /**
      * Gets the current user.
      *
@@ -36,8 +21,8 @@ public class AddFriendsState {
         return friend;
     }
 
-    public String getFriendError() {
-        return friendError;
+    public String getError() {
+        return error;
     }
 
     public void setCurrentUser(String currentUser) {
@@ -48,7 +33,7 @@ public class AddFriendsState {
         this.friend = friend;
     }
 
-    public void setFriendError(String friendError) {
-        this.friendError = friendError;
+    public void setError(String error) {
+        this.error = error;
     }
 }

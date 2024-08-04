@@ -32,7 +32,7 @@ public class AddFriendsPresenter implements AddFriendsOutputBoundary {
         addFriendsState.setCurrentUser(outputData.getCurrentUser());
 
         addFriendsState.setFriend(outputData.getFriend());
-        addFriendsState.setFriendError(null);
+        addFriendsState.setError(null);
 
         addFriendsViewModel.setState(addFriendsState);
         addFriendsViewModel.firePropertyChanged();
