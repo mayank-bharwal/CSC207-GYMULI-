@@ -162,7 +162,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
      */
     private void showFriendOptionsPopup(MouseEvent e, String currentUser, String friend) {
         JPopupMenu friendOptions = new JPopupMenu();
-        JMenuItem deleteFriendItem = new JMenuItem("Delete Friend");
+        JMenuItem deleteFriendItem = new JMenuItem("Remove Friend");
         deleteFriendItem.addActionListener(event -> removeFriendsController.removeFriends(currentUser, friend));
         friendOptions.add(deleteFriendItem);
         friendOptions.show(e.getComponent(), e.getX(), e.getY());
