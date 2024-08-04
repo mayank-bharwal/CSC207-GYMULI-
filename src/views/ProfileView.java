@@ -52,9 +52,8 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
         JLabel atSymbolLabel = new JLabel("@");
         atSymbolLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        atSymbolLabel.setForeground(Color.DARK_GRAY);
 
-        usernameLabel = createLabel(Font.BOLD, 24, Color.DARK_GRAY);
+        usernameLabel = createLabel(Font.BOLD, 24);
 
         GridBagConstraints gbcUser = new GridBagConstraints();
         gbcUser.insets = new Insets(0, 0, 0, 5);
@@ -99,12 +98,11 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         JPanel ageProgramPanel = new JPanel(new GridBagLayout());
         ageProgramPanel.setOpaque(false);
 
-        ageLabel = createLabel(Font.PLAIN, 14, Color.BLACK);
-        programOfStudyLabel = createLabel(Font.PLAIN, 14, Color.BLACK);
+        ageLabel = createLabel(Font.PLAIN, 14);
+        programOfStudyLabel = createLabel(Font.PLAIN, 14);
 
         JLabel separator = new JLabel("|");
         separator.setFont(new Font("Arial", Font.PLAIN, 14));
-        separator.setForeground(Color.BLACK);
 
         GridBagConstraints gbcInfo = new GridBagConstraints();
         gbcInfo.insets = new Insets(0, 0, 0, 5);
@@ -131,7 +129,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
-        bioLabel = createLabel(Font.PLAIN, 14, Color.BLACK);
+        bioLabel = createLabel(Font.PLAIN, 14);
         profilePanel.add(bioLabel, gbc);
 
         JPanel outerPanel = new JPanel(new BorderLayout());
@@ -148,10 +146,10 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         friendsButton.addActionListener(e -> viewModelManager.setActiveView(EditFriendsView.viewName));
     }
 
-    private JLabel createLabel(int fontStyle, int fontSize, Color color) {
+
+    private JLabel createLabel(int fontStyle, int fontSize) {
         JLabel label = new JLabel();
         label.setFont(new Font("Arial", fontStyle, fontSize));
-        label.setForeground(color);
         return label;
     }
 
