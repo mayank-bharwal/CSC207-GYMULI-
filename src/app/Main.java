@@ -140,7 +140,7 @@ public class Main {
 
 
         AddFriendsViewModel addFriendsViewModel = new AddFriendsViewModel();
-        AddFriendsPresenter addFriendsPresenter = new AddFriendsPresenter(addFriendsViewModel, viewModelManager);
+        AddFriendsPresenter addFriendsPresenter = new AddFriendsPresenter(addFriendsViewModel);
         AddFriendsInputBoundary addFriendsInteractor = new AddFriendsInteractor(addFriendsPresenter, userDataAccessObject);
         AddFriendsController addFriendsController = new AddFriendsController(addFriendsInteractor);
 
@@ -149,7 +149,7 @@ public class Main {
         RemoveFriendsInputBoundary removeFriendsInteractor = new RemoveFriendsInteractor(userDataAccessObject, removeFriendsPresenter);
         RemoveFriendsController removeFriendsController = new RemoveFriendsController(removeFriendsInteractor, viewModelManager);
 
-        EditFriendsView friendsView = FriendsViewFactory.create(viewModelManager, removeFriendsController, addFriendsController);
+        EditFriendsView friendsView = FriendsViewFactory.create(viewModelManager, addFriendsViewModel,removeFriendsViewModel, removeFriendsController, addFriendsController);
         views.add(friendsView, EditFriendsView.viewName);
 
         SearchUserViewModel searchUserViewModel = new SearchUserViewModel();

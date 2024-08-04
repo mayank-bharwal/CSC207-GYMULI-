@@ -21,7 +21,7 @@ public class RemoveFriendsInteractor implements RemoveFriendsInputBoundary{
         } else {
 
             removeFriendsDAO.remove(inputData.getUser1(), inputData.getUser2());
-            RemoveFriendsOutputData outputData = new RemoveFriendsOutputData(inputData.getUser2(), false);
+            RemoveFriendsOutputData outputData = new RemoveFriendsOutputData(inputData.getUser1(), inputData.getUser2(), false);
             friendsPresenter.setPassView(outputData);
         }
 

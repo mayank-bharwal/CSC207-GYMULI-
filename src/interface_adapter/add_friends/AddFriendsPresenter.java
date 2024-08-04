@@ -1,7 +1,4 @@
 package interface_adapter.add_friends;
-
-
-import interface_adapter.ViewModelManager;
 import use_case.add_friends.AddFriendsOutputBoundary;
 import use_case.add_friends.AddFriendsOutputData;
 /**
@@ -10,16 +7,13 @@ import use_case.add_friends.AddFriendsOutputData;
  */
 public class AddFriendsPresenter implements AddFriendsOutputBoundary {
     private final AddFriendsViewModel addFriendsViewModel;
-    private final ViewModelManager viewModelManager;
 
     /**
      * Constructs a new AddFriendsPresenter with the specified view model manager and add friends view model.
      * @param addFriendsViewModel the addFriendsViewModel
-     * @param viewModelManager the view model manager
      */
-    public AddFriendsPresenter(AddFriendsViewModel addFriendsViewModel, ViewModelManager viewModelManager){
+    public AddFriendsPresenter(AddFriendsViewModel addFriendsViewModel){
         this.addFriendsViewModel = addFriendsViewModel;
-        this.viewModelManager = viewModelManager;
     }
     /**
      * Sets the pass view for successful adding friends.
@@ -28,15 +22,29 @@ public class AddFriendsPresenter implements AddFriendsOutputBoundary {
 
     @Override
     public void setPassView(AddFriendsOutputData outputData) {
+        AddFriendsState addFriendsState = addFriendsViewModel.getState();
+        addFriendsState.setCurrentUser(outputData.getCurrentUser());
+
+        addFriendsState.setFriend(outputData.getFriend());
+        addFriendsState.setError(null);
+
+        addFriendsViewModel.setState(addFriendsState);
+        addFriendsViewModel.firePropertyChanged("friendsList", null, "Friend successfully added!");
+
 
     }
     /**
      * Sets the fail view for unsuccessful adding friends.
-     * @param msg the error message
+     * @param error the error message
      */
 
     @Override
-    public void setFailView(String msg) {
+    public void setFailView(String error) {
+        AddFriendsState state = addFriendsViewModel.getState();
+        state.setError(error);
+        addFriendsViewModel.setState(state);
+        addFriendsViewModel.firePropertyChanged("generalError", null, error);
+
 
     }
 }
