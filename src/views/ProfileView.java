@@ -5,11 +5,10 @@ import interface_adapter.ViewModelManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-/**
- * A view that displays the user's profile information.
- */
-public class ProfileView extends JPanel {
+public class ProfileView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "ProfileView";
 
     private final ViewModelManager viewModelManager;
@@ -21,11 +20,6 @@ public class ProfileView extends JPanel {
     private final JButton updateProfileButton;
     private final JButton friendsButton;
 
-    /**
-     * Constructs a ProfileView with the specified ViewModelManager.
-     *
-     * @param viewModelManager the manager that handles view models and manages state
-     */
     public ProfileView(ViewModelManager viewModelManager) {
         this.viewModelManager = viewModelManager;
 
@@ -45,7 +39,6 @@ public class ProfileView extends JPanel {
         gbc.insets = new Insets(2, 5, 2, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Profile Picture
         profilePictureLabel = new JLabel(new ImageIcon("images/profilepicdefault.png"));
         profilePictureLabel.setPreferredSize(new Dimension(50, 50));
         gbc.gridx = 0;
@@ -94,7 +87,6 @@ public class ProfileView extends JPanel {
         updateProfileButton = new JButton("Edit Profile");
         profilePanel.add(updateProfileButton, gbc);
 
-        // Horizontal separator
         JSeparator separator1 = new JSeparator();
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -133,10 +125,12 @@ public class ProfileView extends JPanel {
         gbc.anchor = GridBagConstraints.WEST;
         profilePanel.add(ageProgramPanel, gbc);
 
+        // need to center bio
         gbc.gridx = 0;
         gbc.gridy = 6;
         gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
         bioLabel = createLabel(Font.PLAIN, 14, Color.BLACK);
         profilePanel.add(bioLabel, gbc);
 
@@ -146,19 +140,13 @@ public class ProfileView extends JPanel {
 
         add(outerPanel, BorderLayout.CENTER);
 
+        viewModelManager.addPropertyChangeListener(this);
+
         updateUserInfo();
 
         updateProfileButton.addActionListener(e -> viewModelManager.setActiveView(UpdateProfileView.viewName));
     }
 
-    /**
-     * Creates a JLabel with specified font settings.
-     *
-     * @param fontStyle the style of the font
-     * @param fontSize  the size of the font
-     * @param color     the color of the font
-     * @return a new JLabel
-     */
     private JLabel createLabel(int fontStyle, int fontSize, Color color) {
         JLabel label = new JLabel();
         label.setFont(new Font("Arial", fontStyle, fontSize));
@@ -166,19 +154,18 @@ public class ProfileView extends JPanel {
         return label;
     }
 
-    /**
-     * Updates the display with the current user's information.
-     */
     private void updateUserInfo() {
         User currentUser = viewModelManager.getCurrentUser();
+        System.out.println("Current User: " + currentUser);
         if (currentUser != null) {
+            System.out.println("Username: " + currentUser.getUsername());
             usernameLabel.setText(currentUser.getUsername());
             bioLabel.setText(currentUser.getBio());
             programOfStudyLabel.setText(currentUser.getProgramOfStudy());
             ageLabel.setText(currentUser.getAge() != null ? currentUser.getAge().toString() : "N/A");
 
             profilePictureLabel.setIcon(new ImageIcon("images/profilepicdefault.png"));
-            friendsButton.setText("- Friends");
+            friendsButton.setText(currentUser.getFriends().size() + " Friends");
         } else {
             usernameLabel.setText("N/A");
             bioLabel.setText("N/A");
@@ -187,6 +174,13 @@ public class ProfileView extends JPanel {
 
             profilePictureLabel.setIcon(new ImageIcon("images/profilepicdefault.png"));
             friendsButton.setText("0 Friends");
+        }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("activeView".equals(evt.getPropertyName()) && viewName.equals(evt.getNewValue())) {
+            updateUserInfo();
         }
     }
 }
