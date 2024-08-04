@@ -103,8 +103,14 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
                 break;
             case "friendsList":
                 updateFriendsList();
-                JOptionPane.showMessageDialog(this, "Friend successfully added or deleted!", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Friend successfully added!", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
                 break;
+
+            case "friendRemoved":
+                updateFriendsList();
+                JOptionPane.showMessageDialog(this, "Friend successfully removed!", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
+                break;
+
             case "generalError":
                 String error = evt.getNewValue().toString();
                 if (error != null) {
@@ -176,6 +182,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         User currentUser = viewModelManager.getCurrentUser();
         if (currentUser != null) {
             List<String> friendsList = currentUser.getFriends();
+            System.out.println(friendsList);
             for (String friend : friendsList) {
                 JButton friendButton = new JButton(friend);
                 friendButton.setAlignmentX(Component.LEFT_ALIGNMENT);

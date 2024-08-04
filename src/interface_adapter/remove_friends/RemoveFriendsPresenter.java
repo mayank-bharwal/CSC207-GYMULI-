@@ -36,7 +36,7 @@ public class RemoveFriendsPresenter implements RemoveFriendsOutputBoundary {
         state.setError(null);
 
         removeFriendsViewModel.setState(state);
-        removeFriendsViewModel.firePropertyChanged("friendsList", null, "Friend successfully removed!");
+        removeFriendsViewModel.firePropertyChanged("friendRemoved", null, "Friend successfully removed!");
     }
 
     /**
