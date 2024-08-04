@@ -1,7 +1,4 @@
 package interface_adapter.add_friends;
-
-
-import interface_adapter.ViewModelManager;
 import use_case.add_friends.AddFriendsOutputBoundary;
 import use_case.add_friends.AddFriendsOutputData;
 /**
@@ -10,16 +7,13 @@ import use_case.add_friends.AddFriendsOutputData;
  */
 public class AddFriendsPresenter implements AddFriendsOutputBoundary {
     private final AddFriendsViewModel addFriendsViewModel;
-    private final ViewModelManager viewModelManager;
 
     /**
      * Constructs a new AddFriendsPresenter with the specified view model manager and add friends view model.
      * @param addFriendsViewModel the addFriendsViewModel
-     * @param viewModelManager the view model manager
      */
-    public AddFriendsPresenter(AddFriendsViewModel addFriendsViewModel, ViewModelManager viewModelManager){
+    public AddFriendsPresenter(AddFriendsViewModel addFriendsViewModel){
         this.addFriendsViewModel = addFriendsViewModel;
-        this.viewModelManager = viewModelManager;
     }
     /**
      * Sets the pass view for successful adding friends.

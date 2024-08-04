@@ -1,10 +1,11 @@
 package interface_adapter.remove_friends;
 
-import java.util.ArrayList;
-
 public class RemoveFriendsState {
+    private String currentUser;
     private boolean success;
     private String error;
+
+
 
     public boolean isSuccess() {
         return success;
@@ -20,5 +21,13 @@ public class RemoveFriendsState {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public String getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(String currentUser) {
+        this.currentUser = currentUser;
     }
 }
