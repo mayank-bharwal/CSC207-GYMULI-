@@ -28,6 +28,8 @@ public class AddFriendsPresenter implements AddFriendsOutputBoundary {
 
     @Override
     public void setPassView(AddFriendsOutputData outputData) {
+        AddFriendsState addFriendsState = addFriendsViewModel.getState();
+
 
     }
     /**
