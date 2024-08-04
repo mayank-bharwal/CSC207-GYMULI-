@@ -27,7 +27,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static data_access.readDB.GetDB.getCollectionID;
-import static data_access.userMap_ignore.getMap;
 
 /**
  * Data Access Object for User-related operations.
