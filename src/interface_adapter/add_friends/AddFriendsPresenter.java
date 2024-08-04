@@ -29,6 +29,13 @@ public class AddFriendsPresenter implements AddFriendsOutputBoundary {
     @Override
     public void setPassView(AddFriendsOutputData outputData) {
         AddFriendsState addFriendsState = addFriendsViewModel.getState();
+        addFriendsState.setCurrentUser(outputData.getCurrentUser());
+
+        addFriendsState.setFriend(outputData.getFriend());
+        addFriendsState.setFriendError(null);
+
+        addFriendsViewModel.setState(addFriendsState);
+        addFriendsViewModel.firePropertyChanged();
 
 
     }
@@ -39,6 +46,10 @@ public class AddFriendsPresenter implements AddFriendsOutputBoundary {
 
     @Override
     public void setFailView(String msg) {
+        AddFriendsState state = addFriendsViewModel.getState();
+        state.setError(msg);
+        addFriendsViewModel.setState(state);
+
 
     }
 }
