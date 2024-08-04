@@ -202,4 +202,5 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
             friendsListPanel.repaint(); // Repaint the panel to apply changes
         }
     }
+    //end of view
 }
