@@ -24,6 +24,11 @@ public class Facade implements FacadeInterface {
         return apiCaller.filterProfanity(text);
     }
 
+    public void use_paid(boolean paid){
+        APICallerInterface apiCaller = new APICaller();
+        apiCaller.use_paid(paid);
+    }
+
 // ******************************
     // ignore this, testing purposes only
     public static void main(String[]args){

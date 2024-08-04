@@ -59,6 +59,11 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         this.mongoConnection = mongoConnection;
         this.UserCollection = mongoConnection.getUserCollection();
 
+        /**
+         * CHANGE facade.use_paid to true when NOT TESTING
+         */
+        facade.use_paid(false); // false in TESTING
+
 
         try (MongoCursor<Document> cursor = UserCollection.find().iterator()) {
             while (cursor.hasNext()) {
@@ -167,7 +172,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
-        APICaller.use_paid(false); // switch to TRUE when NOT testing
         facade.UpdateDB(user, accounts, mongoConnection);
 
         accounts.put(user.getUsername(), user);
@@ -267,7 +271,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         accounts.remove(oldUsername);// 1
 
-        APICaller.use_paid(false); // Change to TRUE when NOT testing
         facade.UpdateDB(user, accounts, mongoConnection);// 2
 
         accounts.put(newUsername, newUser); // 3
