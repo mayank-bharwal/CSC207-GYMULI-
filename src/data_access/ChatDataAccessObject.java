@@ -214,12 +214,6 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         }
 
 
-
-
-
-
-
-
     }
 
     /**
