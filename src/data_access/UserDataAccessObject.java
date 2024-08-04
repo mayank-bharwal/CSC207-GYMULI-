@@ -163,7 +163,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
-        APICaller.use_paid(false);
+        APICaller.use_paid(false); // switch to TRUE when NOT testing
         facade.UpdateDB(user, accounts, mongoConnection);
 
         accounts.put(user.getUsername(), user);
