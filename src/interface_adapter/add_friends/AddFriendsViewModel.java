@@ -40,6 +40,14 @@ public class AddFriendsViewModel extends ViewModel {
     }
 
     /**
+     * Overloading property change method with different method signatures.
+     * This notefies listener that the state has changed with appropriate message.
+     */
+    public void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
+        propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+    }
+
+    /**
      * Adds a property change listener to this view model.
      *
      * @param listener the property change listener to add
