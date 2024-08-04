@@ -65,11 +65,16 @@ import interface_adapter.send_message.SendMessageViewModel;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class Main {
+
     public static void main(String[] args) {
 
-        JFrame application = new JFrame("YapNet");
+
+
+        JFrame application = new JFrame("GYMULI");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setPreferredSize(new Dimension(800, 600));
 
@@ -165,4 +170,6 @@ public class Main {
         application.pack();
         application.setVisible(true);
     }
+
+
 }
