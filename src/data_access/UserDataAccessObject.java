@@ -61,7 +61,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         /**
          * CHANGE facade.use_paid to true when NOT TESTING
          */
-        facade.use_paid(false); // false in TESTING, true in production
+        facade.use_paid(false); // false in TESTING, true in PRODUCTION
 
 
         try (MongoCursor<Document> cursor = UserCollection.find().iterator()) {
