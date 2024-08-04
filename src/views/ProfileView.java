@@ -145,6 +145,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         updateUserInfo();
 
         updateProfileButton.addActionListener(e -> viewModelManager.setActiveView(UpdateProfileView.viewName));
+        friendsButton.addActionListener(e -> viewModelManager.setActiveView(EditFriendsView.viewName));
     }
 
     private JLabel createLabel(int fontStyle, int fontSize, Color color) {
