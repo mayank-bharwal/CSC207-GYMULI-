@@ -8,6 +8,7 @@ import interface_adapter.remove_friends.RemoveFriendsController;
 import interface_adapter.remove_friends.RemoveFriendsViewModel;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -54,14 +55,16 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
-        setBackground(Color.WHITE);  // Set background to white
+
+        Color hex = new Color(224,224,224);
 
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(Color.WHITE);
+        headerPanel.setBorder(null);
+        headerPanel.setBackground(hex);
 
         // User Info Panel
         JPanel userInfoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        userInfoPanel.setBackground(Color.WHITE);
+        userInfoPanel.setBackground(hex);
         profilePictureLabel = new JLabel();
         currentUserLabel = new JLabel();
         userInfoPanel.add(profilePictureLabel);
@@ -70,7 +73,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         // Add Friend Button (Image of the button)
         ImageIcon addFriendIcon = new ImageIcon("images/add_friend.png");
         Image originalImage = addFriendIcon.getImage();
-        Image resizedImage = originalImage.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+        Image resizedImage = originalImage.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
 
@@ -87,12 +90,10 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         backButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        bottomPanel.setBackground(Color.WHITE);
         bottomPanel.add(backButton);
         add(bottomPanel, BorderLayout.SOUTH);
 
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonsPanel.setBackground(Color.WHITE);
         buttonsPanel.add(addFriendButton);
 
         headerPanel.add(userInfoPanel, BorderLayout.WEST);
@@ -101,13 +102,11 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
 
         friendsListPanel = new JPanel();
         friendsListPanel.setLayout(new BoxLayout(friendsListPanel, BoxLayout.Y_AXIS));
-        friendsListPanel.setBackground(Color.WHITE);
         JScrollPane scrollPane = new JScrollPane(friendsListPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(Color.WHITE);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         add(mainPanel, BorderLayout.CENTER);
 
@@ -205,11 +204,17 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
             for (String friend : friendsList) {
                 JPanel friendPanel = new JPanel();
                 friendPanel.setLayout(new BoxLayout(friendPanel, BoxLayout.X_AXIS));
-                friendPanel.setBackground(Color.WHITE);
 
                 JLabel friendLabel = new JLabel(friend);
                 friendLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-                friendLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+                Border blackBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
+                Border paddingBorder = BorderFactory.createEmptyBorder(10 ,10,10, screenSize.width);
+                Border compoundBorder = BorderFactory.createCompoundBorder(blackBorder, paddingBorder);
+
+                friendLabel.setBorder(compoundBorder);
 
                 friendPanel.add(friendLabel);
                 friendPanel.add(Box.createHorizontalGlue());
