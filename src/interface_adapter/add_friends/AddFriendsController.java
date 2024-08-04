@@ -11,18 +11,20 @@ public class AddFriendsController {
 
     /**
      * Constructor for AddFriends
+     *
      * @param addFriendsInputBoundary
      */
-    public AddFriendsController(AddFriendsInputBoundary addFriendsInputBoundary){
+    public AddFriendsController(AddFriendsInputBoundary addFriendsInputBoundary) {
         this.addFriendsInputBoundary = addFriendsInputBoundary;
     }
 
     /**
      * executes the add friends process
+     *
      * @param currentUser
      * @param friend
      */
-    public void add(String currentUser, String friend){
+    public void add(String currentUser, String friend) {
         AddFriendsInputData addFriendsInputData = new AddFriendsInputData(currentUser, friend);
         addFriendsInputBoundary.execute(addFriendsInputData);
     }
