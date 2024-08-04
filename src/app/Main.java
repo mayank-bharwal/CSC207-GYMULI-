@@ -69,13 +69,12 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 public class Main {
-    private static boolean isDarkMode = false;
 
     public static void main(String[] args) {
 
 
 
-        JFrame application = new JFrame("YapNet");
+        JFrame application = new JFrame("GYMULI");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setPreferredSize(new Dimension(800, 600));
 
