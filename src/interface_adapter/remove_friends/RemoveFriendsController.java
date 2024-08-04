@@ -21,7 +21,7 @@ public class RemoveFriendsController {
         User currentUser =  viewModelManager.getCurrentUser();
         viewModelManager.setCurrentUser(currentUser);
 
-        viewModelManager.firePropertyChanged("friendsUpdated", null, null);
+        viewModelManager.firePropertyChanged("friendRemoved", null, null);
     }
 }
 

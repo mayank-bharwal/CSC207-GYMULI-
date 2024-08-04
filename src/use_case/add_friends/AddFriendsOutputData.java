@@ -13,4 +13,11 @@ public class AddFriendsOutputData {
         this.UseCaseFailed = UseCaseFailed;
     }
 
+    public String getCurrentUser() {
+        return currentUser;
+    }
+
+    public String getFriend() {
+        return friend;
+    }
 }

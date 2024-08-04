@@ -2,6 +2,9 @@ package data_access;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+
 import data_access.apiCallFacade.apiCaller.APICaller;
 import data_access.readDB.MongoConnection;
 import data_access.apiCallFacade.Facade;
@@ -24,7 +27,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static data_access.readDB.GetDB.getCollectionID;
-import static data_access.userMap_ignore.getMap;
 
 /**
  * Data Access Object for User-related operations.
@@ -55,6 +57,11 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         this.accounts = accounts;
         this.mongoConnection = mongoConnection;
         this.UserCollection = mongoConnection.getUserCollection();
+
+        /**
+         * CHANGE facade.use_paid to true when NOT TESTING
+         */
+        facade.use_paid(false); // false in TESTING, true in PRODUCTION
 
 
         try (MongoCursor<Document> cursor = UserCollection.find().iterator()) {
@@ -103,6 +110,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                  .toLocalDateTime();
 
          cU.setChats(chats);
+         cU.setFriends(friends);
 
          System.out.println("work done");
 
@@ -163,7 +171,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
-        APICaller.use_paid(false);
         facade.UpdateDB(user, accounts, mongoConnection);
 
         accounts.put(user.getUsername(), user);
@@ -259,15 +266,30 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         User user = accounts.get(oldUsername);
 
+        List<String> frnds = user.getFriends();
+
+        for (String f: frnds) {
+            UserCollection.updateOne(
+                    Filters.eq("username", f),
+                    Updates.pull("friends", oldUsername)
+            );
+            UserCollection.updateOne(
+                    Filters.eq("username", f),
+                    Updates.addToSet("friends", newUsername)
+            );
+
+            User fUser = accounts.get(f);
+            fUser.getFriends().remove(oldUsername);
+            fUser.getFriends().add(newUsername);
+
+        }
+
         User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
+        accounts.remove(oldUsername);
 
-        accounts.remove(oldUsername);// 1
-
-        APICaller.use_paid(false); // Change to TRUE when NOT testing
         facade.UpdateDB(user, accounts, mongoConnection);// 2
 
-        accounts.put(newUsername, newUser); // 3
-
+        accounts.put(newUsername, newUser);
         System.out.println("user updated");
         System.out.println(accounts.get(newUsername).getUsername());
 
@@ -341,13 +363,22 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         User friend = getUser(user2);
 
         if (user != null && friend != null) {
-            Document filter1 = new Document("username", user1);
-            Document update1 = new Document("$pull", new Document("friends", user1));
-            UserCollection.updateOne(filter1, update1);
 
-            Document filter2 = new Document("username", user2);
-            Document update2 = new Document("$pull", new Document("friends", user2));
-            UserCollection.updateMany(filter2, update2);
+
+            UserCollection.updateOne(
+                    Filters.eq("username", user1),
+                    Updates.pull("friends", user2)
+            );
+
+            UserCollection.updateOne(
+                    Filters.eq("username", user2),
+                    Updates.pull("friends", user1)
+
+
+            );
+            user.getFriends().remove(user2);
+            friend.getFriends().remove(user1);
+
         } else {
             System.out.println("User not found");
         }

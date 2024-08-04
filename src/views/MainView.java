@@ -12,6 +12,8 @@ import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 
 /**
  * A view that represents the main user interface after a user has logged in.
@@ -20,6 +22,7 @@ import java.util.Set;
  */
 public class MainView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "MainView";
+    private boolean isDarkMode = false;
 
     private final ViewModelManager viewModelManager;
     private final UserDataAccessObject userDataAccessObject;
@@ -40,6 +43,9 @@ public class MainView extends JPanel implements PropertyChangeListener {
         this.viewModelManager.addPropertyChangeListener(this);
         this.retrieveChatController = retrieveChatController;
         this.userDataAccessObject = userDataAccessObject;
+
+        JButton toggleDarkModeButton = new JButton("Toggle Dark Mode");
+        toggleDarkModeButton.addActionListener(e -> toggleDarkMode());
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
@@ -88,6 +94,8 @@ public class MainView extends JPanel implements PropertyChangeListener {
         buttonPanel.add(logoutButton);
         buttonPanel.add(findFriendsButton);
         buttonPanel.add(refreshButton);
+        buttonPanel.add(toggleDarkModeButton);
+
         headerPanel.add(buttonPanel, BorderLayout.WEST);
 
         add(headerPanel, BorderLayout.NORTH);
@@ -160,5 +168,23 @@ public class MainView extends JPanel implements PropertyChangeListener {
         chatListPanel.revalidate();
         chatListPanel.repaint();
     }
+
+    private void toggleDarkMode() {
+        try {
+            if (isDarkMode) {
+                UIManager.setLookAndFeel(new FlatLightLaf());
+                isDarkMode = false;
+            } else {
+                UIManager.setLookAndFeel(new FlatDarkLaf());
+                isDarkMode = true;
+            }
+            // Update the look and feel for all components
+            SwingUtilities.updateComponentTreeUI(SwingUtilities.getWindowAncestor(this));
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
 }
 
