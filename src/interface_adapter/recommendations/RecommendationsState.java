@@ -2,23 +2,33 @@ package interface_adapter.recommendations;
 
 import entity.User;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RecommendationsState {
-
-    private List<User> Similarusers = new ArrayList<>();
+    private Map<User, Double> userSimilarities = new HashMap<>();
     private String recommendationError = null;
 
     public RecommendationsState(RecommendationsState copy){
-        Similarusers = copy.Similarusers;
+        userSimilarities = copy.userSimilarities;
         recommendationError = copy.recommendationError;
     }
+
     public RecommendationsState() {}
 
-    public String getRecommendationError() {return recommendationError;}
-    public List<User> getSimilarUsers() {return Similarusers;}
+    public String getRecommendationError() {
+        return recommendationError;
+    }
 
-    public void setrecommendationError(String recommendationError) {this.recommendationError = recommendationError;}
-    public void setSimilarusers(List<User> similarusers) {this.Similarusers = similarusers;}
+    public Map<User, Double> getUserSimilarities() {
+        return userSimilarities;
+    }
+
+    public void setRecommendationError(String recommendationError) {
+        this.recommendationError = recommendationError;
+    }
+
+    public void setUserSimilarities(Map<User, Double> userSimilarities) {
+        this.userSimilarities = userSimilarities;
+    }
 }

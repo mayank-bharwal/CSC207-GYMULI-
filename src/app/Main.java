@@ -10,9 +10,15 @@ import interface_adapter.account_creation.SignupViewModel;
 import interface_adapter.ViewModelManager;
 import interface_adapter.make_chat.CreateChatPresenter;
 import interface_adapter.make_chat.CreateChatViewModel;
+import interface_adapter.recommendations.RecommendationsController;
+import interface_adapter.recommendations.RecommendationsPresenter;
+import interface_adapter.recommendations.RecommendationsViewModel;
 import interface_adapter.retrieve_chat.RetrieveChatController;
 import interface_adapter.retrieve_chat.RetrieveChatPresenter;
 import interface_adapter.retrieve_chat.RetrieveChatViewModel;
+import interface_adapter.search_user.SearchUserController;
+import interface_adapter.search_user.SearchUserPresenter;
+import interface_adapter.search_user.SearchUserViewModel;
 import interface_adapter.update_profile.UpdateProfilePresenter;
 import interface_adapter.update_profile.UpdateProfileViewModel;
 import use_case.account_creation.AccountCreationInputBoundary;
@@ -27,8 +33,16 @@ import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.make_chat.MakeChatInputBoundary;
 import use_case.make_chat.MakeChatInteractor;
+import use_case.recommendations.RecommendationsInputBoundary;
+import use_case.recommendations.RecommendationsInputData;
+import use_case.recommendations.RecommendationsInteractor;
+import use_case.recommendations.RecommendationsOutputBoundary;
 import use_case.retrieve_chat.RetrieveChatInputBoundary;
 import use_case.retrieve_chat.RetrieveChatInteractor;
+import use_case.search_user.SearchUserDataAccessInterface;
+import use_case.search_user.SearchUserInputBoundary;
+import use_case.search_user.SearchUserInteractor;
+import use_case.search_user.SearchUserOutputBoundary;
 import use_case.send_message.SendMessageInteractor;
 import use_case.update_profile.UpdateProfileInputBoundary;
 import use_case.update_profile.UpdateProfileInteractor;
@@ -61,12 +75,14 @@ public class Main {
         SignupViewModel signupViewModel = new SignupViewModel();
         CreateChatViewModel createChatViewModel = new CreateChatViewModel();
         UpdateProfileViewModel updateProfileViewModel = new UpdateProfileViewModel();
+        RecommendationsViewModel recommendationsViewModel = new RecommendationsViewModel();
 
         MongoConnection mongoConnection = new MongoConnection();
 
         UserFactory userFactory = new CommonUserFactory();
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, new HashMap<>(), mongoConnection);
         ChatDataAccessObject chatDataAccessObject = new ChatDataAccessObject(mongoConnection, new HashMap<>(), new MessageFactory(), new HashMap<>(), new ChatFactory(), userDataAccessObject);
+
 
         AccountCreationOutputBoundary accountCreationOutputBoundary = new SignupPresenter(viewModelManager, signupViewModel, loginViewModel);
         AccountCreationInputBoundary accountCreationInputBoundary = new AccountCreationInteractor(userDataAccessObject, accountCreationOutputBoundary, userFactory);
@@ -107,11 +123,19 @@ public class Main {
         UpdateProfileView updateProfileView = UpdateProfileViewFactory.create(viewModelManager, updateProfileViewModel, updateProfileInputBoundary);
         views.add(updateProfileView, UpdateProfileView.viewName);
 
+        SearchUserViewModel searchUserViewModel = new SearchUserViewModel();
+        SearchUserOutputBoundary searchUserOutputBoundary = new SearchUserPresenter(searchUserViewModel);
+        SearchUserInputBoundary searchUserInputBoundary = new SearchUserInteractor(searchUserOutputBoundary, userDataAccessObject);
+        SearchUserController searchUserController = new SearchUserController(searchUserInputBoundary);
+
+        RecommendationsOutputBoundary recommendationsOutputBoundary = new RecommendationsPresenter(recommendationsViewModel, viewModelManager);
+        RecommendationsInputBoundary recommendationsInputBoundary = new RecommendationsInteractor(userDataAccessObject, recommendationsOutputBoundary);
+        RecommendationsController recommendationsController = new RecommendationsController(recommendationsInputBoundary);
+        RecommendationView recommendationView = RecommendationViewFactory.create(viewModelManager, recommendationsController, recommendationsViewModel, searchUserController, searchUserViewModel);
+        views.add(recommendationView, RecommendationView.viewName);
 
         viewModelManager.setActiveView(loginView.viewName);
         viewModelManager.firePropertyChanged();
-
-
 
         application.pack();
         application.setVisible(true);
