@@ -3,7 +3,7 @@ package use_case.remove_friends;
 public class RemoveFriendsOutputData {
     private final String currentUser;
     private final String friendRemoved;
-    private boolean failView;
+    private final boolean failView;
 
 
     public RemoveFriendsOutputData(String cuurentUser, String friendRemoved, boolean failView) {
