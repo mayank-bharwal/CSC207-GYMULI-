@@ -8,8 +8,14 @@ import interface_adapter.Login.LoginPresenter;
 import interface_adapter.Login.LoginViewModel;
 import interface_adapter.account_creation.SignupViewModel;
 import interface_adapter.ViewModelManager;
+import interface_adapter.add_friends.AddFriendsController;
+import interface_adapter.add_friends.AddFriendsPresenter;
+import interface_adapter.add_friends.AddFriendsViewModel;
 import interface_adapter.make_chat.CreateChatPresenter;
 import interface_adapter.make_chat.CreateChatViewModel;
+import interface_adapter.remove_friends.RemoveFriendsController;
+import interface_adapter.remove_friends.RemoveFriendsPresenter;
+import interface_adapter.remove_friends.RemoveFriendsViewModel;
 import interface_adapter.recommendations.RecommendationsController;
 import interface_adapter.recommendations.RecommendationsPresenter;
 import interface_adapter.recommendations.RecommendationsViewModel;
@@ -28,11 +34,15 @@ import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.account_creation.SignupPresenter;
 import data_access.UserDataAccessObject;
+import use_case.add_friends.AddFriendsInputBoundary;
+import use_case.add_friends.AddFriendsInteractor;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.make_chat.MakeChatInputBoundary;
 import use_case.make_chat.MakeChatInteractor;
+import use_case.remove_friends.RemoveFriendsInputBoundary;
+import use_case.remove_friends.RemoveFriendsInteractor;
 import use_case.recommendations.RecommendationsInputBoundary;
 import use_case.recommendations.RecommendationsInputData;
 import use_case.recommendations.RecommendationsInteractor;
@@ -123,6 +133,20 @@ public class Main {
         UpdateProfileView updateProfileView = UpdateProfileViewFactory.create(viewModelManager, updateProfileViewModel, updateProfileInputBoundary);
         views.add(updateProfileView, UpdateProfileView.viewName);
 
+
+        AddFriendsViewModel addFriendsViewModel = new AddFriendsViewModel();
+        AddFriendsPresenter addFriendsPresenter = new AddFriendsPresenter(addFriendsViewModel, viewModelManager);
+        AddFriendsInputBoundary addFriendsInteractor = new AddFriendsInteractor(addFriendsPresenter, userDataAccessObject);
+        AddFriendsController addFriendsController = new AddFriendsController(addFriendsInteractor);
+
+        RemoveFriendsViewModel removeFriendsViewModel = new RemoveFriendsViewModel();
+        RemoveFriendsPresenter removeFriendsPresenter = new RemoveFriendsPresenter(removeFriendsViewModel);
+        RemoveFriendsInputBoundary removeFriendsInteractor = new RemoveFriendsInteractor(userDataAccessObject, removeFriendsPresenter);
+        RemoveFriendsController removeFriendsController = new RemoveFriendsController(removeFriendsInteractor, viewModelManager);
+
+        EditFriendsView friendsView = FriendsViewFactory.create(viewModelManager, removeFriendsController, addFriendsController);
+        views.add(friendsView, EditFriendsView.viewName);
+
         SearchUserViewModel searchUserViewModel = new SearchUserViewModel();
         SearchUserOutputBoundary searchUserOutputBoundary = new SearchUserPresenter(searchUserViewModel);
         SearchUserInputBoundary searchUserInputBoundary = new SearchUserInteractor(searchUserOutputBoundary, userDataAccessObject);
@@ -133,6 +157,7 @@ public class Main {
         RecommendationsController recommendationsController = new RecommendationsController(recommendationsInputBoundary);
         RecommendationView recommendationView = RecommendationViewFactory.create(viewModelManager, recommendationsController, recommendationsViewModel, searchUserController, searchUserViewModel);
         views.add(recommendationView, RecommendationView.viewName);
+
 
         viewModelManager.setActiveView(loginView.viewName);
         viewModelManager.firePropertyChanged();
