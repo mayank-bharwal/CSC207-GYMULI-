@@ -15,6 +15,8 @@ public class APICaller implements APICallerInterface {
             .readTimeout(60, TimeUnit.SECONDS)
             .build();
 
+    private static boolean use_paid = false;
+
     @Override
     public float getSimilarityScore(String text1, String text2) {
 
@@ -27,6 +29,7 @@ public class APICaller implements APICallerInterface {
             Response response = client.newCall(request).execute();
 
             if (!response.isSuccessful()) {
+                //System.out.println(response); // debugging
                 System.out.println("First API failed, Trying the backup API");
 
                 String URL2 = getBackupAPI(text1, text2);
@@ -36,25 +39,34 @@ public class APICaller implements APICallerInterface {
                 response = client.newCall(request2).execute();
 
                 if (!response.isSuccessful()) {
-                    System.out.println("Second API failed, Trying the Third API");
-                    Request request3 = new Request.Builder()
-                            .url(getThirdAPI(text1, text2))
-                            .get()
-                            .addHeader("x-rapidapi-key", getKey())
-                            .addHeader("x-rapidapi-host", getBody())
-                            .build();
+                    //System.out.println(response);//debugging
+                    if (use_paid == true) {
+                        System.out.println("Second API failed, Trying the Third PAID API");
+                        Request request3 = new Request.Builder()
+                                .url(getThirdAPI(text1, text2))
+                                .get()
+                                .addHeader("x-rapidapi-key", getKey())
+                                .addHeader("x-rapidapi-host", getBody())
+                                .build();
 
-                    response = client.newCall(request3).execute();
+                        response = client.newCall(request3).execute();
+                    } else {
+                        System.out.println("Second API failed and NOT using the PAID API");
+                        //pass;
+                    }
                 }
             }
 
-            JSONObject responseBody = new JSONObject(response.body().string());
-            if (responseBody.has("similarity")) {
-                return (float) responseBody.getDouble("similarity") + 0.01f;
+            if (response.isSuccessful()) {
+                JSONObject responseBody = new JSONObject(response.body().string());
+                if (responseBody.has("similarity")) {
+                    return (float) responseBody.getDouble("similarity") + 0.01f;
+                } else {
+                    throw new JSONException("Response does not contain 'similarity' field");
+                }
             } else {
-                throw new JSONException("Response does not contain 'similarity' field");
+                return (float) Math.random() * 0.5f;
             }
-
         } catch (IOException | JSONException e) {
             throw new RuntimeException("API call failed -- All three", e);
         }
@@ -86,6 +98,10 @@ public class APICaller implements APICallerInterface {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void use_paid(boolean use_paid) {
+        APICaller.use_paid = use_paid;
     }
 
     public static void main (String[]args){
