@@ -35,21 +35,21 @@ public class AddFriendsPresenter implements AddFriendsOutputBoundary {
         addFriendsState.setError(null);
 
         addFriendsViewModel.setState(addFriendsState);
-        addFriendsViewModel.firePropertyChanged();
+        addFriendsViewModel.firePropertyChanged("friendsList", null, "Friend successfully added!");
 
 
     }
     /**
      * Sets the fail view for unsuccessful adding friends.
-     * @param msg the error message
+     * @param error the error message
      */
 
     @Override
-    public void setFailView(String msg) {
+    public void setFailView(String error) {
         AddFriendsState state = addFriendsViewModel.getState();
-        state.setError(msg);
+        state.setError(error);
         addFriendsViewModel.setState(state);
-        addFriendsViewModel.firePropertyChanged();
+        addFriendsViewModel.firePropertyChanged("generalError", null, error);
 
 
     }

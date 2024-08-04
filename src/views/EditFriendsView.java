@@ -4,6 +4,7 @@ import entity.User;
 import interface_adapter.ViewModelManager;
 import interface_adapter.add_friends.AddFriendsController;
 import interface_adapter.add_friends.AddFriendsViewModel;
+import interface_adapter.edit_friends.EditFriendsViewModel;
 import interface_adapter.remove_friends.RemoveFriendsController;
 import interface_adapter.remove_friends.RemoveFriendsViewModel;
 
@@ -23,6 +24,7 @@ import java.util.List;
 public class EditFriendsView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "EditFriendsView";
     private final ViewModelManager viewModelManager;
+    private final AddFriendsViewModel addFriendsViewModel;
     private final RemoveFriendsController removeFriendsController;
     private final AddFriendsController addFriendsController;
     private final JLabel currentUserLabel;
@@ -36,8 +38,9 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
      * @param removeFriendsController the controller for removing friends
      * @param addFriendsController the controller for adding friends
      */
-    public EditFriendsView(ViewModelManager viewModelManager, RemoveFriendsController removeFriendsController, AddFriendsController addFriendsController) {
+    public EditFriendsView(ViewModelManager viewModelManager, AddFriendsViewModel addFriendsViewModel, RemoveFriendsController removeFriendsController, AddFriendsController addFriendsController) {
         this.viewModelManager = viewModelManager;
+        this.addFriendsViewModel = addFriendsViewModel;
         this.removeFriendsController = removeFriendsController;
         this.addFriendsController = addFriendsController;
         this.viewModelManager.addPropertyChangeListener(this);
@@ -85,6 +88,12 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
             updateCurrentUser();
         } else if ("friendsList".equals(evt.getPropertyName())) {
             updateFriendsList();
+            JOptionPane.showMessageDialog(this, "Friend Successfully added!", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
+        } else if ("generalError".equals(evt.getPropertyName())) {
+            String error = addFriendsViewModel.getState().getError();
+            if (error != null) {
+                JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
