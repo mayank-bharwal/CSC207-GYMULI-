@@ -66,6 +66,9 @@ public class APICaller implements APICallerInterface {
                     throw new JSONException("Response does not contain 'similarity' field");
                 }
             } else {
+                /*
+                Will never be used in production since third api would be called
+                 */
                 return (float) Math.random() * 0.5f;
             }
         } catch (IOException | JSONException e) {
