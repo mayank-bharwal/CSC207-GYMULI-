@@ -2,6 +2,8 @@ package data_access;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import data_access.readDB.MongoConnection;
 import data_access.apiCallFacade.Facade;
 import data_access.apiCallFacade.FacadeInterface;
@@ -102,6 +104,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                  .toLocalDateTime();
 
          cU.setChats(chats);
+         cU.setFriends(friends);
 
          System.out.println("work done");
 
@@ -344,13 +347,22 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         User friend = getUser(user2);
 
         if (user != null && friend != null) {
-            Document filter1 = new Document("username", user1);
-            Document update1 = new Document("$pull", new Document("friends", user1));
-            UserCollection.updateOne(filter1, update1);
 
-            Document filter2 = new Document("username", user2);
-            Document update2 = new Document("$pull", new Document("friends", user2));
-            UserCollection.updateMany(filter2, update2);
+
+            UserCollection.updateOne(
+                    Filters.eq("username", user1),
+                    Updates.pull("friends", user2)
+            );
+
+            UserCollection.updateOne(
+                    Filters.eq("username", user2),
+                    Updates.pull("friends", user1)
+
+
+            );
+            user.getFriends().remove(user2);
+            friend.getFriends().remove(user1);
+
         } else {
             System.out.println("User not found");
         }
