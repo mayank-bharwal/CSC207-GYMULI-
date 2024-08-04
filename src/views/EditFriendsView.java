@@ -87,7 +87,10 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         JScrollPane scrollPane = new JScrollPane(friendsListPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        add(scrollPane, BorderLayout.WEST);
+
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+        add(mainPanel, BorderLayout.CENTER);
 
         updateCurrentUser();
     }
@@ -180,7 +183,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
                 friendButton.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        if (SwingUtilities.isLeftMouseButton(e)) {
+                        if (SwingUtilities.isRightMouseButton(e)) {
                             showFriendOptionsPopup(e, currentUser.getUsername(), friend);
                         }
                     }
