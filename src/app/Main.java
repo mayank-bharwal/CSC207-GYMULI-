@@ -135,7 +135,7 @@ public class Main {
 
 
         AddFriendsViewModel addFriendsViewModel = new AddFriendsViewModel();
-        AddFriendsPresenter addFriendsPresenter = new AddFriendsPresenter(addFriendsViewModel, viewModelManager);
+        AddFriendsPresenter addFriendsPresenter = new AddFriendsPresenter(addFriendsViewModel);
         AddFriendsInputBoundary addFriendsInteractor = new AddFriendsInteractor(addFriendsPresenter, userDataAccessObject);
         AddFriendsController addFriendsController = new AddFriendsController(addFriendsInteractor);
 
