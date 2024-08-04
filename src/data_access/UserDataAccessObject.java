@@ -2,6 +2,7 @@ package data_access;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import data_access.apiCallFacade.apiCaller.APICaller;
 import data_access.readDB.MongoConnection;
 import data_access.apiCallFacade.Facade;
 import data_access.apiCallFacade.FacadeInterface;
@@ -162,7 +163,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
-
+        APICaller.use_paid(false);
         facade.UpdateDB(user, accounts, mongoConnection);
 
         accounts.put(user.getUsername(), user);
@@ -260,16 +261,12 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
 
-        accounts.put(newUsername, newUser); // 3
         accounts.remove(oldUsername);// 1
 
+        APICaller.use_paid(false); // Change to TRUE when NOT testing
+        facade.UpdateDB(user, accounts, mongoConnection);// 2
 
-
-
-
-
-
-        facade.UpdateDB(user, accounts, mongoConnection);
+        accounts.put(newUsername, newUser); // 3
 
         System.out.println("user updated");
         System.out.println(accounts.get(newUsername).getUsername());
