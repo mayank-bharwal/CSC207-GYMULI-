@@ -3,8 +3,9 @@ package use_case.recommendations;
 import entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RecommendationsDataAccessInterface {
-    List<User> getNSimilarUsers(User user, int numberOfUsers);
-    public boolean AccountExists(String username);
+    Map<User, Double> getNSimilarUsers(User user, int numberOfUsers);
+    boolean AccountExists(String username);
 }

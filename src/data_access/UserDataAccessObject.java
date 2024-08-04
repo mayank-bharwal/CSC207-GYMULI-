@@ -2,7 +2,6 @@ package data_access;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import data_access.apiCallFacade.apiCaller.APICaller;
 import data_access.readDB.MongoConnection;
 import data_access.apiCallFacade.Facade;
 import data_access.apiCallFacade.FacadeInterface;
@@ -14,6 +13,7 @@ import use_case.add_friends.AddFriendsUserDataAccessObject;
 import use_case.login.LoginUserDataAccessInterface;
 
 import use_case.recommendations.RecommendationsDataAccessInterface;
+import use_case.search_user.SearchUserDataAccessInterface;
 import use_case.update_profile.UpdateProfileUserDataAccessInterface;
 
 import java.time.LocalDateTime;
@@ -29,7 +29,7 @@ import static data_access.userMap_ignore.getMap;
  */
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
-        UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationsDataAccessInterface {
+        UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationsDataAccessInterface, SearchUserDataAccessInterface {
     private MongoConnection mongoConnection;
     private MongoCollection<Document> UserCollection;
     private Map<String, User> accounts = new HashMap<>();
@@ -159,7 +159,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
-        APICaller.use_paid(false); // change it to TRUE when NOT testing
+
         facade.UpdateDB(user, accounts, mongoConnection);
 
         accounts.put(user.getUsername(), user);
@@ -257,12 +257,16 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
 
+        accounts.put(newUsername, newUser); // 3
         accounts.remove(oldUsername);// 1
 
-        APICaller.use_paid(false); // Change to TRUE when NOT testing
-        facade.UpdateDB(user, accounts, mongoConnection);// 2
 
-        accounts.put(newUsername, newUser); // 3
+
+
+
+
+
+        facade.UpdateDB(user, accounts, mongoConnection);
 
         System.out.println("user updated");
         System.out.println(accounts.get(newUsername).getUsername());
@@ -278,20 +282,18 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
      */
 
     @Override
-    public List<User> getNSimilarUsers(User user, int N) {
-
+    public Map<User, Double> getNSimilarUsers(User user, int N) {
         Document doc = mongoConnection.getSimilarityCollection().find(new Document("_id", getCollectionID())).first();
+        System.out.println("getNSimilarUsers for " + user.getUsername() + ": Document exists: " + (doc != null));
 
         if (doc != null) {
-            List<UserSimilarity> userSimilarities = new ArrayList<>();
+            List<Map.Entry<User, Double>> userSimilarities = new ArrayList<>();
             String username = user.getUsername();
 
             for (String key : doc.keySet()) {
-
                 if (key == null || key.equals("_id")) continue; // Skip the _id field
 
                 String[] users = key.replace("(", "").replace(")", "").split(", ");
-
                 if (users.length == 2) {
                     String user1 = users[0];
                     String user2 = users[1];
@@ -303,35 +305,30 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
                     }
 
                     double score = scoreWrapper.doubleValue();
-
                     if (user1.equals(username) || user2.equals(username)) {
                         String otherUser = user1.equals(username) ? user2 : user1;
-                        userSimilarities.add(new UserSimilarity(otherUser, score));
+                        User similarUser = getUser(otherUser);
+                        if (similarUser != null) {
+                            userSimilarities.add(new AbstractMap.SimpleEntry<>(similarUser, score));
+                        }
                     }
                 }
             }
 
-            Collections.sort(userSimilarities, Comparator.comparingDouble(UserSimilarity::getScore).reversed());
+            userSimilarities.sort((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()));
 
-            List<String> topNUsernames = userSimilarities.stream()
+            Map<User, Double> topNUsers = userSimilarities.stream()
                     .limit(N)
-                    .map(UserSimilarity::getUsername)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-            List<User> topNUsers = new ArrayList<>();
-            for (String topUsername : topNUsernames) {
-                User similarUser = getUser(topUsername);
-                assert similarUser != null;
-                if (!similarUser.getUsername().equals(username)) {
-                    topNUsers.add(similarUser);
-                }
-            }
-
+            System.out.println("Found similar users for " + username + ": " + topNUsers.size());
             return topNUsers;
         }
-        System.out.println("Document Does not exist");
-        return new ArrayList<>();
+        System.out.println("Document does not exist for user: " + user.getUsername());
+        return new HashMap<>();
     }
+
+
 
 
     public static void main(String[] args) { // TESTING PURPOSES ONLY, REDUNDANT MAIN METHOD
@@ -352,8 +349,8 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         User user1 = userDataAccessObject.getUser("Alice");
         if (user1 != null) {
-            List<User> similarUsers = userDataAccessObject.getNSimilarUsers(user1, 5);
-            similarUsers.forEach(u -> System.out.println(u.getUsername()));
+            Map<User, Double> similarUsers = userDataAccessObject.getNSimilarUsers(user1, 5);
+            similarUsers.forEach((u, score) -> System.out.println(u.getUsername() + " (Score: " + score + ")"));
         } else {
             System.out.println("User 'Alice' not found.");
         }

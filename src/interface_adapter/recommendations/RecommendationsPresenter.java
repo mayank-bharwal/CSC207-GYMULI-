@@ -17,16 +17,18 @@ public class RecommendationsPresenter implements RecommendationsOutputBoundary {
     @Override
     public void showSuccessScreen(RecommendationsOutputData recommendationsOutputData){
         RecommendationsState recommendationsState = new RecommendationsState();
-        recommendationsState.setSimilarusers(recommendationsOutputData.getSimilarUsers()); // list
+        recommendationsState.setUserSimilarities(recommendationsOutputData.getUserSimilarities());
         recommendationsViewModel.setState(recommendationsState);
+        recommendationsViewModel.firePropertyChanged("userSimilarities", null, recommendationsState.getUserSimilarities());
     }
 
     @Override
     public void showFailureScreen(String errorMessage){
-
         RecommendationsState recommendationsState = new RecommendationsState();
-        recommendationsState.setrecommendationError(errorMessage);
+        recommendationsState.setRecommendationError(errorMessage);
         recommendationsViewModel.setState(recommendationsState);
+        recommendationsViewModel.firePropertyChanged("generalError", null, errorMessage);
     }
 
 }
+

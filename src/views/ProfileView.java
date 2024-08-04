@@ -21,6 +21,7 @@ public class ProfileView extends JPanel {
     private final JLabel interestsLabel;
     private final JLabel friendsLabel;
     private final JLabel dateCreatedLabel;
+    private final JLabel profilePictureLabel;
 
     /**
      * Constructs a ProfileView with the specified ViewModelManager.
@@ -37,16 +38,30 @@ public class ProfileView extends JPanel {
         profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
         profilePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        usernameLabel = createLabel();
-        bioLabel = createLabel();
-        programOfStudyLabel = createLabel();
-        ageLabel = createLabel();
-        interestsLabel = createLabel();
-        friendsLabel = createLabel();
-        dateCreatedLabel = createLabel();
 
-        profilePanel.add(createLabeledPanel("Username:", usernameLabel));
-        profilePanel.add(createLabeledPanel("Bio:", bioLabel));
+        profilePictureLabel = new JLabel();
+        profilePictureLabel.setHorizontalAlignment(JLabel.CENTER);
+        profilePictureLabel.setPreferredSize(new Dimension(150, 150));
+        profilePictureLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+        profilePanel.add(profilePictureLabel);
+
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        headerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        usernameLabel = createLabel(Font.BOLD, 24);
+        headerPanel.add(usernameLabel);
+
+        bioLabel = createLabel(Font.ITALIC, 16);
+        headerPanel.add(bioLabel);
+
+        profilePanel.add(headerPanel);
+
+        programOfStudyLabel = createLabel(Font.PLAIN, 14);
+        ageLabel = createLabel(Font.PLAIN, 14);
+        interestsLabel = createLabel(Font.PLAIN, 14);
+        friendsLabel = createLabel(Font.PLAIN, 14);
+        dateCreatedLabel = createLabel(Font.PLAIN, 14);
+
         profilePanel.add(createLabeledPanel("Program of Study:", programOfStudyLabel));
         profilePanel.add(createLabeledPanel("Age:", ageLabel));
         profilePanel.add(createLabeledPanel("Interests:", interestsLabel));
@@ -59,20 +74,22 @@ public class ProfileView extends JPanel {
     }
 
     /**
-     * Creates a JLabel with default settings.
+     * Creates a JLabel with specified font settings.
      *
+     * @param fontStyle the style of the font
+     * @param fontSize  the size of the font
      * @return a new JLabel
      */
-    private JLabel createLabel() {
+    private JLabel createLabel(int fontStyle, int fontSize) {
         JLabel label = new JLabel();
-        label.setFont(new Font("Arial", Font.PLAIN, 14));
+        label.setFont(new Font("Arial", fontStyle, fontSize));
         return label;
     }
 
     /**
      * Creates a JPanel with a label and a value.
      *
-     * @param labelText the text for the label
+     * @param labelText  the text for the label
      * @param valueLabel the JLabel to display the value
      * @return a new JPanel
      */
@@ -100,6 +117,8 @@ public class ProfileView extends JPanel {
             friendsLabel.setText(String.join(", ", currentUser.getFriends()));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             dateCreatedLabel.setText(currentUser.getDateCreated().format(formatter));
+
+            profilePictureLabel.setIcon(new ImageIcon("path/to/profile_picture.png")); // replace with actual path
         } else {
             usernameLabel.setText("N/A");
             bioLabel.setText("N/A");
@@ -108,6 +127,8 @@ public class ProfileView extends JPanel {
             interestsLabel.setText("N/A");
             friendsLabel.setText("N/A");
             dateCreatedLabel.setText("N/A");
+
+            profilePictureLabel.setIcon(new ImageIcon("path/to/default_picture.png")); // replace with actual path
         }
     }
 }

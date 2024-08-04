@@ -13,18 +13,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 /**
  * A view that represents the main user interface after a user has logged in.
  * It displays the current user, a list of available chats, and provides options
  * to edit the profile or create a new chat.
  */
-
 public class MainView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "MainView";
 
     private final ViewModelManager viewModelManager;
-    private UserDataAccessObject userDataAccessObject;
+    private final UserDataAccessObject userDataAccessObject;
     private final RetrieveChatController retrieveChatController;
     private final JLabel currentUserLabel;
     private final JPanel chatListPanel;
@@ -34,6 +32,7 @@ public class MainView extends JPanel implements PropertyChangeListener {
      *
      * @param viewModelManager the manager that handles view models and manages state
      * @param retrieveChatController the controller responsible for retrieving chat data
+     * @param userDataAccessObject the data access object for user data
      */
     public MainView(ViewModelManager viewModelManager, RetrieveChatController retrieveChatController,
                     UserDataAccessObject userDataAccessObject) {
@@ -56,7 +55,6 @@ public class MainView extends JPanel implements PropertyChangeListener {
         JButton editProfileButton = new JButton("Edit Profile");
         editProfileButton.addActionListener(e -> viewModelManager.setActiveView(UpdateProfileView.viewName));
 
-
         String imagePath = "images/profilepicdefault.png";
         ImageIcon profileIcon = new ImageIcon(imagePath);
 
@@ -76,12 +74,10 @@ public class MainView extends JPanel implements PropertyChangeListener {
         logoutButton.addActionListener(e -> {
             viewModelManager.setActiveView(LoginView.viewName);
             viewModelManager.setCurrentUser(null);
-            System.out.println();
         });
 
-        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        leftPanel.add(logoutButton);
-        headerPanel.add(leftPanel, BorderLayout.WEST);
+        JButton findFriendsButton = new JButton("Find Friends");
+        findFriendsButton.addActionListener(e -> viewModelManager.setActiveView(RecommendationView.viewName));
 
         JButton refreshButton = new JButton("Refresh");
         refreshButton.setPreferredSize(new Dimension(100, 30));
@@ -90,10 +86,12 @@ public class MainView extends JPanel implements PropertyChangeListener {
             updateChats();
             System.out.println(viewModelManager.getCurrentUser().getChats());
         });
-        JPanel refreshPanel = new JPanel();
-        refreshPanel.add(refreshButton);
-        headerPanel.add(refreshPanel, BorderLayout.CENTER);
 
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        buttonPanel.add(logoutButton);
+        buttonPanel.add(findFriendsButton);
+        buttonPanel.add(refreshButton);
+        headerPanel.add(buttonPanel, BorderLayout.WEST);
 
         add(headerPanel, BorderLayout.NORTH);
 
@@ -115,8 +113,8 @@ public class MainView extends JPanel implements PropertyChangeListener {
         } else if ("chatsUpdated".equals(evt.getPropertyName())) {
             updateChats();
         } else if ("profileUpdated".equals(evt.getPropertyName())) {
-            updateCurrentUser();}
-
+            updateCurrentUser();
+        }
     }
 
     /**
