@@ -4,7 +4,6 @@ import entity.User;
 import interface_adapter.ViewModelManager;
 import interface_adapter.add_friends.AddFriendsController;
 import interface_adapter.add_friends.AddFriendsViewModel;
-import interface_adapter.edit_friends.EditFriendsViewModel;
 import interface_adapter.remove_friends.RemoveFriendsController;
 import interface_adapter.remove_friends.RemoveFriendsViewModel;
 
@@ -25,6 +24,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "EditFriendsView";
     private final ViewModelManager viewModelManager;
     private final AddFriendsViewModel addFriendsViewModel;
+    private final RemoveFriendsViewModel removeFriendsViewModel;
     private final RemoveFriendsController removeFriendsController;
     private final AddFriendsController addFriendsController;
     private final JLabel currentUserLabel;
@@ -34,16 +34,23 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     /**
      * Constructs an EditFriendsView with the specified ViewModelManager and Controllers.
      *
-     * @param viewModelManager the manager that handles view models and manages state
+     * @param viewModelManager       the manager that handles view models and manages state
+     * @param addFriendsViewModel    the view model for adding friends
+     * @param removeFriendsViewModel the view model for removing friends
      * @param removeFriendsController the controller for removing friends
-     * @param addFriendsController the controller for adding friends
+     * @param addFriendsController   the controller for adding friends
      */
-    public EditFriendsView(ViewModelManager viewModelManager, AddFriendsViewModel addFriendsViewModel, RemoveFriendsController removeFriendsController, AddFriendsController addFriendsController) {
+    public EditFriendsView(ViewModelManager viewModelManager, AddFriendsViewModel addFriendsViewModel, RemoveFriendsViewModel removeFriendsViewModel, RemoveFriendsController removeFriendsController, AddFriendsController addFriendsController) {
         this.viewModelManager = viewModelManager;
         this.addFriendsViewModel = addFriendsViewModel;
+        this.removeFriendsViewModel = removeFriendsViewModel;
         this.removeFriendsController = removeFriendsController;
         this.addFriendsController = addFriendsController;
+
+        // Add PropertyChangeListeners
         this.viewModelManager.addPropertyChangeListener(this);
+        this.addFriendsViewModel.addPropertyChangeListener(this);
+        this.removeFriendsViewModel.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
@@ -75,25 +82,34 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         headerPanel.add(buttonsPanel, BorderLayout.EAST);
         add(headerPanel, BorderLayout.NORTH);
 
-        friendsListPanel = new JPanel(new GridBagLayout());
+        friendsListPanel = new JPanel();
+        friendsListPanel.setLayout(new BoxLayout(friendsListPanel, BoxLayout.Y_AXIS));
         JScrollPane scrollPane = new JScrollPane(friendsListPanel);
-        add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        add(scrollPane, BorderLayout.WEST);
 
         updateCurrentUser();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("currentUser".equals(evt.getPropertyName())) {
-            updateCurrentUser();
-        } else if ("friendsList".equals(evt.getPropertyName())) {
-            updateFriendsList();
-            JOptionPane.showMessageDialog(this, "Friend Successfully added!", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
-        } else if ("generalError".equals(evt.getPropertyName())) {
-            String error = addFriendsViewModel.getState().getError();
-            if (error != null) {
-                JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
-            }
+        switch (evt.getPropertyName()) {
+            case "currentUser":
+                updateCurrentUser();
+                break;
+            case "friendsList":
+                updateFriendsList();
+                JOptionPane.showMessageDialog(this, "Friend successfully added or deleted!", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case "generalError":
+                String error = addFriendsViewModel.getState().getError();
+                if (error != null) {
+                    JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -126,6 +142,8 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
             String newFriend = JOptionPane.showInputDialog(this, "Enter friend's name:");
             if (newFriend != null && !newFriend.trim().isEmpty()) {
                 addFriendsController.add(currentUser.getUsername(), newFriend.trim());
+            } else {
+                JOptionPane.showMessageDialog(this, "Friend's name cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "You need to be logged in to add friends.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -135,9 +153,9 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     /**
      * Shows a popup menu with options for a specific friend.
      *
-     * @param e the mouse event
+     * @param e         the mouse event
      * @param currentUser the current user's username
-     * @param friend the name of the friend
+     * @param friend    the name of the friend
      */
     private void showFriendOptionsPopup(MouseEvent e, String currentUser, String friend) {
         JPopupMenu friendOptions = new JPopupMenu();
@@ -148,8 +166,8 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     }
 
     /**
-    * Updates the list of friends displayed in the view.
-    */
+     * Updates the list of friends displayed in the view.
+     */
     private void updateFriendsList() {
         friendsListPanel.removeAll(); // Clear existing friends list
         User currentUser = viewModelManager.getCurrentUser();
@@ -157,6 +175,8 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
             List<String> friendsList = currentUser.getFriends();
             for (String friend : friendsList) {
                 JButton friendButton = new JButton(friend);
+                friendButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+                friendButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, friendButton.getMinimumSize().height));
                 friendButton.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
