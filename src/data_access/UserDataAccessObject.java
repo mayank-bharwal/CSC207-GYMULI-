@@ -332,33 +332,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     }
 
 
-
-
-    public static void main(String[] args) { // TESTING PURPOSES ONLY, REDUNDANT MAIN METHOD
-        // Example usage
-        UserFactory userFactory = new CommonUserFactory();
-        Map<String, Message> messages = new HashMap<>();
-        MessageFactory messageFactory = new MessageFactory();
-
-        User user = userFactory.createUser("Gippy", "love123", "Audiophile", 34, "Cinema Studies",
-                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now());
-
-        FacadeInterface facade = new Facade();
-
-        MongoConnection mongoConnection = new MongoConnection();
-        facade.UpdateDB(user, getMap(), mongoConnection);
-
-        UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, getMap(), mongoConnection);
-
-        User user1 = userDataAccessObject.getUser("Alice");
-        if (user1 != null) {
-            Map<User, Double> similarUsers = userDataAccessObject.getNSimilarUsers(user1, 5);
-            similarUsers.forEach((u, score) -> System.out.println(u.getUsername() + " (Score: " + score + ")"));
-        } else {
-            System.out.println("User 'Alice' not found.");
-        }
-    }
-
     @Override
     public boolean isFriend(String user1, String user2) {
         User user = getUser(user1);

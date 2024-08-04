@@ -23,7 +23,10 @@ public class AddFriendsInteractor implements AddFriendsInputBoundary{
 
         if (!userDataAccessObject.userExists(friend)) {
             outputBoundary.setFailView("User does not exist");
-        } else {
+        } else if(userDataAccessObject.isFriend(currentUser,friend)) {
+            outputBoundary.setFailView("Friend Already Added.");
+        }
+        else {
 
             userDataAccessObject.addFriend(currentUser, friend);
             AddFriendsOutputData addFriendsOutputData = new AddFriendsOutputData(currentUser,friend, false);

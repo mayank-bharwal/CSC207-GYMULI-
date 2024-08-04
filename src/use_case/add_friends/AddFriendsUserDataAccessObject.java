@@ -6,4 +6,6 @@ public interface AddFriendsUserDataAccessObject {
 
     public void addFriend(String currentUser, String friend);
 
+    public boolean isFriend(String user1, String user2);
+
 }
