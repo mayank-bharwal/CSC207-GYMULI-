@@ -28,6 +28,7 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
     private final JButton searchButton;
     private final JTextField searchField;
     private final JPanel contentPanel;
+    private final JLabel searchUserLabel;
 
     public RecommendationView(RecommendationsController recommendationsController, SearchUserController searchUserController, ViewModelManager viewModelManager, RecommendationsViewModel recommendationsViewModel, SearchUserViewModel searchUserViewModel) {
         this.recommendationsController = recommendationsController;
@@ -83,11 +84,29 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
         add(formPanel, BorderLayout.NORTH);
 
         JPanel searchPanel = new JPanel();
-        searchPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        searchPanel.setLayout(new GridBagLayout());
+
+        gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        searchUserLabel = new JLabel("Search User:");
+        searchUserLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        searchPanel.add(searchUserLabel, gbc);
+
         searchField = new JTextField(15);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        searchPanel.add(searchField, gbc);
+
         searchButton = new JButton("Search");
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        searchPanel.add(searchButton, gbc);
 
         add(searchPanel, BorderLayout.SOUTH);
 
@@ -185,5 +204,8 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
         }
     }
 }
+
+
+
 
 
