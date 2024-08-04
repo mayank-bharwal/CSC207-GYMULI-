@@ -266,14 +266,30 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         User user = accounts.get(oldUsername);
 
-        User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
+        List<String> frnds = user.getFriends();
 
-        accounts.remove(oldUsername);// 1
+        for (String f: frnds) {
+            UserCollection.updateOne(
+                    Filters.eq("username", f),
+                    Updates.pull("friends", oldUsername)
+            );
+            UserCollection.updateOne(
+                    Filters.eq("username", f),
+                    Updates.addToSet("friends", newUsername)
+            );
+
+            User fUser = accounts.get(f);
+            fUser.getFriends().remove(oldUsername);
+            fUser.getFriends().add(newUsername);
+
+        }
+
+        User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
+        accounts.remove(oldUsername);
 
         facade.UpdateDB(user, accounts, mongoConnection);// 2
 
-        accounts.put(newUsername, newUser); // 3
-
+        accounts.put(newUsername, newUser);
         System.out.println("user updated");
         System.out.println(accounts.get(newUsername).getUsername());
 
