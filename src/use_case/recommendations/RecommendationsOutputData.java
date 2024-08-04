@@ -2,14 +2,16 @@ package use_case.recommendations;
 
 import entity.User;
 
-import java.util.List;
+import java.util.Map;
 
 public class RecommendationsOutputData {
+    private final Map<User, Double> userSimilarities;
 
-    private final List<User> users;
-
-    public RecommendationsOutputData(List<User> users) {
-        this.users = users;
+    public RecommendationsOutputData(Map<User, Double> userSimilarities) {
+        this.userSimilarities = userSimilarities;
     }
-    public List<User> getSimilarUsers() {return users;}
+
+    public Map<User, Double> getUserSimilarities() {
+        return userSimilarities;
+    }
 }
