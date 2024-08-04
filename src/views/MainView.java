@@ -105,6 +105,14 @@ public class MainView extends JPanel implements PropertyChangeListener {
         createChatButton.addActionListener(e -> viewModelManager.setActiveView(CreateChatView.viewName));
         add(createChatButton, BorderLayout.SOUTH);
 
+        JButton friendsViewButton = new JButton("Friends View");
+        friendsViewButton.addActionListener(e -> viewModelManager.setActiveView(EditFriendsView.viewName));
+
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(createChatButton, BorderLayout.EAST);
+        bottomPanel.add(friendsViewButton, BorderLayout.WEST);
+        add(bottomPanel, BorderLayout.SOUTH);
+
         updateCurrentUser();
     }
 

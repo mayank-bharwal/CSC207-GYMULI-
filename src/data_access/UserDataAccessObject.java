@@ -13,6 +13,7 @@ import use_case.add_friends.AddFriendsUserDataAccessObject;
 import use_case.login.LoginUserDataAccessInterface;
 
 import use_case.recommendations.RecommendationsDataAccessInterface;
+import use_case.remove_friends.RemoveFriendsUserDataAccessInterface;
 import use_case.update_profile.UpdateProfileUserDataAccessInterface;
 
 import java.time.LocalDateTime;
@@ -28,7 +29,8 @@ import static data_access.userMap_ignore.getMap;
  */
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
-        UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationsDataAccessInterface {
+        UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationsDataAccessInterface,
+        RemoveFriendsUserDataAccessInterface {
     private MongoConnection mongoConnection;
     private MongoCollection<Document> UserCollection;
     private Map<String, User> accounts = new HashMap<>();
@@ -362,4 +364,29 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         }
     }
 
+    @Override
+    public boolean isFriend(String user1, String user2) {
+        User user = getUser(user1);
+        return user.getFriends().contains(user2);
+    }
+
+    @Override
+    public void remove(String user1, String user2) {
+        User user = getUser(user1);
+        User friend = getUser(user2);
+
+        if (user != null && friend != null) {
+            Document filter1 = new Document("username", user1);
+            Document update1 = new Document("$pull", new Document("friends", user1));
+            UserCollection.updateOne(filter1, update1);
+
+            Document filter2 = new Document("username", user2);
+            Document update2 = new Document("$pull", new Document("friends", user2));
+            UserCollection.updateMany(filter2, update2);
+        } else {
+            System.out.println("User not found");
+        }
+
+
+    }
 }
