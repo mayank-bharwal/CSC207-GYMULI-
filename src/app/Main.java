@@ -144,7 +144,7 @@ public class Main {
         RemoveFriendsInputBoundary removeFriendsInteractor = new RemoveFriendsInteractor(userDataAccessObject, removeFriendsPresenter);
         RemoveFriendsController removeFriendsController = new RemoveFriendsController(removeFriendsInteractor, viewModelManager);
 
-        EditFriendsView friendsView = FriendsViewFactory.create(viewModelManager,addFriendsViewModel, removeFriendsController, addFriendsController);
+        EditFriendsView friendsView = FriendsViewFactory.create(viewModelManager, addFriendsViewModel,removeFriendsViewModel, removeFriendsController, addFriendsController);
         views.add(friendsView, EditFriendsView.viewName);
 
         SearchUserViewModel searchUserViewModel = new SearchUserViewModel();
