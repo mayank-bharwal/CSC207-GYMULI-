@@ -109,37 +109,6 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     }
 
     /**
-     * Updates the list of friends displayed in the view.
-     */
-    private void updateFriendsList() {
-        friendsListPanel.removeAll();
-        GridBagConstraints gbc = new GridBagConstraints();
-        User currentUser = viewModelManager.getCurrentUser();
-        if (currentUser != null) {
-            List<String> friendsList = currentUser.getFriends();
-            gbc.insets = new Insets(10, 10, 10, 10);
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            for (String friend : friendsList) {
-                JButton friendButton = new JButton(friend);
-                friendButton.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        if (SwingUtilities.isLeftMouseButton(e)) {
-                            showFriendOptionsPopup(e, currentUser.getUsername(), friend);
-                        }
-                    }
-                });
-                friendsListPanel.add(friendButton, gbc);
-                gbc.gridy++;
-            }
-
-            friendsListPanel.revalidate();
-            friendsListPanel.repaint();
-        }
-    }
-
-    /**
      * Shows a dialog to add a new friend.
      */
     private void showAddFriendDialog() {
@@ -167,5 +136,31 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         deleteFriendItem.addActionListener(event -> removeFriendsController.removeFriends(currentUser, friend));
         friendOptions.add(deleteFriendItem);
         friendOptions.show(e.getComponent(), e.getX(), e.getY());
+    }
+
+    /**
+    * Updates the list of friends displayed in the view.
+    */
+    private void updateFriendsList() {
+        friendsListPanel.removeAll(); // Clear existing friends list
+        User currentUser = viewModelManager.getCurrentUser();
+        if (currentUser != null) {
+            List<String> friendsList = currentUser.getFriends();
+            for (String friend : friendsList) {
+                JButton friendButton = new JButton(friend);
+                friendButton.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (SwingUtilities.isLeftMouseButton(e)) {
+                            showFriendOptionsPopup(e, currentUser.getUsername(), friend);
+                        }
+                    }
+                });
+                friendsListPanel.add(friendButton); // Add friend button to panel
+            }
+
+            friendsListPanel.revalidate(); // Refresh the panel to reflect updates
+            friendsListPanel.repaint(); // Repaint the panel to apply changes
+        }
     }
 }
