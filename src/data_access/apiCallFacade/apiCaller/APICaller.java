@@ -50,6 +50,7 @@ public class APICaller implements APICallerInterface {
                                 .build();
 
                         response = client.newCall(request3).execute();
+                        if (!response.isSuccessful()) {System.out.println("Third Paid API used and Failed");}
                     } else {
                         System.out.println("Second API failed and NOT using the PAID API");
                         //pass;
