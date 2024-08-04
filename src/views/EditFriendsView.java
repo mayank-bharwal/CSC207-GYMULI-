@@ -54,28 +54,45 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
+        setBackground(Color.WHITE);  // Set background to white
 
         JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setBackground(Color.WHITE);
 
         // User Info Panel
         JPanel userInfoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        userInfoPanel.setBackground(Color.WHITE);
         profilePictureLabel = new JLabel();
         currentUserLabel = new JLabel();
         userInfoPanel.add(profilePictureLabel);
         userInfoPanel.add(currentUserLabel);
 
-        // Add Friend Button (Plus Sign)
-        JButton addFriendButton = new JButton("+");
+        // Add Friend Button (Image of the button)
+        ImageIcon addFriendIcon = new ImageIcon("images/add_friend.png");
+        Image originalImage = addFriendIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+
+        JButton addFriendButton = new JButton(resizedIcon);
+        addFriendButton.setBorderPainted(false);
+        addFriendButton.setContentAreaFilled(false);
+        addFriendButton.setFocusPainted(false);
+        addFriendButton.setOpaque(false);
         addFriendButton.addActionListener(e -> showAddFriendDialog());
 
+
+        // Back button (with text back)
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        bottomPanel.setBackground(Color.WHITE);
         bottomPanel.add(backButton);
         add(bottomPanel, BorderLayout.SOUTH);
 
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonsPanel.setBackground(Color.WHITE);
         buttonsPanel.add(addFriendButton);
 
         headerPanel.add(userInfoPanel, BorderLayout.WEST);
@@ -84,11 +101,13 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
 
         friendsListPanel = new JPanel();
         friendsListPanel.setLayout(new BoxLayout(friendsListPanel, BoxLayout.Y_AXIS));
+        friendsListPanel.setBackground(Color.WHITE);
         JScrollPane scrollPane = new JScrollPane(friendsListPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(Color.WHITE);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
         add(mainPanel, BorderLayout.CENTER);
 
@@ -184,10 +203,18 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
             List<String> friendsList = currentUser.getFriends();
             System.out.println(friendsList);
             for (String friend : friendsList) {
-                JButton friendButton = new JButton(friend);
-                friendButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-                friendButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, friendButton.getMinimumSize().height));
-                friendButton.addMouseListener(new MouseAdapter() {
+                JPanel friendPanel = new JPanel();
+                friendPanel.setLayout(new BoxLayout(friendPanel, BoxLayout.X_AXIS));
+                friendPanel.setBackground(Color.WHITE);
+
+                JLabel friendLabel = new JLabel(friend);
+                friendLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                friendLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+                friendPanel.add(friendLabel);
+                friendPanel.add(Box.createHorizontalGlue());
+
+                friendPanel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (SwingUtilities.isRightMouseButton(e)) {
@@ -195,12 +222,12 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
                         }
                     }
                 });
-                friendsListPanel.add(friendButton); // Add friend button to panel
+
+                friendsListPanel.add(friendPanel);
             }
 
             friendsListPanel.revalidate(); // Refresh the panel to reflect updates
             friendsListPanel.repaint(); // Repaint the panel to apply changes
         }
     }
-    //end of view
 }
