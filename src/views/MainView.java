@@ -64,7 +64,10 @@ public class MainView extends JPanel implements PropertyChangeListener {
 
         JButton profileIconButton = new JButton(profileIcon);
         profileIconButton.setPreferredSize(new Dimension(50, 50));
-        profileIconButton.addActionListener(e -> viewModelManager.setActiveView(ProfileView.viewName));
+        profileIconButton.addActionListener(e ->{
+            viewModelManager.setViewedUser(viewModelManager.getCurrentUser());
+            viewModelManager.setActiveView(ProfileView.viewName);
+        });
 
         JPanel profileButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
         profileButtonPanel.add(profileIconButton);
