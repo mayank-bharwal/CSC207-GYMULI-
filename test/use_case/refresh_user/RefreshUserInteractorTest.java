@@ -35,7 +35,7 @@ class RefreshUserInteractorTest {
     void refreshUser_nonExistentUser_setsFailView() {
         RefreshUserInputData inputData = new RefreshUserInputData("nonExistentUser");
 
-        when(refreshDAO.userExists("nonExistentUser")).thenReturn(false);
+        when(refreshDAO.userUpdate("nonExistentUser")).thenReturn(false);
 
         interactor.refreshUser(inputData);
 
