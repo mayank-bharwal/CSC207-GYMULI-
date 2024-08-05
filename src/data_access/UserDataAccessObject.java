@@ -18,6 +18,7 @@ import use_case.add_friends.AddFriendsUserDataAccessObject;
 import use_case.login.LoginUserDataAccessInterface;
 
 import use_case.recommendations.RecommendationsDataAccessInterface;
+import use_case.refresh_user.RefreshUserDataAccessInterface;
 import use_case.remove_friends.RemoveFriendsUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
 import use_case.update_profile.UpdateProfileUserDataAccessInterface;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
         UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationsDataAccessInterface,
-        RemoveFriendsUserDataAccessInterface, SearchUserDataAccessInterface {
+        RemoveFriendsUserDataAccessInterface, SearchUserDataAccessInterface, RefreshUserDataAccessInterface {
           
     private readDBInterface mongoConnection;
     private MongoCollection<Document> UserCollection;
@@ -90,7 +91,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         }
     }
 
-     public void userUpdate(String user){
+     public User userUpdate(String user){
 
         User cU = accounts.get(user);
         Document queryResult = UserCollection.find(eq("username", user)).first();
@@ -111,8 +112,17 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
          cU.setChats(chats);
          cU.setFriends(friends);
-
+         cU.setInterests(interests);
+         cU.setProgramOfStudy(programOfStudy);
+         cU.setDateCreated(dateCreated);
+         cU.setUsername(username);
+         cU.setPassword(password);
+         cU.setBio(bio);
+         cU.setAge(age);
          System.out.println("work done");
+
+         return cU;
+
 
 
 //         user.setUsername(username);

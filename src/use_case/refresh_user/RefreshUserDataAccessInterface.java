@@ -22,5 +22,5 @@ public interface RefreshUserDataAccessInterface {
      * @param user The username of the user to retrieve.
      * @return The User object containing the user's information.
      */
-    User getUser(String user);
+    User userUpdate(String user);
 }

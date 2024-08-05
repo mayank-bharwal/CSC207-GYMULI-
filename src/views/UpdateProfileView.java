@@ -2,11 +2,7 @@ package views;
 
 import entity.User;
 import interface_adapter.ViewModelManager;
-import interface_adapter.account_creation.SignupController;
-import interface_adapter.account_creation.SignupState;
-import interface_adapter.account_creation.SignupViewModel;
 import interface_adapter.update_profile.UpdateProfileController;
-import interface_adapter.update_profile.UpdateProfilePresenter;
 import interface_adapter.update_profile.UpdateProfileState;
 import interface_adapter.update_profile.UpdateProfileViewModel;
 
