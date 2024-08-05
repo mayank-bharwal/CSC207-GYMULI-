@@ -27,6 +27,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     private final JLabel currentUserLabel;
     private final JLabel profilePictureLabel;
     private final JPanel friendsListPanel;
+    private final JButton addFriendButton;
 
     public EditFriendsView(ViewModelManager viewModelManager, AddFriendsViewModel addFriendsViewModel, RemoveFriendsViewModel removeFriendsViewModel, RemoveFriendsController removeFriendsController, AddFriendsController addFriendsController, RefreshUserController refreshUserController) {
         this.viewModelManager = viewModelManager;
@@ -57,7 +58,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         Image resizedImage = originalImage.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
-        JButton addFriendButton = new JButton(resizedIcon);
+        addFriendButton = new JButton(resizedIcon);
         addFriendButton.setBorderPainted(false);
         addFriendButton.setContentAreaFilled(false);
         addFriendButton.setFocusPainted(false);
@@ -65,7 +66,10 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         addFriendButton.addActionListener(e -> showAddFriendDialog());
 
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
+        backButton.addActionListener(e -> {
+            viewModelManager.clearViewedUser();
+            viewModelManager.setActiveView(MainView.viewName);
+        });
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         bottomPanel.add(backButton);
@@ -95,6 +99,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
             case "currentUser":
+            case "viewedUser":
                 updateCurrentUser();
                 break;
             case "friendsList":
@@ -118,12 +123,18 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
 
     private void updateCurrentUser() {
         User currentUser = viewModelManager.getCurrentUser();
-        currentUserLabel.setText(currentUser != null ? currentUser.getUsername() + "'s friends" : "Not logged in");
-        loadUserProfile();
+        User viewedUser = viewModelManager.getViewedUser();
+        User userToDisplay = viewedUser != null ? viewedUser : currentUser;
+
+        currentUserLabel.setText(userToDisplay != null ? userToDisplay.getUsername() + "'s friends" : "Not logged in");
+        loadUserProfile(userToDisplay);
         updateFriendsList();
+
+        boolean isViewingOwnFriends = viewedUser == null || viewedUser.equals(currentUser);
+        addFriendButton.setVisible(isViewingOwnFriends);
     }
 
-    private void loadUserProfile() {
+    private void loadUserProfile(User user) {
         String imagePath = "images/profilepicdefault.png";
         ImageIcon imageIcon = new ImageIcon(imagePath);
         profilePictureLabel.setIcon(imageIcon);
@@ -154,9 +165,11 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     private void updateFriendsList() {
         friendsListPanel.removeAll();
         User currentUser = viewModelManager.getCurrentUser();
-        if (currentUser != null) {
-            List<String> friendsList = currentUser.getFriends();
-            System.out.println(friendsList);
+        User viewedUser = viewModelManager.getViewedUser();
+        User userToDisplay = viewedUser != null ? viewedUser : currentUser;
+
+        if (userToDisplay != null) {
+            List<String> friendsList = userToDisplay.getFriends();
             for (String friend : friendsList) {
                 JPanel friendPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
@@ -192,5 +205,6 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         }
     }
 }
+
 
 

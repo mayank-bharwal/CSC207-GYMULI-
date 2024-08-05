@@ -41,6 +41,12 @@ public class ViewModelManager {
         return viewedUser;
     }
 
+    public void clearViewedUser() {
+        User oldViewedUser = this.viewedUser;
+        this.viewedUser = null;
+        pcs.firePropertyChange("viewedUser", oldViewedUser, null);
+    }
+
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
     }
