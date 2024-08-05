@@ -52,7 +52,7 @@ public class GetDB {
 
 
 
-    public static String getCollectionID(){
+    public static String getID(){
         return readTokenFromFile("src/data_access/readDB/DB_files/CollectionID");
     }
 
