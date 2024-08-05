@@ -9,6 +9,7 @@ public class ViewModelManager {
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private String activeView;
     private User currentUser;
+    private User viewedUser; // Add a field for the viewed user
 
     public void setActiveView(String activeView) {
         String oldView = this.activeView;
@@ -30,6 +31,16 @@ public class ViewModelManager {
         return currentUser;
     }
 
+    public void setViewedUser(User viewedUser) {
+        User oldViewedUser = this.viewedUser;
+        this.viewedUser = viewedUser;
+        pcs.firePropertyChange("viewedUser", oldViewedUser, viewedUser);
+    }
+
+    public User getViewedUser() {
+        return viewedUser;
+    }
+
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
     }
@@ -37,14 +48,12 @@ public class ViewModelManager {
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         pcs.removePropertyChangeListener(listener);
     }
+
     public void firePropertyChanged() {
         pcs.firePropertyChange("activeView", null, this.activeView);
     }
-
-
 
     public void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
         pcs.firePropertyChange(propertyName, oldValue, newValue);
     }
 }
-

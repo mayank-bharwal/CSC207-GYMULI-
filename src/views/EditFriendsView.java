@@ -56,26 +56,19 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
 
-        Color hex = new Color(224,224,224);
-
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBorder(null);
-        headerPanel.setBackground(hex);
 
-        // User Info Panel
-        JPanel userInfoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        userInfoPanel.setBackground(hex);
+        JPanel userInfoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         profilePictureLabel = new JLabel();
         currentUserLabel = new JLabel();
         userInfoPanel.add(profilePictureLabel);
         userInfoPanel.add(currentUserLabel);
 
-        // Add Friend Button (Image of the button)
         ImageIcon addFriendIcon = new ImageIcon("images/add_friend.png");
         Image originalImage = addFriendIcon.getImage();
         Image resizedImage = originalImage.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedImage);
-
 
         JButton addFriendButton = new JButton(resizedIcon);
         addFriendButton.setBorderPainted(false);
@@ -84,8 +77,6 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         addFriendButton.setOpaque(false);
         addFriendButton.addActionListener(e -> showAddFriendDialog());
 
-
-        // Back button (with text back)
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
 
@@ -123,12 +114,10 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
                 updateFriendsList();
                 JOptionPane.showMessageDialog(this, "Friend successfully added!", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
                 break;
-
             case "friendRemoved":
                 updateFriendsList();
                 JOptionPane.showMessageDialog(this, "Friend successfully removed!", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
                 break;
-
             case "generalError":
                 String error = evt.getNewValue().toString();
                 if (error != null) {
@@ -140,33 +129,23 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         }
     }
 
-    /**
-     * Updates the display of the current user.
-     * Also triggers an update of the friends list.
-     */
     private void updateCurrentUser() {
         User currentUser = viewModelManager.getCurrentUser();
-        currentUserLabel.setText(currentUser != null ? currentUser.getUsername() : "Not logged in");
+        currentUserLabel.setText(currentUser != null ? currentUser.getUsername() + "'s friends" : "Not logged in");
         loadUserProfile();
         updateFriendsList();
     }
 
-    /**
-     * Loads the user's profile picture.
-     */
     private void loadUserProfile() {
-        String imagePath = "images/profilepicdefault.png"; // Replace with actual path
+        String imagePath = "images/profilepicdefault.png";
         ImageIcon imageIcon = new ImageIcon(imagePath);
         profilePictureLabel.setIcon(imageIcon);
     }
 
-    /**
-     * Shows a dialog to add a new friend.
-     */
     private void showAddFriendDialog() {
         User currentUser = viewModelManager.getCurrentUser();
         if (currentUser != null) {
-            String newFriend = JOptionPane.showInputDialog(this, "Enter friend's name:");
+            String newFriend = JOptionPane.showInputDialog(this, "Enter username:");
             if (newFriend != null && !newFriend.trim().isEmpty()) {
                 addFriendsController.add(currentUser.getUsername(), newFriend.trim());
             } else {
@@ -177,13 +156,6 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         }
     }
 
-    /**
-     * Shows a popup menu with options for a specific friend.
-     *
-     * @param e         the mouse event
-     * @param currentUser the current user's username
-     * @param friend    the name of the friend
-     */
     private void showFriendOptionsPopup(MouseEvent e, String currentUser, String friend) {
         JPopupMenu friendOptions = new JPopupMenu();
         JMenuItem deleteFriendItem = new JMenuItem("Remove Friend");
@@ -192,32 +164,30 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         friendOptions.show(e.getComponent(), e.getX(), e.getY());
     }
 
-    /**
-     * Updates the list of friends displayed in the view.
-     */
     private void updateFriendsList() {
-        friendsListPanel.removeAll(); // Clear existing friends list
+        friendsListPanel.removeAll();
         User currentUser = viewModelManager.getCurrentUser();
         if (currentUser != null) {
             List<String> friendsList = currentUser.getFriends();
             System.out.println(friendsList);
             for (String friend : friendsList) {
-                JPanel friendPanel = new JPanel();
-                friendPanel.setLayout(new BoxLayout(friendPanel, BoxLayout.X_AXIS));
+                JPanel friendPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+
+                JLabel profilePictureLabel = new JLabel(new ImageIcon("images/profilepicdefault.png"));
+                profilePictureLabel.setPreferredSize(new Dimension(50, 50));
+                friendPanel.add(profilePictureLabel);
 
                 JLabel friendLabel = new JLabel(friend);
                 friendLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-
-                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-                Border blackBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
-                Border paddingBorder = BorderFactory.createEmptyBorder(10 ,10,10, screenSize.width);
-                Border compoundBorder = BorderFactory.createCompoundBorder(blackBorder, paddingBorder);
-
-                friendLabel.setBorder(compoundBorder);
-
                 friendPanel.add(friendLabel);
-                friendPanel.add(Box.createHorizontalGlue());
+
+                JButton viewProfileButton = new JButton("View Profile");
+                viewProfileButton.addActionListener(e -> {
+                    //User friendUser = viewModelManager.getUser(friend);
+                    //viewModelManager.setViewedUser(friendUser);
+                    viewModelManager.setActiveView(ProfileView.viewName);
+                });
+                friendPanel.add(viewProfileButton);
 
                 friendPanel.addMouseListener(new MouseAdapter() {
                     @Override
@@ -231,8 +201,9 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
                 friendsListPanel.add(friendPanel);
             }
 
-            friendsListPanel.revalidate(); // Refresh the panel to reflect updates
-            friendsListPanel.repaint(); // Repaint the panel to apply changes
+            friendsListPanel.revalidate();
+            friendsListPanel.repaint();
         }
     }
 }
+
