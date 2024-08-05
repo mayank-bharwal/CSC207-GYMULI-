@@ -21,6 +21,5 @@ public class SearchUserInteractor implements SearchUserInputBoundary{
             System.out.println("Interactor: User does not exist");
             outputBoundary.showFailureScreen("User does not exist");
         }
-
     }
 }
