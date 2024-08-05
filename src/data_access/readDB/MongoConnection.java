@@ -38,7 +38,7 @@ public class MongoConnection implements readDBInterface{
     }
 
     public String getCollectionID(){
-        return getCollectionID();
+        return getID();
     }
 
     public static void main(String[] args) {

@@ -63,6 +63,8 @@ public class APICaller implements APICallerInterface {
                         //pass;
                     }
                 }
+            } else {
+                System.out.println("Primary API successful");
             }
 
             if (response.isSuccessful()) {
