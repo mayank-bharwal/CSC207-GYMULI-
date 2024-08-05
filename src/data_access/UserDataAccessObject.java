@@ -10,6 +10,7 @@ import data_access.readDB.readDBInterface;
 import data_access.apiCallFacade.Facade;
 import data_access.apiCallFacade.FacadeInterface;
 import static com.mongodb.client.model.Filters.eq;
+
 import entity.*;
 import org.bson.Document;
 import use_case.account_creation.AccountCreationUserDataAccessInterface;
@@ -26,7 +27,6 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static data_access.readDB.GetDB.getCollectionID;
 
 /**
  * Data Access Object for User-related operations.
@@ -305,7 +305,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
     @Override
     public Map<User, Double> getNSimilarUsers(User user, int N) {
-        Document doc = mongoConnection.getSimilarityCollection().find(new Document("_id", getCollectionID())).first();
+        Document doc = mongoConnection.getSimilarityCollection().find(new Document("_id",mongoConnection.getCollectionID())).first();
         System.out.println("getNSimilarUsers for " + user.getUsername() + ": Document exists: " + (doc != null));
 
         if (doc != null) {

@@ -2,12 +2,10 @@ package data_access.apiCallFacade.dbUpdater;
 
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
-import data_access.readDB.MongoConnection;
+
 import data_access.readDB.readDBInterface;
 import org.bson.Document;
 import org.json.JSONObject;
-
-import static data_access.readDB.GetDB.*;
 
 public class MapUpdater implements MapUpdaterInterface {
     @Override
@@ -26,11 +24,11 @@ public class MapUpdater implements MapUpdaterInterface {
             Object id = document.get("_id");
             System.out.println(id == null);
             if (id == null) {
-                document.put("_id", getCollectionID());
+                document.put("_id", mongoConnection.getCollectionID());
             }
 
             // Replace the document if it exists, otherwise insert a new one
-            mongoConnection.getSimilarityCollection().replaceOne(Filters.eq("_id", getCollectionID()), document, new ReplaceOptions().upsert(true));
+            mongoConnection.getSimilarityCollection().replaceOne(Filters.eq("_id", mongoConnection.getCollectionID()), document, new ReplaceOptions().upsert(true));
         }
     }
 }
