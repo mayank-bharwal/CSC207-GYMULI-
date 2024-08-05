@@ -1,21 +1,20 @@
-import entity.User;
-import entity.UserFactory;
-import entity.Chat;
-import entity.ChatFactory;
-import entity.Message;
+package entity;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for the Chat class.
+ */
 public class ChatTest {
     private Chat chat;
     private ArrayList<User> users;
@@ -24,6 +23,10 @@ public class ChatTest {
     private ChatFactory chatFactory;
     private ArrayList<String> userNames;
 
+    /**
+     * Set up the test environment before each test.
+     * Initialize mock objects and create a sample Chat instance.
+     */
     @BeforeEach
     void setUp() {
         userFactory = mock(UserFactory.class);  // Mock UserFactory
@@ -88,37 +91,58 @@ public class ChatTest {
         chat = chatFactory.createChat("Test Chat", userNames, users.size(), messages, LocalDateTime.now());
     }
 
+    /**
+     * Test the getChatName method of the Chat class.
+     */
     @Test
     void testGetChatName() {
         assertEquals("Test Chat", chat.getChatName());
     }
 
+    /**
+     * Test the getUsers method of the Chat class.
+     */
     @Test
     void testGetUsers() {
         assertEquals(userNames, chat.getUsers());
     }
 
+    /**
+     * Test the getNoOfMembers method of the Chat class.
+     */
     @Test
     void testGetNoOfMembers() {
         assertEquals(userNames.size(), chat.getNoOfMembers());
     }
 
+    /**
+     * Test the getAllmessages method of the Chat class.
+     */
     @Test
     void testGetAllMessages() {
         assertEquals(messages, chat.getAllmessages());
     }
 
+    /**
+     * Test the getTime method of the Chat class.
+     */
     @Test
     void testGetTime() {
         assertNotNull(chat.getTime());
     }
 
+    /**
+     * Test the setChatName method of the Chat class.
+     */
     @Test
     void testSetChatName() {
         chat.setChatName("New Chat");
         assertEquals("New Chat", chat.getChatName());
     }
 
+    /**
+     * Test the setUsers method of the Chat class.
+     */
     @Test
     void testSetUsers() {
         ArrayList<User> newUsers = new ArrayList<>();
@@ -149,12 +173,18 @@ public class ChatTest {
         assertEquals(newUserNames, chat.getUsers());
     }
 
+    /**
+     * Test the setNoOfMembers method of the Chat class.
+     */
     @Test
     void testSetNoOfMembers() {
         chat.setNoOfMembers(5);
         assertEquals(5, chat.getNoOfMembers());
     }
 
+    /**
+     * Test the setAllmessages method of the Chat class.
+     */
     @Test
     void testSetAllMessages() {
         ArrayList<Message> newMessages = new ArrayList<>();
@@ -166,6 +196,9 @@ public class ChatTest {
         assertEquals(newMessages, chat.getAllmessages());
     }
 
+    /**
+     * Test the setChatName method of the Chat class when setting it to null.
+     */
     @Test
     void testSetChatNameToNull() {
         chat.setChatName(null);

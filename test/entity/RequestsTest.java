@@ -1,6 +1,4 @@
-import entity.Requests;
-import entity.User;
-import entity.UserFactory;
+package entity;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,12 +11,19 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for the Requests class.
+ */
 public class RequestsTest {
     private User fromUser;
     private User toUser;
     private UserFactory userFactory;
     private Requests request;
 
+    /**
+     * Set up the test environment before each test.
+     * Initialize the UserFactory and create sample User instances.
+     */
     @BeforeEach
     void setUp() {
         userFactory = Mockito.mock(UserFactory.class);
@@ -35,16 +40,25 @@ public class RequestsTest {
         request = new Requests(fromUser, toUser);
     }
 
+    /**
+     * Test the getFrom method of the Requests class.
+     */
     @Test
     void testGetFrom() {
         assertEquals(fromUser, request.getFrom());
     }
 
+    /**
+     * Test the getTo method of the Requests class.
+     */
     @Test
     void testGetTo() {
         assertEquals(toUser, request.getTo());
     }
 
+    /**
+     * Test the setFrom method of the Requests class.
+     */
     @Test
     void testSetFrom() {
         List<String> newInterests = new ArrayList<>();
@@ -60,6 +74,9 @@ public class RequestsTest {
         assertEquals(newFromUser, request.getFrom());
     }
 
+    /**
+     * Test the setTo method of the Requests class.
+     */
     @Test
     void testSetTo() {
         List<String> newInterests = new ArrayList<>();
@@ -75,6 +92,9 @@ public class RequestsTest {
         assertEquals(newToUser, request.getTo());
     }
 
+    /**
+     * Test setting and getting From and To users multiple times in the Requests class.
+     */
     @Test
     void testSetFromToMultipleTimes() {
         User firstUser = userFactory.createUser("Jasmine", "password", "(Demo)", 21,
@@ -95,6 +115,16 @@ public class RequestsTest {
         assertEquals(secondUser, request.getTo());
     }
 
+    /**
+     * Create a mock User instance with the specified attributes.
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     * @param bio the bio of the user
+     * @param age the age of the user
+     * @param program the program of study of the user
+     * @return the mock User instance
+     */
     private User createMockUser(String username, String password, String bio, Integer age, String program) {
         User mockUser = Mockito.mock(User.class);
         Mockito.when(mockUser.getUsername()).thenReturn(username);

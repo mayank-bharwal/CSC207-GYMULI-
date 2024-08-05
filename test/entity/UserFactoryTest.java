@@ -1,5 +1,5 @@
-import entity.User;
-import entity.UserFactory;
+package entity;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -185,9 +185,6 @@ public class UserFactoryTest {
 
         User user = userFactory.createUser("Jasmine", "password", "Demo Bio", age, "Computer Science", specialCharInterests, friends, chats, date);
 
-        System.out.println("Expected: Jasmine");
-        System.out.println("Actual: " + user.getUsername());
-
         assertNotNull(user);
         assertEquals("Jasmine", user.getUsername());
         assertEquals("password", user.getPassword());
@@ -215,6 +212,7 @@ public class UserFactoryTest {
 
         User user = userFactory.createUser("Jasmine", "password", "Demo Bio", age, "Computer Science", interests, specialCharFriends, chats, date);
 
+        assertNotNull(user);
         assertEquals("Jasmine", user.getUsername());
         assertEquals("password", user.getPassword());
         assertEquals("Demo Bio", user.getBio());

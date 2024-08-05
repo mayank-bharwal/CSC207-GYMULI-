@@ -1,5 +1,5 @@
-import entity.User;
-import entity.UserFactory;
+package entity;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -12,6 +12,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+/**
+ * Test class for the User class.
+ */
 public class UserTest {
     private User user;
     private List<String> interests;
@@ -20,6 +23,9 @@ public class UserTest {
     private LocalDateTime dateCreated;
     private UserFactory userFactory;
 
+    /**
+     * Sets up the test environment before each test method.
+     */
     @BeforeEach
     void setUp() {
         userFactory = Mockito.mock(UserFactory.class);
@@ -75,46 +81,73 @@ public class UserTest {
                 .thenReturn(user);
     }
 
+    /**
+     * Tests the getUsername method.
+     */
     @Test
     void testGetUsername() {
         assertEquals("Jasmine", user.getUsername());
     }
 
+    /**
+     * Tests the getPassword method.
+     */
     @Test
     void testGetPassword() {
         assertEquals("password", user.getPassword());
     }
 
+    /**
+     * Tests the getBio method.
+     */
     @Test
     void testGetBio() {
         assertEquals("(Demo)", user.getBio());
     }
 
+    /**
+     * Tests the getProgramOfStudy method.
+     */
     @Test
     void testGetProgramOfStudy() {
         assertEquals("Computer Science", user.getProgramOfStudy());
     }
 
+    /**
+     * Tests the getAge method.
+     */
     @Test
     void testGetAge() {
         assertEquals(21, user.getAge());
     }
 
+    /**
+     * Tests the getInterests method.
+     */
     @Test
     void testGetInterests() {
         assertEquals(interests, user.getInterests());
     }
 
+    /**
+     * Tests the getFriends method.
+     */
     @Test
     void testGetFriends() {
         assertEquals(friends, user.getFriends());
     }
 
+    /**
+     * Tests the getDateCreated method.
+     */
     @Test
     void testGetDateCreated() {
         assertEquals(dateCreated, user.getDateCreated());
     }
 
+    /**
+     * Tests the setUsername method.
+     */
     @Test
     void testSetUsername() {
         user.setUsername("newUsername");
@@ -122,6 +155,9 @@ public class UserTest {
         assertEquals("newUsername", user.getUsername());
     }
 
+    /**
+     * Tests the setPassword method.
+     */
     @Test
     void testSetPassword() {
         user.setPassword("newPassword");
@@ -129,6 +165,9 @@ public class UserTest {
         assertEquals("newPassword", user.getPassword());
     }
 
+    /**
+     * Tests the setBio method.
+     */
     @Test
     void testSetBio() {
         user.setBio("New bio.");
@@ -136,6 +175,9 @@ public class UserTest {
         assertEquals("New bio.", user.getBio());
     }
 
+    /**
+     * Tests the setProgramOfStudy method.
+     */
     @Test
     void testSetProgramOfStudy() {
         user.setProgramOfStudy("Mathematics");
@@ -143,6 +185,9 @@ public class UserTest {
         assertEquals("Mathematics", user.getProgramOfStudy());
     }
 
+    /**
+     * Tests the setAge method.
+     */
     @Test
     void testSetAge() {
         user.setAge(25);
@@ -150,6 +195,9 @@ public class UserTest {
         assertEquals(25, user.getAge());
     }
 
+    /**
+     * Tests the setInterests method.
+     */
     @Test
     void testSetInterests() {
         List<String> newInterests = new ArrayList<>();
@@ -160,6 +208,9 @@ public class UserTest {
         assertEquals(newInterests, user.getInterests());
     }
 
+    /**
+     * Tests the setFriends method.
+     */
     @Test
     void testSetFriends() {
         List<String> newFriends = new ArrayList<>();
@@ -169,6 +220,9 @@ public class UserTest {
         assertEquals(newFriends, user.getFriends());
     }
 
+    /**
+     * Tests setting an empty bio.
+     */
     @Test
     void testSetEmptyBio() {
         user.setBio("");
@@ -176,6 +230,9 @@ public class UserTest {
         assertEquals("", user.getBio());
     }
 
+    /**
+     * Tests setting an empty program of study.
+     */
     @Test
     void testSetEmptyProgramOfStudy() {
         user.setProgramOfStudy("");
@@ -183,14 +240,20 @@ public class UserTest {
         assertEquals("", user.getProgramOfStudy());
     }
 
+    /**
+     * Tests setting an empty list of interests.
+     */
     @Test
     void testSetEmptyInterests() {
         List<String> emptyInterests = Collections.emptyList();
         user.setInterests(emptyInterests);
-        Mockito.when(user.getInterests()).thenReturn(emptyInterests);
+        when(user.getInterests()).thenReturn(emptyInterests);
         assertEquals(emptyInterests, user.getInterests());
     }
 
+    /**
+     * Tests setting a bio with whitespace.
+     */
     @Test
     void testSetBioWithWhitespace() {
         user.setBio(" ");
@@ -198,6 +261,9 @@ public class UserTest {
         assertEquals(" ", user.getBio());
     }
 
+    /**
+     * Tests setting a username with special characters.
+     */
     @Test
     void testSetUsernameWithSpecialCharacters() {
         user.setUsername("!@#$%");
@@ -205,6 +271,9 @@ public class UserTest {
         assertEquals("!@#$%", user.getUsername());
     }
 
+    /**
+     * Tests setting a password with special characters.
+     */
     @Test
     void testSetPasswordWithSpecialCharacters() {
         user.setPassword("!@#$%");
@@ -212,6 +281,9 @@ public class UserTest {
         assertEquals("!@#$%", user.getPassword());
     }
 
+    /**
+     * Tests setting a bio with special characters.
+     */
     @Test
     void testSetBioWithSpecialCharacters() {
         user.setBio("!@#$%");
@@ -219,6 +291,9 @@ public class UserTest {
         assertEquals("!@#$%", user.getBio());
     }
 
+    /**
+     * Tests setting a program of study with special characters.
+     */
     @Test
     void testSetProgramOfStudyWithSpecialCharacters() {
         user.setProgramOfStudy("!@#$%");
@@ -226,6 +301,9 @@ public class UserTest {
         assertEquals("!@#$%", user.getProgramOfStudy());
     }
 
+    /**
+     * Tests setting interests with special characters.
+     */
     @Test
     void testSetInterestsWithSpecialCharacters() {
         List<String> interestsWithSpecialChars = new ArrayList<>();
@@ -235,21 +313,33 @@ public class UserTest {
         assertEquals(interestsWithSpecialChars, user.getInterests());
     }
 
+    /**
+     * Tests setting the username to null.
+     */
     @Test
     void testSetUsernameToNull() {
         assertThrows(NullPointerException.class, () -> user.setUsername(null));
     }
 
+    /**
+     * Tests setting the password to null.
+     */
     @Test
     void testSetPasswordToNull() {
         assertThrows(NullPointerException.class, () -> user.setPassword(null));
     }
 
+    /**
+     * Tests setting an empty password.
+     */
     @Test
     void testSetEmptyPassword() {
         assertThrows(IllegalArgumentException.class, () -> user.setPassword(""));
     }
 
+    /**
+     * Tests setting a password with whitespace.
+     */
     @Test
     void testSetPasswordWithWhitespace() {
         assertThrows(IllegalArgumentException.class, () -> user.setPassword(" "));
