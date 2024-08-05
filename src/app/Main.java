@@ -163,6 +163,8 @@ public class Main {
         RecommendationView recommendationView = RecommendationViewFactory.create(viewModelManager, recommendationsController, recommendationsViewModel, searchUserController, searchUserViewModel);
         views.add(recommendationView, RecommendationView.viewName);
 
+        ProfileView profileView = ProfileViewFactory.create(viewModelManager);
+        views.add(profileView, ProfileView.viewName);
 
         viewModelManager.setActiveView(loginView.viewName);
         viewModelManager.firePropertyChanged();

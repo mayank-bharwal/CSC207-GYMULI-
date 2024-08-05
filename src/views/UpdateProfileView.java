@@ -272,13 +272,13 @@ public class UpdateProfileView  extends JPanel implements ActionListener, Proper
                         interest3Field.getText()
                 ));
 
-            if (currentState.getError() == null) { // Assume no error means success
+            if (currentState.getError() == null) {
                 viewModelManager.firePropertyChanged("profileUpdated", null, currentState.getUsername());
             }
 
         });
         clearButton.addActionListener(e -> clearFields());
-        backButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
+        backButton.addActionListener(e -> viewModelManager.setActiveView(ProfileView.viewName));
 
 
     }

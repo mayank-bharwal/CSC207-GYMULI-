@@ -3,17 +3,18 @@ package data_access.apiCallFacade;
 import data_access.readDB.MongoConnection;
 import data_access.apiCallFacade.apiCaller.APICaller;
 import data_access.apiCallFacade.apiCaller.APICallerInterface;
-import data_access.apiCallFacade.apiCaller.MapGenerator;
-import data_access.apiCallFacade.apiCaller.MapGeneratorInterface;
+import data_access.apiCallFacade.mapGenerator.MapGenerator;
+import data_access.apiCallFacade.mapGenerator.MapGeneratorInterface;
 import data_access.apiCallFacade.dbUpdater.MapUpdater;
 import data_access.apiCallFacade.dbUpdater.MapUpdaterInterface;
+import data_access.readDB.readDBInterface;
 import entity.User;
 
 import java.util.*;
 
 public class Facade implements FacadeInterface {
 
-    public void UpdateDB(User user, Map<String, User> accounts, MongoConnection mongoConnection){
+    public void UpdateDB(User user, Map<String, User> accounts, readDBInterface mongoConnection){
         MapGeneratorInterface mapGenerator = new MapGenerator();
         MapUpdaterInterface mapUpdater = new MapUpdater();
         mapUpdater.updateMap(mapGenerator.generateMap(user, accounts), mongoConnection);

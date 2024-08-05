@@ -5,12 +5,10 @@ import interface_adapter.ViewModelManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.format.DateTimeFormatter;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-/**
- * A view that displays the user's profile information.
- */
-public class ProfileView extends JPanel {
+public class ProfileView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "ProfileView";
 
     private final ViewModelManager viewModelManager;
@@ -18,117 +16,175 @@ public class ProfileView extends JPanel {
     private final JLabel bioLabel;
     private final JLabel programOfStudyLabel;
     private final JLabel ageLabel;
-    private final JLabel interestsLabel;
-    private final JLabel friendsLabel;
-    private final JLabel dateCreatedLabel;
     private final JLabel profilePictureLabel;
+    private final JButton updateProfileButton;
+    private final JButton friendsButton;
 
-    /**
-     * Constructs a ProfileView with the specified ViewModelManager.
-     *
-     * @param viewModelManager the manager that handles view models and manages state
-     */
     public ProfileView(ViewModelManager viewModelManager) {
         this.viewModelManager = viewModelManager;
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
 
-        JPanel profilePanel = new JPanel();
-        profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
+        JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        backButtonPanel.add(backButton);
+        add(backButtonPanel, BorderLayout.NORTH);
+
+        JPanel profilePanel = new JPanel(new GridBagLayout());
         profilePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(2, 5, 2, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        profilePictureLabel = new JLabel();
-        profilePictureLabel.setHorizontalAlignment(JLabel.CENTER);
-        profilePictureLabel.setPreferredSize(new Dimension(150, 150));
-        profilePictureLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-        profilePanel.add(profilePictureLabel);
+        profilePictureLabel = new JLabel(new ImageIcon("images/profilepicdefault.png"));
+        profilePictureLabel.setPreferredSize(new Dimension(50, 50));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        profilePanel.add(profilePictureLabel, gbc);
 
-        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        headerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JPanel usernamePanel = new JPanel(new GridBagLayout());
+        usernamePanel.setOpaque(false);
+
+        JLabel atSymbolLabel = new JLabel("@");
+        atSymbolLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         usernameLabel = createLabel(Font.BOLD, 24);
-        headerPanel.add(usernameLabel);
 
-        bioLabel = createLabel(Font.ITALIC, 16);
-        headerPanel.add(bioLabel);
+        GridBagConstraints gbcUser = new GridBagConstraints();
+        gbcUser.insets = new Insets(0, 0, 0, 5);
+        gbcUser.gridx = 0;
+        gbcUser.gridy = 0;
+        usernamePanel.add(atSymbolLabel, gbcUser);
 
-        profilePanel.add(headerPanel);
+        gbcUser.gridx = 1;
+        usernamePanel.add(usernameLabel, gbcUser);
 
-        programOfStudyLabel = createLabel(Font.PLAIN, 14);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        profilePanel.add(usernamePanel, gbc);
+
+        JSeparator separator2 = new JSeparator();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        profilePanel.add(separator2, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        friendsButton = new JButton("0 Friends");
+        profilePanel.add(friendsButton, gbc);
+
+        gbc.gridx = 1;
+        updateProfileButton = new JButton("Edit Profile");
+        profilePanel.add(updateProfileButton, gbc);
+
+        JSeparator separator1 = new JSeparator();
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        profilePanel.add(separator1, gbc);
+
+        JPanel infoPanel = new JPanel(new GridBagLayout());
+        infoPanel.setOpaque(false);
+
+        JPanel ageProgramPanel = new JPanel(new GridBagLayout());
+        ageProgramPanel.setOpaque(false);
+
         ageLabel = createLabel(Font.PLAIN, 14);
-        interestsLabel = createLabel(Font.PLAIN, 14);
-        friendsLabel = createLabel(Font.PLAIN, 14);
-        dateCreatedLabel = createLabel(Font.PLAIN, 14);
+        programOfStudyLabel = createLabel(Font.PLAIN, 14);
 
-        profilePanel.add(createLabeledPanel("Program of Study:", programOfStudyLabel));
-        profilePanel.add(createLabeledPanel("Age:", ageLabel));
-        profilePanel.add(createLabeledPanel("Interests:", interestsLabel));
-        profilePanel.add(createLabeledPanel("Friends:", friendsLabel));
-        profilePanel.add(createLabeledPanel("Date Created:", dateCreatedLabel));
+        JLabel separator = new JLabel("|");
+        separator.setFont(new Font("Arial", Font.PLAIN, 14));
 
-        add(profilePanel, BorderLayout.CENTER);
+        GridBagConstraints gbcInfo = new GridBagConstraints();
+        gbcInfo.insets = new Insets(0, 0, 0, 5);
+        gbcInfo.gridx = 0;
+        gbcInfo.gridy = 0;
+        gbcInfo.anchor = GridBagConstraints.WEST;
+        ageProgramPanel.add(ageLabel, gbcInfo);
+
+        gbcInfo.gridx = 1;
+        ageProgramPanel.add(separator, gbcInfo);
+
+        gbcInfo.gridx = 2;
+        ageProgramPanel.add(programOfStudyLabel, gbcInfo);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+        profilePanel.add(ageProgramPanel, gbc);
+
+        // need to center bio
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
+        bioLabel = createLabel(Font.PLAIN, 14);
+        profilePanel.add(bioLabel, gbc);
+
+        JPanel outerPanel = new JPanel(new BorderLayout());
+        outerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        outerPanel.add(profilePanel, BorderLayout.CENTER);
+
+        add(outerPanel, BorderLayout.CENTER);
+
+        viewModelManager.addPropertyChangeListener(this);
 
         updateUserInfo();
+
+        updateProfileButton.addActionListener(e -> viewModelManager.setActiveView(UpdateProfileView.viewName));
+        friendsButton.addActionListener(e -> viewModelManager.setActiveView(EditFriendsView.viewName));
     }
 
-    /**
-     * Creates a JLabel with specified font settings.
-     *
-     * @param fontStyle the style of the font
-     * @param fontSize  the size of the font
-     * @return a new JLabel
-     */
+
     private JLabel createLabel(int fontStyle, int fontSize) {
         JLabel label = new JLabel();
         label.setFont(new Font("Arial", fontStyle, fontSize));
         return label;
     }
 
-    /**
-     * Creates a JPanel with a label and a value.
-     *
-     * @param labelText  the text for the label
-     * @param valueLabel the JLabel to display the value
-     * @return a new JPanel
-     */
-    private JPanel createLabeledPanel(String labelText, JLabel valueLabel) {
-        JPanel panel = new JPanel(new BorderLayout());
-        JLabel label = new JLabel(labelText);
-        label.setFont(new Font("Arial", Font.BOLD, 14));
-        panel.add(label, BorderLayout.WEST);
-        panel.add(valueLabel, BorderLayout.CENTER);
-        panel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
-        return panel;
-    }
-
-    /**
-     * Updates the display with the current user's information.
-     */
     private void updateUserInfo() {
         User currentUser = viewModelManager.getCurrentUser();
+        System.out.println("Current User: " + currentUser);
         if (currentUser != null) {
+            System.out.println("Username: " + currentUser.getUsername());
             usernameLabel.setText(currentUser.getUsername());
             bioLabel.setText(currentUser.getBio());
             programOfStudyLabel.setText(currentUser.getProgramOfStudy());
             ageLabel.setText(currentUser.getAge() != null ? currentUser.getAge().toString() : "N/A");
-            interestsLabel.setText(String.join(", ", currentUser.getInterests()));
-            friendsLabel.setText(String.join(", ", currentUser.getFriends()));
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            dateCreatedLabel.setText(currentUser.getDateCreated().format(formatter));
 
-            profilePictureLabel.setIcon(new ImageIcon("path/to/profile_picture.png")); // replace with actual path
+            profilePictureLabel.setIcon(new ImageIcon("images/profilepicdefault.png"));
+            friendsButton.setText(currentUser.getFriends().size() + " Friends");
         } else {
             usernameLabel.setText("N/A");
             bioLabel.setText("N/A");
             programOfStudyLabel.setText("N/A");
             ageLabel.setText("N/A");
-            interestsLabel.setText("N/A");
-            friendsLabel.setText("N/A");
-            dateCreatedLabel.setText("N/A");
 
-            profilePictureLabel.setIcon(new ImageIcon("path/to/default_picture.png")); // replace with actual path
+            profilePictureLabel.setIcon(new ImageIcon("images/profilepicdefault.png"));
+            friendsButton.setText("0 Friends");
+        }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("activeView".equals(evt.getPropertyName()) && viewName.equals(evt.getNewValue())) {
+            updateUserInfo();
         }
     }
 }
+
+
+
+
+

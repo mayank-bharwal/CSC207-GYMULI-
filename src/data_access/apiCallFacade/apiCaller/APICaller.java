@@ -20,9 +20,8 @@ public class APICaller implements APICallerInterface {
     @Override
     public float getSimilarityScore(String text1, String text2) {
 
-        String URL = getAPI(text1, text2);
         Request request = new Request.Builder()
-                .url(URL)
+                .url(getAPI(text1, text2))
                 .build();
 
         try {
@@ -32,10 +31,18 @@ public class APICaller implements APICallerInterface {
                 //System.out.println(response); // debugging
                 System.out.println("First API failed, Trying the backup API");
 
-                String URL2 = getBackupAPI(text1, text2);
+                String json = String.format("{\"text_1\": \""+text1.replaceAll("[^a-zA-Z ]", "")+"\", \"text_2\": \""+text2.replaceAll("[^a-zA-Z ]", "")+"\"}");
+
+                RequestBody body = RequestBody.create(
+                        json,
+                        MediaType.get("application/json; charset=utf-8")
+                );
                 Request request2 = new Request.Builder()
-                        .url(URL2)
+                        .url(getBackupAPI())
+                        .header("X-Api-Key", getProfKey())
+                        .post(body)
                         .build();
+
                 response = client.newCall(request2).execute();
 
                 if (!response.isSuccessful()) {
@@ -110,10 +117,11 @@ public class APICaller implements APICallerInterface {
 
     public static void main (String[]args){
             APICaller apicaller = new APICaller();
-            //Float score = apicaller.getSimilarityScore("Mike tyson Loves Boxing $$$$ ##@@9881989^^&&!!!++]{{", "My dog tyson");
-            //System.out.println("Similarity Score: " + score);
+            Float score = apicaller.getSimilarityScore("Mike tyson Loves Boxing $$$$ ##@@9881989^^&&!!!++]{{", "My dog tyson");
+            System.out.println("Similarity Score: " + score);
+            System.out.println(getBackupAPI());
 
-            System.out.println(apicaller.filterProfanity("Damn, Mike Tyson is a boxer and shit"));
+            //System.out.println(apicaller.filterProfanity("Damn, Mike Tyson is a boxer and shit"));
         }
     }
 

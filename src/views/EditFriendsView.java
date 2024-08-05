@@ -8,6 +8,7 @@ import interface_adapter.remove_friends.RemoveFriendsController;
 import interface_adapter.remove_friends.RemoveFriendsViewModel;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -55,19 +56,36 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
 
+        Color hex = new Color(224,224,224);
+
         JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setBorder(null);
+        headerPanel.setBackground(hex);
 
         // User Info Panel
         JPanel userInfoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        userInfoPanel.setBackground(hex);
         profilePictureLabel = new JLabel();
         currentUserLabel = new JLabel();
         userInfoPanel.add(profilePictureLabel);
         userInfoPanel.add(currentUserLabel);
 
-        // Add Friend Button (Plus Sign)
-        JButton addFriendButton = new JButton("+");
+        // Add Friend Button (Image of the button)
+        ImageIcon addFriendIcon = new ImageIcon("images/add_friend.png");
+        Image originalImage = addFriendIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+
+        JButton addFriendButton = new JButton(resizedIcon);
+        addFriendButton.setBorderPainted(false);
+        addFriendButton.setContentAreaFilled(false);
+        addFriendButton.setFocusPainted(false);
+        addFriendButton.setOpaque(false);
         addFriendButton.addActionListener(e -> showAddFriendDialog());
 
+
+        // Back button (with text back)
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
 
@@ -184,10 +202,24 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
             List<String> friendsList = currentUser.getFriends();
             System.out.println(friendsList);
             for (String friend : friendsList) {
-                JButton friendButton = new JButton(friend);
-                friendButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-                friendButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, friendButton.getMinimumSize().height));
-                friendButton.addMouseListener(new MouseAdapter() {
+                JPanel friendPanel = new JPanel();
+                friendPanel.setLayout(new BoxLayout(friendPanel, BoxLayout.X_AXIS));
+
+                JLabel friendLabel = new JLabel(friend);
+                friendLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+                Border blackBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
+                Border paddingBorder = BorderFactory.createEmptyBorder(10 ,10,10, screenSize.width);
+                Border compoundBorder = BorderFactory.createCompoundBorder(blackBorder, paddingBorder);
+
+                friendLabel.setBorder(compoundBorder);
+
+                friendPanel.add(friendLabel);
+                friendPanel.add(Box.createHorizontalGlue());
+
+                friendPanel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         if (SwingUtilities.isRightMouseButton(e)) {
@@ -195,12 +227,12 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
                         }
                     }
                 });
-                friendsListPanel.add(friendButton); // Add friend button to panel
+
+                friendsListPanel.add(friendPanel);
             }
 
             friendsListPanel.revalidate(); // Refresh the panel to reflect updates
             friendsListPanel.repaint(); // Repaint the panel to apply changes
         }
     }
-    //end of view
 }
