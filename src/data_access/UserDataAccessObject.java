@@ -18,6 +18,7 @@ import use_case.add_friends.AddFriendsUserDataAccessObject;
 import use_case.login.LoginUserDataAccessInterface;
 
 import use_case.recommendations.RecommendationsDataAccessInterface;
+import use_case.refresh_user.RefreshUserDataAccessInterface;
 import use_case.remove_friends.RemoveFriendsUserDataAccessInterface;
 import use_case.search_user.SearchUserDataAccessInterface;
 import use_case.update_profile.UpdateProfileUserDataAccessInterface;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 
 public class UserDataAccessObject implements AccountCreationUserDataAccessInterface, LoginUserDataAccessInterface,
         UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationsDataAccessInterface,
-        RemoveFriendsUserDataAccessInterface, SearchUserDataAccessInterface {
+        RemoveFriendsUserDataAccessInterface, SearchUserDataAccessInterface, RefreshUserDataAccessInterface {
           
     private readDBInterface mongoConnection;
     private MongoCollection<Document> UserCollection;
