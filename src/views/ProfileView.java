@@ -123,7 +123,6 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         gbc.anchor = GridBagConstraints.WEST;
         profilePanel.add(ageProgramPanel, gbc);
 
-        // need to center bio
         gbc.gridx = 0;
         gbc.gridy = 6;
         gbc.gridwidth = 2;
@@ -146,7 +145,6 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         friendsButton.addActionListener(e -> viewModelManager.setActiveView(EditFriendsView.viewName));
     }
 
-
     private JLabel createLabel(int fontStyle, int fontSize) {
         JLabel label = new JLabel();
         label.setFont(new Font("Arial", fontStyle, fontSize));
@@ -155,16 +153,22 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
     private void updateUserInfo() {
         User currentUser = viewModelManager.getCurrentUser();
-        System.out.println("Current User: " + currentUser);
-        if (currentUser != null) {
-            System.out.println("Username: " + currentUser.getUsername());
-            usernameLabel.setText(currentUser.getUsername());
-            bioLabel.setText(currentUser.getBio());
-            programOfStudyLabel.setText(currentUser.getProgramOfStudy());
-            ageLabel.setText(currentUser.getAge() != null ? currentUser.getAge().toString() : "N/A");
+        User viewedUser = viewModelManager.getViewedUser();
+        User userToDisplay = viewedUser != null ? viewedUser : currentUser;
+        System.out.println("User to Display: " + userToDisplay);
+        if (userToDisplay != null) {
+            System.out.println("Username: " + userToDisplay.getUsername());
+            usernameLabel.setText(userToDisplay.getUsername());
+            bioLabel.setText(userToDisplay.getBio());
+            programOfStudyLabel.setText(userToDisplay.getProgramOfStudy());
+            ageLabel.setText(userToDisplay.getAge() != null ? userToDisplay.getAge().toString() : "N/A");
 
             profilePictureLabel.setIcon(new ImageIcon("images/profilepicdefault.png"));
-            friendsButton.setText(currentUser.getFriends().size() + " Friends");
+            friendsButton.setText(userToDisplay.getFriends().size() + " Friends");
+
+            boolean isCurrentUser = userToDisplay.equals(currentUser);
+            updateProfileButton.setEnabled(isCurrentUser);
+            updateProfileButton.setVisible(isCurrentUser);
         } else {
             usernameLabel.setText("N/A");
             bioLabel.setText("N/A");
@@ -173,12 +177,17 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
             profilePictureLabel.setIcon(new ImageIcon("images/profilepicdefault.png"));
             friendsButton.setText("0 Friends");
+            updateProfileButton.setEnabled(false);
+            updateProfileButton.setVisible(false);
         }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("activeView".equals(evt.getPropertyName()) && viewName.equals(evt.getNewValue())) {
+            updateUserInfo();
+        }
+        if ("viewedUser".equals(evt.getPropertyName())) {
             updateUserInfo();
         }
     }
