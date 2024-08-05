@@ -8,7 +8,7 @@ import org.bson.Document;
 
 import static data_access.readDB.GetDB.*;
 
-public class MongoConnection {
+public class MongoConnection implements readDBInterface{
 
     // new db: mongodb+srv://gymuli07:csc207gymuli@cluster0.zjadzk8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
@@ -35,6 +35,10 @@ public class MongoConnection {
 
     public MongoCollection<Document> getSimilarityCollection() {
         return similarityCollection;
+    }
+
+    public String getCollectionID(){
+        return getCollectionID();
     }
 
     public static void main(String[] args) {

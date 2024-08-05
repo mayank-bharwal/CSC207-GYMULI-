@@ -4,8 +4,8 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import data_access.apiCallFacade.Facade;
-import data_access.readDB.MongoConnection;
 import data_access.apiCallFacade.FacadeInterface;
+import data_access.readDB.readDBInterface;
 import entity.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface, SendMessageUserDataAccessInterface,
         MakeChatUserDataAccessInterface, DeleteChatUserDataAccessInterafce {
 
-    private MongoConnection mongoConnection;
+    private readDBInterface mongoConnection;
     private Map<String, Message> messages = new HashMap<>();
     private MessageFactory messageFactory;
     private Map<String, Chat> chats = new HashMap<>();
@@ -53,7 +53,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
      * @param userDataAccessObject      The UserDataAccessObject for user-related data operations.
      */
 
-    public ChatDataAccessObject(MongoConnection mongoConnection, Map<String, Message> messages, MessageFactory messageFactory,
+    public ChatDataAccessObject(readDBInterface mongoConnection, Map<String, Message> messages, MessageFactory messageFactory,
                                 Map<String, Chat> chats, ChatFactory chatFactory,
                                 UserDataAccessObject userDataAccessObject) {
         System.out.println("Initializing ChatDataAccessObject...");

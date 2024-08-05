@@ -6,7 +6,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 
 import data_access.apiCallFacade.apiCaller.APICaller;
-import data_access.readDB.MongoConnection;
+import data_access.readDB.readDBInterface;
 import data_access.apiCallFacade.Facade;
 import data_access.apiCallFacade.FacadeInterface;
 import static com.mongodb.client.model.Filters.eq;
@@ -36,7 +36,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationsDataAccessInterface,
         RemoveFriendsUserDataAccessInterface, SearchUserDataAccessInterface {
           
-    private MongoConnection mongoConnection;
+    private readDBInterface mongoConnection;
     private MongoCollection<Document> UserCollection;
     private Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
@@ -51,7 +51,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
      */
 
 
-    public UserDataAccessObject(UserFactory userFactory, Map<String, User> accounts, MongoConnection mongoConnection) {
+    public UserDataAccessObject(UserFactory userFactory, Map<String, User> accounts, readDBInterface mongoConnection) {
 
         this.userFactory = userFactory;
         this.accounts = accounts;

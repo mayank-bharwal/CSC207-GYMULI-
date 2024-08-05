@@ -3,6 +3,7 @@ package data_access.apiCallFacade.dbUpdater;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import data_access.readDB.MongoConnection;
+import data_access.readDB.readDBInterface;
 import org.bson.Document;
 import org.json.JSONObject;
 
@@ -10,7 +11,7 @@ import static data_access.readDB.GetDB.*;
 
 public class MapUpdater implements MapUpdaterInterface {
     @Override
-    public void updateMap(JSONObject map, MongoConnection mongoConnection) {
+    public void updateMap(JSONObject map, readDBInterface mongoConnection) {
         // upload or modify dictionary present on the database
         // Connection string to MongoDB server, application is DB agnostic
 

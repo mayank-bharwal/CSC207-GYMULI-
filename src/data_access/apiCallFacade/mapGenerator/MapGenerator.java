@@ -1,4 +1,4 @@
-package data_access.apiCallFacade.apiCaller;
+package data_access.apiCallFacade.mapGenerator;
 
 /* Sample Return JSON object
 {
@@ -15,6 +15,8 @@ package data_access.apiCallFacade.apiCaller;
 }
 */
 
+import data_access.apiCallFacade.apiCaller.APICaller;
+import data_access.apiCallFacade.apiCaller.APICallerInterface;
 import entity.User;
 import org.json.JSONObject;
 

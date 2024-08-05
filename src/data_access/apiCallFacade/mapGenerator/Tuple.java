@@ -1,4 +1,4 @@
-package data_access.apiCallFacade.apiCaller;
+package data_access.apiCallFacade.mapGenerator;
 
 public class Tuple {
     private final String first;
