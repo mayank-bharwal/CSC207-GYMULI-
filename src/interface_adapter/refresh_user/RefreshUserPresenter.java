@@ -40,6 +40,8 @@ public class RefreshUserPresenter implements RefreshUserOutputBoundary {
         refreshUserState.setUsername(user.getUpdatedUser().getUsername());
         this.refreshUserViewModel.setState(refreshUserState);
         refreshUserViewModel.firePropertyChange("userUpdated", null, user.getUpdatedUser());
+
+        viewModelManager.setViewedUser(user.getUpdatedUser());
     }
 
     /**
