@@ -1,4 +1,4 @@
-# Welcome to YapNet - A Social Media Messenger app
+# Welcome to GYMULI - A Social Media Messenger app
 
 ## CSC207-GYMULI
 ## Overview
