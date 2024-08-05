@@ -7,7 +7,7 @@ import entity.User;
 import java.util.Map;
 
 public interface FacadeInterface {
-    public void UpdateDB(User user, Map<String, User> accounts, readDBInterface mongoConnection);
+    public void UpdateDB(User user, Map<String, User> accounts);
     public String filter(String text);
     public void use_paid(boolean use_paid);
 }

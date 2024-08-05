@@ -6,6 +6,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 
 import data_access.apiCallFacade.apiCaller.APICaller;
+import data_access.readDB.MongoConnection;
 import data_access.readDB.readDBInterface;
 import data_access.apiCallFacade.Facade;
 import data_access.apiCallFacade.FacadeInterface;
@@ -37,11 +38,11 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         UpdateProfileUserDataAccessInterface, AddFriendsUserDataAccessObject, RecommendationsDataAccessInterface,
         RemoveFriendsUserDataAccessInterface, SearchUserDataAccessInterface, RefreshUserDataAccessInterface {
           
-    private readDBInterface mongoConnection;
+    private readDBInterface mongoConnection = new MongoConnection();
     private MongoCollection<Document> UserCollection;
     private Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
-    private FacadeInterface facade = new Facade();
+    private FacadeInterface facade;
 
     /**
      * Constructor for UserDataAccessObject.
@@ -58,6 +59,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         this.accounts = accounts;
         this.mongoConnection = mongoConnection;
         this.UserCollection = mongoConnection.getUserCollection();
+        this.facade = new Facade(mongoConnection);
 
         /**
          * CHANGE facade.use_paid to true when NOT TESTING
@@ -181,7 +183,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
-        facade.UpdateDB(user, accounts, mongoConnection);
+        facade.UpdateDB(user, accounts);
 
         accounts.put(user.getUsername(), user);
     }
@@ -297,7 +299,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
         accounts.remove(oldUsername);
 
-        facade.UpdateDB(user, accounts, mongoConnection);// 2
+        facade.UpdateDB(user, accounts);// 2
 
         accounts.put(newUsername, newUser);
         System.out.println("user updated");

@@ -13,52 +13,33 @@ import entity.User;
 import java.util.*;
 
 public class Facade implements FacadeInterface {
+    MapGeneratorInterface mapGenerator = new MapGenerator();
+    MapUpdaterInterface mapUpdater = new MapUpdater();
+    APICallerInterface apiCaller = new APICaller();
+    readDBInterface mongoConnection = new MongoConnection();
 
-    public void UpdateDB(User user, Map<String, User> accounts, readDBInterface mongoConnection){
-        MapGeneratorInterface mapGenerator = new MapGenerator();
-        MapUpdaterInterface mapUpdater = new MapUpdater();
+    public Facade(MapGeneratorInterface mapGenerator, MapUpdaterInterface mapUpdater, APICallerInterface apiCaller) {
+        this.mapGenerator = mapGenerator;
+        this.mapUpdater = mapUpdater;
+        this.apiCaller = apiCaller;
+        this.mongoConnection = new MongoConnection();
+    }
+
+    public Facade(){}
+
+    public Facade(readDBInterface mongoConnection){
+        this.mongoConnection = mongoConnection;
+    }
+
+    public void UpdateDB(User user, Map<String,User> accounts){
         mapUpdater.updateMap(mapGenerator.generateMap(user, accounts), mongoConnection);
     }
 
     public String filter(String text){
-        APICallerInterface apiCaller = new APICaller();
         return apiCaller.filterProfanity(text);
     }
 
     public void use_paid(boolean paid){
-        APICallerInterface apiCaller = new APICaller();
         apiCaller.use_paid(paid);
-    }
-
-// ******************************
-    // ignore this, testing purposes only
-    public static void main(String[]args){
-        // Create an instance of CommonUserFactory
-//        CommonUserFactory userFactory = new CommonUserFactory();
-//
-//        List<String> hobbies5 = new ArrayList<>();
-//        hobbies5.add("Dancing");
-//        hobbies5.add("Painting");
-//
-//        List<String> friends5 = new ArrayList<>();
-//        friends5.add("Charlie");
-//        friends5.add("David");
-//
-//        List<String> chats5 = new ArrayList<>();
-//        chats5.add("Chat9");
-//        chats5.add("Chat10");
-//
-//        User user = userFactory.createUser(
-//                "Mayank", "password131415", "Audiophile", 29, "Cinema Studies",
-//                new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), LocalDateTime.now()
-//        );
-//
-//        Map<String, User> accounts = new HashMap<>();
-//        accounts = getMap();
-//
-//        MongoConnection mongoConnection = new MongoConnection();
-        Facade facade = new Facade();
-//        facade.UpdateDB(user, accounts, mongoConnection);
-        System.out.println(facade.filter(" You are an 0, you piece of "));
     }
 }

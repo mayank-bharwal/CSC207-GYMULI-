@@ -40,7 +40,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
     private MongoCollection<Document> UserCollection;
     private MongoCollection<Document> MessageCollection;
     private MongoCollection<Document> ChatCollection;
-    private FacadeInterface facade = new Facade();
+    private FacadeInterface facade;
 
     /**
      * Constructs a new ChatDataAccessObject.
@@ -66,6 +66,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         this.ChatCollection = mongoConnection.getChatCollection();
         this.UserCollection = mongoConnection.getUserCollection();
         this.userDataAccessObject = userDataAccessObject;
+        this.facade = new Facade(mongoConnection);
 
         try (MongoCursor<Document> chatCursor = ChatCollection.find().iterator()) {
             while (chatCursor.hasNext()) {
@@ -339,6 +340,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         user2Chats.add(chat.getChatName());
         user2.setChats(user2Chats);
     }
+
     @Override
     public String filter(String message){
         if(message!=null && !message.isEmpty()){
