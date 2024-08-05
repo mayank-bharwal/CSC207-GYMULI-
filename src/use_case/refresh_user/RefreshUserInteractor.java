@@ -35,7 +35,7 @@ public class RefreshUserInteractor implements RefreshUserInputBoundary {
         if (!refreshDAO.userExists(inputData.getUser())) {
             refreshUserPresenter.setFailView("User does not exist");
         } else {
-            User updatedUser = refreshDAO.getUser(inputData.getUser());
+            User updatedUser = refreshDAO.userUpdate(inputData.getUser());
             RefreshUserOutputData refreshUserOutputData = new RefreshUserOutputData(updatedUser, false);
             refreshUserPresenter.setPassView(refreshUserOutputData);
         }

@@ -90,7 +90,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         }
     }
 
-     public void userUpdate(String user){
+     public User userUpdate(String user){
 
         User cU = accounts.get(user);
         Document queryResult = UserCollection.find(eq("username", user)).first();
@@ -111,8 +111,17 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
          cU.setChats(chats);
          cU.setFriends(friends);
-
+         cU.setInterests(interests);
+         cU.setProgramOfStudy(programOfStudy);
+         cU.setDateCreated(dateCreated);
+         cU.setUsername(username);
+         cU.setPassword(password);
+         cU.setBio(bio);
+         cU.setAge(age);
          System.out.println("work done");
+
+         return cU;
+
 
 
 //         user.setUsername(username);
