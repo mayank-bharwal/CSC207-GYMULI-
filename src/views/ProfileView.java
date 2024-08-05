@@ -27,7 +27,10 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         setPreferredSize(new Dimension(800, 600));
 
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
+        backButton.addActionListener(e -> {
+            viewModelManager.clearViewedUser();
+            viewModelManager.setActiveView(MainView.viewName);
+        });
         JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         backButtonPanel.add(backButton);
         add(backButtonPanel, BorderLayout.NORTH);
@@ -80,6 +83,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         gbc.gridy = 3;
         gbc.gridwidth = 1;
         friendsButton = new JButton("0 Friends");
+        friendsButton.addActionListener(e -> viewModelManager.setActiveView(EditFriendsView.viewName));
         profilePanel.add(friendsButton, gbc);
 
         gbc.gridx = 1;
@@ -192,8 +196,6 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         }
     }
 }
-
-
 
 
 

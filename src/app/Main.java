@@ -13,6 +13,9 @@ import interface_adapter.add_friends.AddFriendsPresenter;
 import interface_adapter.add_friends.AddFriendsViewModel;
 import interface_adapter.make_chat.CreateChatPresenter;
 import interface_adapter.make_chat.CreateChatViewModel;
+import interface_adapter.refresh_user.RefreshUserController;
+import interface_adapter.refresh_user.RefreshUserPresenter;
+import interface_adapter.refresh_user.RefreshUserViewModel;
 import interface_adapter.remove_friends.RemoveFriendsController;
 import interface_adapter.remove_friends.RemoveFriendsPresenter;
 import interface_adapter.remove_friends.RemoveFriendsViewModel;
@@ -41,6 +44,9 @@ import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.make_chat.MakeChatInputBoundary;
 import use_case.make_chat.MakeChatInteractor;
+import use_case.refresh_user.RefreshUserInputBoundary;
+import use_case.refresh_user.RefreshUserInteractor;
+import use_case.refresh_user.RefreshUserOutputBoundary;
 import use_case.remove_friends.RemoveFriendsInputBoundary;
 import use_case.remove_friends.RemoveFriendsInteractor;
 import use_case.recommendations.RecommendationsInputBoundary;
@@ -90,6 +96,7 @@ public class Main {
         CreateChatViewModel createChatViewModel = new CreateChatViewModel();
         UpdateProfileViewModel updateProfileViewModel = new UpdateProfileViewModel();
         RecommendationsViewModel recommendationsViewModel = new RecommendationsViewModel();
+        RefreshUserViewModel refreshUserViewModel = new RefreshUserViewModel();
 
         MongoConnection mongoConnection = new MongoConnection();
 
@@ -143,12 +150,16 @@ public class Main {
         AddFriendsInputBoundary addFriendsInteractor = new AddFriendsInteractor(addFriendsPresenter, userDataAccessObject);
         AddFriendsController addFriendsController = new AddFriendsController(addFriendsInteractor);
 
+        RefreshUserOutputBoundary refreshUserPresenter = new RefreshUserPresenter(refreshUserViewModel, viewModelManager);
+        RefreshUserInputBoundary refreshUserInteractor = new RefreshUserInteractor(userDataAccessObject, refreshUserPresenter);
+        RefreshUserController refreshUserController = new RefreshUserController(refreshUserInteractor);
+
         RemoveFriendsViewModel removeFriendsViewModel = new RemoveFriendsViewModel();
         RemoveFriendsPresenter removeFriendsPresenter = new RemoveFriendsPresenter(removeFriendsViewModel);
         RemoveFriendsInputBoundary removeFriendsInteractor = new RemoveFriendsInteractor(userDataAccessObject, removeFriendsPresenter);
         RemoveFriendsController removeFriendsController = new RemoveFriendsController(removeFriendsInteractor, viewModelManager);
 
-        EditFriendsView friendsView = FriendsViewFactory.create(viewModelManager, addFriendsViewModel,removeFriendsViewModel, removeFriendsController, addFriendsController);
+        EditFriendsView friendsView = FriendsViewFactory.create(viewModelManager, addFriendsViewModel,removeFriendsViewModel, removeFriendsController, addFriendsController, refreshUserController);
         views.add(friendsView, EditFriendsView.viewName);
 
         SearchUserViewModel searchUserViewModel = new SearchUserViewModel();

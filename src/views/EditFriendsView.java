@@ -4,11 +4,11 @@ import entity.User;
 import interface_adapter.ViewModelManager;
 import interface_adapter.add_friends.AddFriendsController;
 import interface_adapter.add_friends.AddFriendsViewModel;
+import interface_adapter.refresh_user.RefreshUserController;
 import interface_adapter.remove_friends.RemoveFriendsController;
 import interface_adapter.remove_friends.RemoveFriendsViewModel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,11 +16,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-/**
- * A view that represents the user interface for managing friends.
- * It displays the current user, a list of friends, and provides options
- * to add or delete friends.
- */
 public class EditFriendsView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "EditFriendsView";
     private final ViewModelManager viewModelManager;
@@ -28,27 +23,20 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     private final RemoveFriendsViewModel removeFriendsViewModel;
     private final RemoveFriendsController removeFriendsController;
     private final AddFriendsController addFriendsController;
+    private final RefreshUserController refreshUserController; // Added
     private final JLabel currentUserLabel;
     private final JLabel profilePictureLabel;
     private final JPanel friendsListPanel;
+    private final JButton addFriendButton;
 
-    /**
-     * Constructs an EditFriendsView with the specified ViewModelManager and Controllers.
-     *
-     * @param viewModelManager       the manager that handles view models and manages state
-     * @param addFriendsViewModel    the view model for adding friends
-     * @param removeFriendsViewModel the view model for removing friends
-     * @param removeFriendsController the controller for removing friends
-     * @param addFriendsController   the controller for adding friends
-     */
-    public EditFriendsView(ViewModelManager viewModelManager, AddFriendsViewModel addFriendsViewModel, RemoveFriendsViewModel removeFriendsViewModel, RemoveFriendsController removeFriendsController, AddFriendsController addFriendsController) {
+    public EditFriendsView(ViewModelManager viewModelManager, AddFriendsViewModel addFriendsViewModel, RemoveFriendsViewModel removeFriendsViewModel, RemoveFriendsController removeFriendsController, AddFriendsController addFriendsController, RefreshUserController refreshUserController) {
         this.viewModelManager = viewModelManager;
         this.addFriendsViewModel = addFriendsViewModel;
         this.removeFriendsViewModel = removeFriendsViewModel;
         this.removeFriendsController = removeFriendsController;
         this.addFriendsController = addFriendsController;
+        this.refreshUserController = refreshUserController;
 
-        // Add PropertyChangeListeners
         this.viewModelManager.addPropertyChangeListener(this);
         this.addFriendsViewModel.addPropertyChangeListener(this);
         this.removeFriendsViewModel.addPropertyChangeListener(this);
@@ -70,7 +58,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         Image resizedImage = originalImage.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
-        JButton addFriendButton = new JButton(resizedIcon);
+        addFriendButton = new JButton(resizedIcon);
         addFriendButton.setBorderPainted(false);
         addFriendButton.setContentAreaFilled(false);
         addFriendButton.setFocusPainted(false);
@@ -78,7 +66,10 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         addFriendButton.addActionListener(e -> showAddFriendDialog());
 
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));
+        backButton.addActionListener(e -> {
+            viewModelManager.clearViewedUser();
+            viewModelManager.setActiveView(MainView.viewName);
+        });
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         bottomPanel.add(backButton);
@@ -108,6 +99,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
             case "currentUser":
+            case "viewedUser":
                 updateCurrentUser();
                 break;
             case "friendsList":
@@ -131,12 +123,18 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
 
     private void updateCurrentUser() {
         User currentUser = viewModelManager.getCurrentUser();
-        currentUserLabel.setText(currentUser != null ? currentUser.getUsername() + "'s friends" : "Not logged in");
-        loadUserProfile();
+        User viewedUser = viewModelManager.getViewedUser();
+        User userToDisplay = viewedUser != null ? viewedUser : currentUser;
+
+        currentUserLabel.setText(userToDisplay != null ? userToDisplay.getUsername() + "'s friends" : "Not logged in");
+        loadUserProfile(userToDisplay);
         updateFriendsList();
+
+        boolean isViewingOwnFriends = viewedUser == null || viewedUser.equals(currentUser);
+        addFriendButton.setVisible(isViewingOwnFriends);
     }
 
-    private void loadUserProfile() {
+    private void loadUserProfile(User user) {
         String imagePath = "images/profilepicdefault.png";
         ImageIcon imageIcon = new ImageIcon(imagePath);
         profilePictureLabel.setIcon(imageIcon);
@@ -167,9 +165,11 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     private void updateFriendsList() {
         friendsListPanel.removeAll();
         User currentUser = viewModelManager.getCurrentUser();
-        if (currentUser != null) {
-            List<String> friendsList = currentUser.getFriends();
-            System.out.println(friendsList);
+        User viewedUser = viewModelManager.getViewedUser();
+        User userToDisplay = viewedUser != null ? viewedUser : currentUser;
+
+        if (userToDisplay != null) {
+            List<String> friendsList = userToDisplay.getFriends();
             for (String friend : friendsList) {
                 JPanel friendPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
@@ -183,8 +183,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
 
                 JButton viewProfileButton = new JButton("View Profile");
                 viewProfileButton.addActionListener(e -> {
-                    //User friendUser = viewModelManager.getUser(friend);
-                    //viewModelManager.setViewedUser(friendUser);
+                    refreshUserController.refreshUser(friend);
                     viewModelManager.setActiveView(ProfileView.viewName);
                 });
                 friendPanel.add(viewProfileButton);
@@ -206,4 +205,6 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         }
     }
 }
+
+
 
