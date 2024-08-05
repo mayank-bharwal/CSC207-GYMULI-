@@ -17,11 +17,13 @@ public class GetAPI {
     private static final String API_PROF;
 
     private static final String PROF_KEY;
+    private static final String API_BACKUP;
 
     static {
         API = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_");
         API_TOKEN = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_key_2");
         BACKUP_TOKEN = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_key_3");
+        API_BACKUP = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_BACKUP");
 
         API_URL = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_uri");
         API_KEY = readTokenFromFile("src/data_access/apiCallFacade/apiCaller/readAPI/API_files/API_key");
@@ -48,8 +50,8 @@ public class GetAPI {
         return String.format(API, text1.replaceAll("[^a-zA-Z ]", ""), text2.replaceAll("[^a-zA-Z ]", ""), API_TOKEN);
     }
 
-    public static String getBackupAPI(String text1, String text2) {
-        return String.format(API, text1.replaceAll("[^a-zA-Z ]", ""), text2.replaceAll("[^a-zA-Z ]", ""), BACKUP_TOKEN);
+    public static String getBackupAPI() {
+        return API_BACKUP;
     }
 
     public static String getThirdAPI(String text1, String text2) {
