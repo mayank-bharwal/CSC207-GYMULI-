@@ -102,28 +102,37 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        String propertyName = evt.getPropertyName();
+public void propertyChange(PropertyChangeEvent evt) {
+    String propertyName = evt.getPropertyName();
 
-        if ("activeView".equals(evt.getPropertyName())) {
+    switch (propertyName) {
+        case "activeView":
             if (EditFriendsView.viewName.equals(evt.getNewValue())) {
                 startTimer();
             } else {
                 stopTimer();
             }
-        }
-        if ("viewedUser".equals(propertyName)) {
+        case "currentUser":
+        case "viewedUser":
             updateCurrentUser();
-        } else if ("friendsEdited".equals(propertyName)) {
+            break;
+
+        case "friendsEdited":
             updateFriendsList();
             JOptionPane.showMessageDialog(this, "Friend List Edited", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
-        } else if ("generalError".equals(propertyName)) {
+            break;
+
+        case "generalError":
             String error = evt.getNewValue().toString();
             if (error != null) {
                 JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
             }
-        }
+            break;
+
+        default:
+            break;
     }
+}
 
     private void updateCurrentUser() {
         User currentUser = viewModelManager.getCurrentUser();
