@@ -10,6 +10,7 @@ import interface_adapter.remove_friends.RemoveFriendsController;
 import interface_adapter.remove_friends.RemoveFriendsViewModel;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -93,6 +94,7 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
         JScrollPane scrollPane = new JScrollPane(friendsListPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(scrollPane, BorderLayout.CENTER);
@@ -190,22 +192,27 @@ public void propertyChange(PropertyChangeEvent evt) {
         if (userToDisplay != null) {
             List<String> friendsList = userToDisplay.getFriends();
             for (String friend : friendsList) {
-                JPanel friendPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+                JPanel friendPanel = new JPanel(new BorderLayout(5, 5));
 
                 JLabel profilePictureLabel = new JLabel(new ImageIcon("images/profilepicdefault.png"));
                 profilePictureLabel.setPreferredSize(new Dimension(50, 50));
-                friendPanel.add(profilePictureLabel);
+                friendPanel.add(profilePictureLabel, BorderLayout.WEST);
 
+                JPanel rightPanel = new JPanel(new BorderLayout());
                 JLabel friendLabel = new JLabel(friend);
                 friendLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-                friendPanel.add(friendLabel);
+                rightPanel.add(friendLabel, BorderLayout.WEST);
+
 
                 JButton viewProfileButton = new JButton("View Profile");
+                viewProfileButton.setPreferredSize(new Dimension(150, 10));
                 viewProfileButton.addActionListener(e -> {
                     refreshUserController.refreshUser(friend);
                     viewModelManager.setActiveView(ProfileView.viewName);
                 });
-                friendPanel.add(viewProfileButton);
+                rightPanel.add(viewProfileButton, BorderLayout.EAST);
+
+                friendPanel.add(rightPanel, BorderLayout.CENTER);
 
                 friendPanel.addMouseListener(new MouseAdapter() {
                     @Override
@@ -215,7 +222,10 @@ public void propertyChange(PropertyChangeEvent evt) {
                         }
                     }
                 });
+                friendPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
+                // Set the maximum size to prevent stretching
+                friendPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
                 friendsListPanel.add(friendPanel);
             }
 
