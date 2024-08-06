@@ -1,5 +1,6 @@
 package views;
 
+import data_access.UserDataAccessObject;
 import entity.User;
 import interface_adapter.ViewModelManager;
 import interface_adapter.add_friends.AddFriendsController;
@@ -15,6 +16,8 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class EditFriendsView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "EditFriendsView";
@@ -23,19 +26,22 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
     private final RemoveFriendsViewModel removeFriendsViewModel;
     private final RemoveFriendsController removeFriendsController;
     private final AddFriendsController addFriendsController;
-    private final RefreshUserController refreshUserController; // Added
+    private final RefreshUserController refreshUserController;
+    private final UserDataAccessObject userDAO;
     private final JLabel currentUserLabel;
     private final JLabel profilePictureLabel;
     private final JPanel friendsListPanel;
     private final JButton addFriendButton;
+    private Timer timer;
 
-    public EditFriendsView(ViewModelManager viewModelManager, AddFriendsViewModel addFriendsViewModel, RemoveFriendsViewModel removeFriendsViewModel, RemoveFriendsController removeFriendsController, AddFriendsController addFriendsController, RefreshUserController refreshUserController) {
+    public EditFriendsView(ViewModelManager viewModelManager, AddFriendsViewModel addFriendsViewModel, RemoveFriendsViewModel removeFriendsViewModel, RemoveFriendsController removeFriendsController, AddFriendsController addFriendsController, RefreshUserController refreshUserController, UserDataAccessObject userDAO) {
         this.viewModelManager = viewModelManager;
         this.addFriendsViewModel = addFriendsViewModel;
         this.removeFriendsViewModel = removeFriendsViewModel;
         this.removeFriendsController = removeFriendsController;
         this.addFriendsController = addFriendsController;
         this.refreshUserController = refreshUserController;
+        this.userDAO = userDAO;
 
         this.viewModelManager.addPropertyChangeListener(this);
         this.addFriendsViewModel.addPropertyChangeListener(this);
@@ -97,27 +103,25 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        switch (evt.getPropertyName()) {
-            case "currentUser":
-            case "viewedUser":
-                updateCurrentUser();
-                break;
-            case "friendsList":
-                updateFriendsList();
-                JOptionPane.showMessageDialog(this, "Friend successfully added!", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
-                break;
-            case "friendRemoved":
-                updateFriendsList();
-                JOptionPane.showMessageDialog(this, "Friend successfully removed!", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
-                break;
-            case "generalError":
-                String error = evt.getNewValue().toString();
-                if (error != null) {
-                    JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                break;
-            default:
-                break;
+        String propertyName = evt.getPropertyName();
+
+        if ("activeView".equals(evt.getPropertyName())) {
+            if (EditFriendsView.viewName.equals(evt.getNewValue())) {
+                startTimer();
+            } else {
+                stopTimer();
+            }
+        }
+        if ("viewedUser".equals(propertyName)) {
+            updateCurrentUser();
+        } else if ("friendsEdited".equals(propertyName)) {
+            updateFriendsList();
+            JOptionPane.showMessageDialog(this, "Friend List Edited", "Friend Success", JOptionPane.INFORMATION_MESSAGE);
+        } else if ("generalError".equals(propertyName)) {
+            String error = evt.getNewValue().toString();
+            if (error != null) {
+                JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -164,7 +168,13 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
 
     private void updateFriendsList() {
         friendsListPanel.removeAll();
-        User currentUser = viewModelManager.getCurrentUser();
+        User oldUser = viewModelManager.getCurrentUser();
+        User currentUser;
+        if (oldUser == null) {
+            currentUser = null;
+        }else {
+            currentUser = userDAO.getUser(oldUser.getUsername());
+        }
         User viewedUser = viewModelManager.getViewedUser();
         User userToDisplay = viewedUser != null ? viewedUser : currentUser;
 
@@ -202,6 +212,25 @@ public class EditFriendsView extends JPanel implements PropertyChangeListener {
 
             friendsListPanel.revalidate();
             friendsListPanel.repaint();
+        }
+    }
+
+    private void startTimer() {
+        if (timer == null) {
+            timer = new Timer(true);
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    SwingUtilities.invokeLater(() -> updateFriendsList());
+                }
+            }, 0, 1000); // Refresh every second
+        }
+    }
+
+    private void stopTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
         }
     }
 }
