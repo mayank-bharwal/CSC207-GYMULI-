@@ -6,6 +6,7 @@ import entity.UserFactory;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ArrayList;
 
 public class AccountCreationInteractor implements AccountCreationInputBoundary {
     final AccountCreationUserDataAccessInterface accountDataAccessObject;

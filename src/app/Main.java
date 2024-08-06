@@ -179,6 +179,8 @@ public class Main {
         viewModelManager.setActiveView(loginView.viewName);
         viewModelManager.firePropertyChanged();
 
+        userDataAccessObject.startTimer();
+
         application.pack();
         application.setVisible(true);
     }

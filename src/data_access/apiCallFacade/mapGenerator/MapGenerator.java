@@ -29,8 +29,11 @@ public class MapGenerator implements MapGeneratorInterface {
     @Override
     public JSONObject generateMap(User user, Map<String, User> accounts) {
         APICallerInterface apiCaller = new APICaller();
+
         Map<Tuple, Float> similarityMap = new HashMap<>();
+
         accounts.forEach((key, value) -> {
+            if(value != user && value.getUsername() != user.getUsername()){
             String text1 = user.getBio() + " " + user.getProgramOfStudy() + " " + String.join(" ",user.getInterests())
                      + " " + String.join(" ",user.getFriends());
 
@@ -38,27 +41,27 @@ public class MapGenerator implements MapGeneratorInterface {
                     + " " + String.join(" ",value.getFriends());
 
             Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
-            similarityMap.put(new Tuple(user.getUsername(), key), similarityScore);
+            similarityMap.put(new Tuple(user.getUsername(), key), similarityScore);}
         });
 
         // Calculate similarity between all users in accounts
-        String[] keys = accounts.keySet().toArray(new String[0]);
-        for (int i = 0; i < keys.length; i++) {
-            for (int j = i + 1; j < keys.length; j++) {
-                String key1 = keys[i];
-                String key2 = keys[j];
-                User user1 = accounts.get(key1);
-                User user2 = accounts.get(key2);
-
-                String text1 = user1.getBio() + " " + user1.getProgramOfStudy() + " " + String.join(" ",user1.getInterests())
-                        + " " + String.join(" ",user1.getFriends());
-                String text2 = user2.getBio() + " " + user2.getProgramOfStudy() + " " + String.join(" ",user2.getInterests())
-                        + " " + String.join(" ",user2.getFriends());
-
-                Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
-                similarityMap.put(new Tuple(key1, key2), similarityScore);
-            }
-        }
+//        String[] keys = accounts.keySet().toArray(new String[0]);
+//        for (int i = 0; i < keys.length; i++) {
+//            for (int j = i + 1; j < keys.length; j++) {
+//                String key1 = keys[i];
+//                String key2 = keys[j];
+//                User user1 = accounts.get(key1);
+//                User user2 = accounts.get(key2);
+//
+//                String text1 = user1.getBio() + " " + user1.getProgramOfStudy() + " " + String.join(" ",user1.getInterests())
+//                        + " " + String.join(" ",user1.getFriends());
+//                String text2 = user2.getBio() + " " + user2.getProgramOfStudy() + " " + String.join(" ",user2.getInterests())
+//                        + " " + String.join(" ",user2.getFriends());
+//
+//                Float similarityScore = apiCaller.getSimilarityScore(text1, text2);
+//                //similarityMap.put(new Tuple(key1, key2), similarityScore);
+//            }
+//        }
 
         JSONObject jsonObject = new JSONObject();
         for (Map.Entry<Tuple, Float> entry : similarityMap.entrySet()) {

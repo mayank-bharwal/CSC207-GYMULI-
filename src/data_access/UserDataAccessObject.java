@@ -43,6 +43,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     private Map<String, User> accounts = new HashMap<>();
     private UserFactory userFactory;
     private FacadeInterface facade;
+    private Timer timer;
 
     /**
      * Constructor for UserDataAccessObject.
@@ -183,7 +184,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
-        //facade.UpdateDB(user, accounts);
 
         accounts.put(user.getUsername(), user);
     }
@@ -299,7 +299,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
         accounts.remove(oldUsername);
 
-        facade.UpdateDB(user, accounts);// 2
 
         accounts.put(newUsername, newUser);
         System.out.println("user updated");
@@ -317,8 +316,11 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
     @Override
     public Map<User, Double> getNSimilarUsers(User user, int N) {
-        Document doc = mongoConnection.getSimilarityCollection().find(new Document("_id",mongoConnection.getCollectionID())).first();
-        System.out.println("getNSimilarUsers for " + user.getUsername() + ": Document exists: " + (doc != null));
+
+        //Document doc = mongoConnection.getSimilarityCollection().find(new Document("_id",mongoConnection.getCollectionID())).first();
+        Document doc = facade.getDocument(user, accounts);
+        System.out.println(doc);
+        //System.out.println("getNSimilarUsers for " + user.getUsername() + ": Document exists: " + (doc != null));
 
         if (doc != null) {
             List<Map.Entry<User, Double>> userSimilarities = new ArrayList<>();
@@ -396,5 +398,51 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         }
 
 
+    }
+
+    public void startTimer() {
+        if (timer == null) {
+            timer = new Timer(true);
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    System.out.println("Timer triggered");
+                    updateUsers();
+                }
+            }, 0, 1000);
+        }
+    }
+
+    public void stopTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    private void updateUsers(){
+        try (MongoCursor<Document> cursor = UserCollection.find().iterator()) {
+            while (cursor.hasNext()) {
+
+                Document doc = cursor.next();
+                String username = doc.getString("username");
+                String password = doc.getString("password");
+                String bio = doc.getString("bio");
+                Integer age = doc.getInteger("age");
+                String programOfStudy = doc.getString("programOfStudy");
+                List<String> interests = (List<String>) doc.get("interests");
+                List<String> friends = (List<String>) doc.get("friends");
+                List<String> chats = (List<String>) doc.get("chats");
+                Date date = doc.getDate("dateCreated");
+
+                LocalDateTime dateCreated = date.toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime();
+
+                User user = userFactory.createUser(username, password, bio, age, programOfStudy, interests, friends, chats, dateCreated);
+                accounts.put(username, user);
+
+            }
+        }
     }
 }
