@@ -20,8 +20,16 @@ public class APICaller implements APICallerInterface {
     @Override
     public float getSimilarityScore(String text1, String text2) {
 
+        String json = String.format("{\"text_1\": \""+text1.replaceAll("[^a-zA-Z ]", "")+"\", \"text_2\": \""+text2.replaceAll("[^a-zA-Z ]", "")+"\"}");
+
+        RequestBody body = RequestBody.create(
+                json,
+                MediaType.get("application/json; charset=utf-8")
+        );
         Request request = new Request.Builder()
-                .url(getAPI(text1, text2))
+                .url(getBackupAPI())
+                .header("X-Api-Key", getProfKey())
+                .post(body)
                 .build();
 
         try {
@@ -29,18 +37,9 @@ public class APICaller implements APICallerInterface {
 
             if (!response.isSuccessful()) {
                 //System.out.println(response); // debugging
-                System.out.println("First API failed, Trying the backup API");
-
-                String json = String.format("{\"text_1\": \""+text1.replaceAll("[^a-zA-Z ]", "")+"\", \"text_2\": \""+text2.replaceAll("[^a-zA-Z ]", "")+"\"}");
-
-                RequestBody body = RequestBody.create(
-                        json,
-                        MediaType.get("application/json; charset=utf-8")
-                );
+                //System.out.println("First API failed, Trying the backup API");
                 Request request2 = new Request.Builder()
-                        .url(getBackupAPI())
-                        .header("X-Api-Key", getProfKey())
-                        .post(body)
+                        .url(getAPI(text1, text2))
                         .build();
 
                 response = client.newCall(request2).execute();
@@ -48,7 +47,7 @@ public class APICaller implements APICallerInterface {
                 if (!response.isSuccessful()) {
                     //System.out.println(response);//debugging
                     if (use_paid == true) {
-                        System.out.println("Second API failed, Trying the Third PAID API");
+                        //System.out.println("Second API failed, Trying the Third PAID API");
                         Request request3 = new Request.Builder()
                                 .url(getThirdAPI(text1, text2))
                                 .get()
@@ -59,12 +58,12 @@ public class APICaller implements APICallerInterface {
                         response = client.newCall(request3).execute();
                         if (!response.isSuccessful()) {System.out.println("Third Paid API used and Failed");}
                     } else {
-                        System.out.println("Second API failed and NOT using the PAID API");
+                        //System.out.println("Second API failed and NOT using the PAID API");
                         //pass;
                     }
                 }
             } else {
-                System.out.println("Primary API successful");
+                //System.out.println("Primary API successful");
             }
 
             if (response.isSuccessful()) {
@@ -97,14 +96,14 @@ public class APICaller implements APICallerInterface {
         try {
             Response response = client.newCall(request).execute();
             if (!response.isSuccessful()) {
-                System.out.println("Profanity API failed"+ response.body().string());
+                //System.out.println("Profanity API failed"+ response.body().string());
                 return text1;
             }else{
                 JSONObject responseBody = new JSONObject(response.body().string());
                 if (responseBody.has("censored")) {
                     return responseBody.getString("censored");
                 } else {
-                    System.out.println("Response does not contain 'censored' field");
+                    //System.out.println("Response does not contain 'censored' field");
                     return text1;
                 }
             }

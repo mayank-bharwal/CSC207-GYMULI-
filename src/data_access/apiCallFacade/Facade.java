@@ -9,6 +9,8 @@ import data_access.apiCallFacade.dbUpdater.MapUpdater;
 import data_access.apiCallFacade.dbUpdater.MapUpdaterInterface;
 import data_access.readDB.readDBInterface;
 import entity.User;
+import org.bson.Document;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -30,7 +32,9 @@ public class Facade implements FacadeInterface {
     public Facade(readDBInterface mongoConnection){
         this.mongoConnection = mongoConnection;
     }
-
+    /*
+    Obsolete method
+     */
     public void UpdateDB(User user, Map<String,User> accounts){
         mapUpdater.updateMap(mapGenerator.generateMap(user, accounts), mongoConnection);
     }
@@ -41,5 +45,15 @@ public class Facade implements FacadeInterface {
 
     public void use_paid(boolean paid){
         apiCaller.use_paid(paid);
+    }
+
+    public Document getDocument(User user,Map<String,User> accounts){
+        JSONObject json = mapGenerator.generateMap(user, accounts);
+        String jsonStringFromObject = json.toString();
+
+        // Convert JSON string to Document
+        Document document = Document.parse(jsonStringFromObject);
+        //Document document = Document.parse(json);
+        return document;
     }
 }

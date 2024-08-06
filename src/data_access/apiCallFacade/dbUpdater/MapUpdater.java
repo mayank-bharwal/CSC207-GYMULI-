@@ -1,3 +1,6 @@
+/**
+ * OBSOLETE CLASS
+ */
 package data_access.apiCallFacade.dbUpdater;
 
 import com.mongodb.client.model.Filters;
