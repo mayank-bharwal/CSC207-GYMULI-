@@ -183,7 +183,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         document.append("dateCreated", user.getDateCreated());
         UserCollection.insertOne(document);
 
-        facade.UpdateDB(user, accounts);
 
         accounts.put(user.getUsername(), user);
     }
@@ -299,7 +298,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         User newUser = userFactory.createUser(newUsername, password, bio, age, programOfStudy, user.getInterests(), user.getFriends(), user.getChats(), user.getDateCreated());
         accounts.remove(oldUsername);
 
-        facade.UpdateDB(user, accounts);// 2
 
         accounts.put(newUsername, newUser);
         System.out.println("user updated");
@@ -317,8 +315,11 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
     @Override
     public Map<User, Double> getNSimilarUsers(User user, int N) {
-        Document doc = mongoConnection.getSimilarityCollection().find(new Document("_id",mongoConnection.getCollectionID())).first();
-        System.out.println("getNSimilarUsers for " + user.getUsername() + ": Document exists: " + (doc != null));
+
+        //Document doc = mongoConnection.getSimilarityCollection().find(new Document("_id",mongoConnection.getCollectionID())).first();
+        Document doc = facade.getDocument(user, accounts);
+        System.out.println(doc);
+        //System.out.println("getNSimilarUsers for " + user.getUsername() + ": Document exists: " + (doc != null));
 
         if (doc != null) {
             List<Map.Entry<User, Double>> userSimilarities = new ArrayList<>();
