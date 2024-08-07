@@ -171,7 +171,7 @@ public class Main {
         RecommendationsOutputBoundary recommendationsOutputBoundary = new RecommendationsPresenter(recommendationsViewModel, viewModelManager);
         RecommendationsInputBoundary recommendationsInputBoundary = new RecommendationsInteractor(userDataAccessObject, recommendationsOutputBoundary);
         RecommendationsController recommendationsController = new RecommendationsController(recommendationsInputBoundary);
-        RecommendationView recommendationView = RecommendationViewFactory.create(viewModelManager, recommendationsController, recommendationsViewModel, searchUserController, searchUserViewModel);
+        RecommendationView recommendationView = RecommendationViewFactory.create(viewModelManager, addFriendsController, recommendationsController, recommendationsViewModel, searchUserController, searchUserViewModel);
         views.add(recommendationView, RecommendationView.viewName);
 
         ProfileView profileView = ProfileViewFactory.create(viewModelManager);

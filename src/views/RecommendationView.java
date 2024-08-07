@@ -2,6 +2,8 @@ package views;
 
 import entity.User;
 import interface_adapter.ViewModelManager;
+import interface_adapter.add_friends.AddFriendsController;
+import interface_adapter.add_friends.AddFriendsViewModel;
 import interface_adapter.recommendations.RecommendationsController;
 import interface_adapter.recommendations.RecommendationsViewModel;
 import interface_adapter.search_user.SearchUserController;
@@ -18,6 +20,7 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
     public static final String viewName = "RecommendationView";
 
     private final RecommendationsController recommendationsController;
+    private final AddFriendsController addFriendsController;
     private final SearchUserController searchUserController;
     private final ViewModelManager viewModelManager;
     private final RecommendationsViewModel recommendationsViewModel;
@@ -30,8 +33,9 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
     private final JPanel contentPanel;
     private final JLabel searchUserLabel;
 
-    public RecommendationView(RecommendationsController recommendationsController, SearchUserController searchUserController, ViewModelManager viewModelManager, RecommendationsViewModel recommendationsViewModel, SearchUserViewModel searchUserViewModel) {
+    public RecommendationView(RecommendationsController recommendationsController, AddFriendsController addFriendsController, SearchUserController searchUserController, ViewModelManager viewModelManager, RecommendationsViewModel recommendationsViewModel, SearchUserViewModel searchUserViewModel) {
         this.recommendationsController = recommendationsController;
+        this.addFriendsController = addFriendsController;
         this.searchUserController = searchUserController;
         this.recommendationsViewModel = recommendationsViewModel;
         this.searchUserViewModel = searchUserViewModel;
@@ -164,7 +168,7 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
 
                     JButton addButton = new JButton("Add");
                     addButton.addActionListener(e -> {
-                        System.out.println("Add button clicked for user: " + user.getUsername());
+                        addFriendsController.add(viewModelManager.getCurrentUser().getUsername(), user.getUsername());
                     });
                     userPanel.add(addButton);
 
