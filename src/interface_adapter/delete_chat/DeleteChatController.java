@@ -15,10 +15,11 @@ public class DeleteChatController {
     }
 
     public void deleteChat(String chatname) {
+        System.out.println("Controller Called");
         DeleteChatInputData inputData = new DeleteChatInputData(chatname);
         deleteChatInputBoundary.deleteChat(inputData);
 
 
-        viewModelManager.firePropertyChanged("chatsUpdated", null, null);
+
     }
 }

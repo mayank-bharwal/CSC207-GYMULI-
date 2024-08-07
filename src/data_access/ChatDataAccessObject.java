@@ -200,18 +200,16 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
     public void DeleteChat(String chatname) {
         Chat ch = chats.get(chatname);
         ArrayList<String> users = ch.getUsers();
-        for (String user: users ){
-            userDataAccessObject.getAccounts().get(user).getChats().remove(chatname);
-            System.out.println(user);
-        }
         chats.remove(chatname);
-        System.out.println(chats);
+        System.out.println(users.size());
 
         ChatCollection.findOneAndDelete(eq("chatName", chatname));
 
         for (String user: users){
-            Bson filter = eq("username", user);
-            Bson update = pull("chats", chatname);
+
+            Document filter = new Document("username", user);
+            Document update = new Document("$pull", new Document("chats", chatname));
+            UserCollection.updateOne(filter, update);
 
             ChatCollection.updateOne(filter, update);
         }
