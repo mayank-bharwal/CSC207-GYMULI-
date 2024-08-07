@@ -35,7 +35,7 @@ class RefreshUserInteractorTest {
     void refreshUser_nonExistentUser_setsFailView() {
         RefreshUserInputData inputData = new RefreshUserInputData("nonExistentUser");
 
-        when(refreshDAO.userUpdate("nonExistentUser")).thenReturn(false);
+        when(refreshDAO.userExists("nonExistentUser")).thenReturn(false);
 
         interactor.refreshUser(inputData);
 
@@ -52,7 +52,7 @@ class RefreshUserInteractorTest {
         User mockUser = mock(User.class);
 
         when(refreshDAO.userExists("existingUser")).thenReturn(true);
-        when(refreshDAO.getUser("existingUser")).thenReturn(mockUser);
+        when(refreshDAO.userUpdate("existingUser")).thenReturn(mockUser);
 
         interactor.refreshUser(inputData);
 
