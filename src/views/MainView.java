@@ -125,6 +125,7 @@ public class MainView extends JPanel implements PropertyChangeListener {
         if (evt.getPropertyName().equals("activeView")) {
             if (MainView.viewName.equals(evt.getNewValue())) {
                 startTimer();
+
             } else {
                 stopTimer();
             }
@@ -137,9 +138,12 @@ public class MainView extends JPanel implements PropertyChangeListener {
             updateCurrentUser();
         }
 
-        if ("Chat Deleted".equals(evt.getPropertyName())){
-            JOptionPane.showMessageDialog(this, "Chat successfully deleted!", "Successful Deletiom", JOptionPane.INFORMATION_MESSAGE);
-        }
+        if  ("ChatDeleted".equals(evt.getPropertyName())) {
+            JOptionPane.showMessageDialog(this, "Chat successfully deleted!", "Successful Deletion", JOptionPane.INFORMATION_MESSAGE);}
+
+
+
+
     }
 
     /**
