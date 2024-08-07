@@ -9,6 +9,7 @@ import use_case.search_user.SearchUserInputData;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * This class tests the functionality of the SearchUserController class.
