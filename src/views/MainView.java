@@ -156,6 +156,7 @@ public class MainView extends JPanel implements PropertyChangeListener {
         if (oldUser == null) {
             currentUser = null;
         }else {
+
             currentUser = userDataAccessObject.getUser(oldUser.getUsername());
         }
         if (currentUser != null) {
