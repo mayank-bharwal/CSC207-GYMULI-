@@ -171,7 +171,7 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
                         addFriendsController.add(viewModelManager.getCurrentUser().getUsername(), user.getUsername());
                     });
                     userPanel.add(addButton);
-
+                    contentPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
                     contentPanel.add(userPanel);
                 });
 
@@ -198,7 +198,7 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
 
             JButton addButton = new JButton("Add");
             addButton.addActionListener(e -> {
-                System.out.println("Add button clicked for user: " + searchUserState.getUsername());
+                addFriendsController.add(viewModelManager.getCurrentUser().getUsername(), searchUserState.getUsername());
             });
             userPanel.add(addButton);
 
