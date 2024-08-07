@@ -12,6 +12,9 @@ import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
@@ -29,7 +32,7 @@ public class MainView extends JPanel implements PropertyChangeListener {
     private final RetrieveChatController retrieveChatController;
     private final JLabel currentUserLabel;
     private final JPanel chatListPanel;
-
+    private Timer timer;
     /**
      * Constructs a MainView with the specified ViewModelManager and RetrieveChatController.
      *
@@ -85,18 +88,9 @@ public class MainView extends JPanel implements PropertyChangeListener {
         JButton findFriendsButton = new JButton("Find Friends");
         findFriendsButton.addActionListener(e -> viewModelManager.setActiveView(RecommendationView.viewName));
 
-        JButton refreshButton = new JButton("Refresh");
-        refreshButton.setPreferredSize(new Dimension(100, 30));
-        refreshButton.addActionListener(e -> {
-            userDataAccessObject.userUpdate(viewModelManager.getCurrentUser().getUsername());
-            updateChats();
-            System.out.println(viewModelManager.getCurrentUser().getChats());
-        });
-
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(logoutButton);
         buttonPanel.add(findFriendsButton);
-        buttonPanel.add(refreshButton);
         buttonPanel.add(toggleDarkModeButton);
 
         headerPanel.add(buttonPanel, BorderLayout.WEST);
@@ -124,6 +118,13 @@ public class MainView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("activeView")) {
+            if (MainView.viewName.equals(evt.getNewValue())) {
+                startTimer();
+            } else {
+                stopTimer();
+            }
+        }
         if ("currentUser".equals(evt.getPropertyName())) {
             updateCurrentUser();
         } else if ("chatsUpdated".equals(evt.getPropertyName())) {
@@ -150,7 +151,14 @@ public class MainView extends JPanel implements PropertyChangeListener {
     private void updateChats() {
         chatListPanel.removeAll();
         System.out.println("update chat called");
-        User currentUser = viewModelManager.getCurrentUser();
+        User oldUser = viewModelManager.getCurrentUser();
+        User currentUser;
+        if (oldUser == null) {
+            currentUser = null;
+        }else {
+
+            currentUser = userDataAccessObject.getUser(oldUser.getUsername());
+        }
         if (currentUser != null) {
             List<String> chats = currentUser.getChats();
             Set<String> uniqueChats = new HashSet<>(chats);
@@ -185,6 +193,25 @@ public class MainView extends JPanel implements PropertyChangeListener {
             SwingUtilities.updateComponentTreeUI(SwingUtilities.getWindowAncestor(this));
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private void startTimer() {
+        if (timer == null) {
+            timer = new java.util.Timer(true);
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    SwingUtilities.invokeLater(() -> updateChats());
+                }
+            }, 0, 1000); // Refresh every second
+        }
+    }
+
+    private void stopTimer() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
         }
     }
 
