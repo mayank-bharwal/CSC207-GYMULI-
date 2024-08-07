@@ -152,7 +152,12 @@ public class MainView extends JPanel implements PropertyChangeListener {
         chatListPanel.removeAll();
         System.out.println("update chat called");
         User oldUser = viewModelManager.getCurrentUser();
-        User currentUser = userDataAccessObject.getUser(oldUser.getUsername());
+        User currentUser;
+        if (oldUser == null) {
+            currentUser = null;
+        }else {
+            currentUser = userDataAccessObject.getUser(oldUser.getUsername());
+        }
         if (currentUser != null) {
             List<String> chats = currentUser.getChats();
             Set<String> uniqueChats = new HashSet<>(chats);
