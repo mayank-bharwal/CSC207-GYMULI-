@@ -2,6 +2,7 @@ package app;
 
 import interface_adapter.ViewModelManager;
 import interface_adapter.add_friends.AddFriendsController;
+import interface_adapter.add_friends.AddFriendsViewModel;
 import interface_adapter.recommendations.RecommendationsController;
 import interface_adapter.recommendations.RecommendationsViewModel;
 import interface_adapter.search_user.SearchUserController;
@@ -25,7 +26,7 @@ public class RecommendationViewFactory {
      */
     public static RecommendationView create(ViewModelManager viewModelManager, AddFriendsController addFriendsController,
                                             RecommendationsController recommendationsController, RecommendationsViewModel
-                                                    recommendationsViewModel, SearchUserController searchUserController, SearchUserViewModel searchUserViewModel) {
-        return new RecommendationView(recommendationsController,addFriendsController, searchUserController, viewModelManager, recommendationsViewModel, searchUserViewModel);
+                                                    recommendationsViewModel, SearchUserController searchUserController, SearchUserViewModel searchUserViewModel, AddFriendsViewModel addFriendsViewModel) {
+        return new RecommendationView(recommendationsController,addFriendsController, searchUserController, viewModelManager, recommendationsViewModel, searchUserViewModel, addFriendsViewModel);
     }
 }
