@@ -136,10 +136,11 @@ public class MainView extends JPanel implements PropertyChangeListener {
             updateChats();
         } else if ("profileUpdated".equals(evt.getPropertyName())) {
             updateCurrentUser();
-        }
-
-        if  ("ChatDeleted".equals(evt.getPropertyName())) {
+        } else if  ("ChatDeleted".equals(evt.getPropertyName())) {
+            updateChats();
             JOptionPane.showMessageDialog(this, "Chat successfully deleted!", "Successful Deletion", JOptionPane.INFORMATION_MESSAGE);}
+
+
 
 
 

@@ -22,9 +22,9 @@ public class DeleteChatInteractor implements DeleteChatInputBoundary{
         } else {
             System.out.println("interactor called");
             Chat deletedChat =  deleteChatDAO.getChat(inputData.getChatname());
-            deleteChatDAO.DeleteChat(inputData.getChatname());
             DeleteChatOutputData outputdata = new DeleteChatOutputData(deletedChat.getChatName(), deletedChat.getUsers(), false);
             deleteChatPresenter.setPassView(outputdata);
+            deleteChatDAO.DeleteChat(inputData.getChatname());
 
         }
     }

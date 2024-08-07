@@ -24,8 +24,8 @@ public class DeleteChatPresenter implements DeleteChatOutputBoundary {
         deleteChatViewModel.setState(state);
         deleteChatViewModel.firePropertyChanged();
 
-        deleteChatViewModel.firePropertyChanged("ChatDeleted", null, "Chat Successfully Deleted");
-        viewModelManager.firePropertyChanged();
+        viewModelManager.firePropertyChanged("ChatDeleted", null, null);
+
     }
 
     @Override
