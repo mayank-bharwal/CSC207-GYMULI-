@@ -1,4 +1,5 @@
 package interface_adapter.add_friends;
+
 import use_case.add_friends.AddFriendsOutputBoundary;
 import use_case.add_friends.AddFriendsOutputData;
 /**
@@ -19,32 +20,24 @@ public class AddFriendsPresenter implements AddFriendsOutputBoundary {
      * Sets the pass view for successful adding friends.
      * @param outputData output data containing add friends information
      */
-
     @Override
     public void setPassView(AddFriendsOutputData outputData) {
         AddFriendsState addFriendsState = addFriendsViewModel.getState();
         addFriendsState.setCurrentUser(outputData.getCurrentUser());
-
         addFriendsState.setFriend(outputData.getFriend());
         addFriendsState.setError(null);
-
         addFriendsViewModel.setState(addFriendsState);
         addFriendsViewModel.firePropertyChanged("friendsList", null, "Friend successfully added!");
-
-
     }
     /**
      * Sets the fail view for unsuccessful adding friends.
      * @param error the error message
      */
-
     @Override
     public void setFailView(String error) {
         AddFriendsState state = addFriendsViewModel.getState();
         state.setError(error);
         addFriendsViewModel.setState(state);
         addFriendsViewModel.firePropertyChanged("generalError", null, error);
-
-
     }
 }

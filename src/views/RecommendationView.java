@@ -25,6 +25,7 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
     private final ViewModelManager viewModelManager;
     private final RecommendationsViewModel recommendationsViewModel;
     private final SearchUserViewModel searchUserViewModel;
+    private final AddFriendsViewModel addFriendsViewModel;
 
     private final JButton findFriendsButton;
     private final JButton goBackButton;
@@ -33,15 +34,18 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
     private final JPanel contentPanel;
     private final JLabel searchUserLabel;
 
-    public RecommendationView(RecommendationsController recommendationsController, AddFriendsController addFriendsController, SearchUserController searchUserController, ViewModelManager viewModelManager, RecommendationsViewModel recommendationsViewModel, SearchUserViewModel searchUserViewModel) {
+
+    public RecommendationView(RecommendationsController recommendationsController, AddFriendsController addFriendsController, SearchUserController searchUserController, ViewModelManager viewModelManager, RecommendationsViewModel recommendationsViewModel, SearchUserViewModel searchUserViewModel, AddFriendsViewModel addFriendsViewModel) {
         this.recommendationsController = recommendationsController;
         this.addFriendsController = addFriendsController;
         this.searchUserController = searchUserController;
         this.recommendationsViewModel = recommendationsViewModel;
         this.searchUserViewModel = searchUserViewModel;
         this.viewModelManager = viewModelManager;
+        this.addFriendsViewModel = addFriendsViewModel;
         this.recommendationsViewModel.addPropertyChangeListener(this);
         this.searchUserViewModel.addPropertyChangeListener(this);
+        this.addFriendsViewModel.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
@@ -144,6 +148,8 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
             updateRecommendations(recommendationsViewModel.getUserSimilarities());
         } else if ("state".equals(evt.getPropertyName()) && evt.getSource() == searchUserViewModel) {
             handleSearchResult();
+        } else if ("friendsList".equals(evt.getPropertyName())) {
+            JOptionPane.showMessageDialog(null, "Friend added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -209,7 +215,6 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
         }
     }
 }
-
 
 
 
