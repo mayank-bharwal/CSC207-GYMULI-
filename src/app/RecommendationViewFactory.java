@@ -1,6 +1,7 @@
 package app;
 
 import interface_adapter.ViewModelManager;
+import interface_adapter.add_friends.AddFriendsController;
 import interface_adapter.recommendations.RecommendationsController;
 import interface_adapter.recommendations.RecommendationsViewModel;
 import interface_adapter.search_user.SearchUserController;
@@ -22,7 +23,9 @@ public class RecommendationViewFactory {
      * @param searchUserViewModel the view model for the search user view, containing the data and logic specific to searching users.
      * @return a new instance of {@link RecommendationView}.
      */
-    public static RecommendationView create(ViewModelManager viewModelManager, RecommendationsController recommendationsController, RecommendationsViewModel recommendationsViewModel, SearchUserController searchUserController, SearchUserViewModel searchUserViewModel) {
-        return new RecommendationView(recommendationsController, searchUserController, viewModelManager, recommendationsViewModel, searchUserViewModel);
+    public static RecommendationView create(ViewModelManager viewModelManager, AddFriendsController addFriendsController,
+                                            RecommendationsController recommendationsController, RecommendationsViewModel
+                                                    recommendationsViewModel, SearchUserController searchUserController, SearchUserViewModel searchUserViewModel) {
+        return new RecommendationView(recommendationsController,addFriendsController, searchUserController, viewModelManager, recommendationsViewModel, searchUserViewModel);
     }
 }
