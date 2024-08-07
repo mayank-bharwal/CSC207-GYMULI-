@@ -11,6 +11,9 @@ import interface_adapter.ViewModelManager;
 import interface_adapter.add_friends.AddFriendsController;
 import interface_adapter.add_friends.AddFriendsPresenter;
 import interface_adapter.add_friends.AddFriendsViewModel;
+import interface_adapter.delete_chat.DeleteChatController;
+import interface_adapter.delete_chat.DeleteChatPresenter;
+import interface_adapter.delete_chat.DeleteChatViewModel;
 import interface_adapter.make_chat.CreateChatPresenter;
 import interface_adapter.make_chat.CreateChatViewModel;
 import interface_adapter.refresh_user.RefreshUserController;
@@ -39,6 +42,9 @@ import interface_adapter.account_creation.SignupPresenter;
 import data_access.UserDataAccessObject;
 import use_case.add_friends.AddFriendsInputBoundary;
 import use_case.add_friends.AddFriendsInteractor;
+import use_case.delete_chat.DeleteChatInputBoundary;
+import use_case.delete_chat.DeleteChatInteractor;
+import use_case.delete_chat.DeleteChatOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -123,7 +129,13 @@ public class Main {
         RetrieveChatController retrieveChatController = new RetrieveChatController(retrieveChatInteractor);
         retrieveChatViewModel.setRetrieveChatInteractor(retrieveChatInteractor);
 
-        MainView mainView = MainViewFactory.create(viewModelManager, retrieveChatController, userDataAccessObject);
+        DeleteChatViewModel deleteChatViewModel = new DeleteChatViewModel();
+        DeleteChatOutputBoundary deleteChatPresenter = new DeleteChatPresenter(deleteChatViewModel, viewModelManager);
+        DeleteChatInputBoundary deleteChatInputBoundary = new DeleteChatInteractor(chatDataAccessObject, deleteChatPresenter);
+        DeleteChatController deleteChatController = new DeleteChatController(deleteChatInputBoundary, viewModelManager);
+
+
+        MainView mainView = MainViewFactory.create(viewModelManager, retrieveChatController, userDataAccessObject, deleteChatController);
         views.add(mainView, MainView.viewName);
 
         SendMessageViewModel sendMessageViewModel = new SendMessageViewModel();

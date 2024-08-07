@@ -1,6 +1,7 @@
 package app;
 
 import interface_adapter.ViewModelManager;
+import interface_adapter.delete_chat.DeleteChatController;
 import interface_adapter.retrieve_chat.RetrieveChatController;
 import data_access.UserDataAccessObject;
 import views.MainView;
@@ -19,7 +20,7 @@ public class MainViewFactory {
      */
 
     public static MainView create(ViewModelManager viewModelManager, RetrieveChatController retrieveChatController,
-                                  UserDataAccessObject userDataAccessObject) {
-        return new MainView(viewModelManager, retrieveChatController, userDataAccessObject);
+                                  UserDataAccessObject userDataAccessObject, DeleteChatController deleteChatController) {
+        return new MainView(viewModelManager, retrieveChatController, userDataAccessObject,deleteChatController);
     }
 }

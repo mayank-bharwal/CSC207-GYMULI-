@@ -202,8 +202,10 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         ArrayList<String> users = ch.getUsers();
         for (String user: users ){
             userDataAccessObject.getAccounts().get(user).getChats().remove(chatname);
+            System.out.println(user);
         }
         chats.remove(chatname);
+        System.out.println(chats);
 
         ChatCollection.findOneAndDelete(eq("chatName", chatname));
 
@@ -244,30 +246,6 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         ChatCollection.updateOne(filter, update);
     }
 
-        // Get the chat object and update its allMessages list
-//        Chat chat = chats.get(message.getChatName());
-//        if (chat != null) {
-//            chat.getAllmessages().add(message);
-//            System.out.println("Message added to in-memory chat: " + message.getMessage());
-//
-//            // Update the chat document in the collection
-//            Document chatFilter = new Document("chatName", chat.getChatName());
-//            Document chatUpdate = new Document("$set", new Document("allMessages", chat.getAllmessages().stream()
-//                    .map(m -> new Document()
-//                            .append("chatName", m.getChatName())
-//                            .append("username", m.getSender())
-//                            .append("receiver", m.getReceiver())
-//                            .append("message", m.getMessage())
-//                            .append("dateCreated", Date.from(m.getTime().atZone(ZoneId.systemDefault()).toInstant())))
-//                    .collect(Collectors.toList())));
-//            ChatCollection.updateOne(chatFilter, chatUpdate);
-//
-//            // Update the in-memory chats map
-//            chats.put(chat.getChatName(), chat);
-//        } else {
-//            System.out.println("Chat not found for chatName: " + message.getChatName());
-//        }
-//    }
 
     /**
      * Checks if a chat exists by its name.

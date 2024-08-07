@@ -3,10 +3,13 @@ package views;
 import entity.User;
 import interface_adapter.ViewModelManager;
 import interface_adapter.retrieve_chat.RetrieveChatController;
+import interface_adapter.delete_chat.DeleteChatController;
 import data_access.UserDataAccessObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashSet;
@@ -26,7 +29,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 public class MainView extends JPanel implements PropertyChangeListener {
     public static final String viewName = "MainView";
     private boolean isDarkMode = false;
-
+    private final DeleteChatController deleteChatController;
     private final ViewModelManager viewModelManager;
     private final UserDataAccessObject userDataAccessObject;
     private final RetrieveChatController retrieveChatController;
@@ -41,11 +44,12 @@ public class MainView extends JPanel implements PropertyChangeListener {
      * @param userDataAccessObject the data access object for user data
      */
     public MainView(ViewModelManager viewModelManager, RetrieveChatController retrieveChatController,
-                    UserDataAccessObject userDataAccessObject) {
+                    UserDataAccessObject userDataAccessObject, DeleteChatController deleteChatController) {
         this.viewModelManager = viewModelManager;
         this.viewModelManager.addPropertyChangeListener(this);
         this.retrieveChatController = retrieveChatController;
         this.userDataAccessObject = userDataAccessObject;
+        this.deleteChatController = deleteChatController;
 
         JButton toggleDarkModeButton = new JButton("Toggle Dark Mode");
         toggleDarkModeButton.addActionListener(e -> toggleDarkMode());
@@ -132,6 +136,10 @@ public class MainView extends JPanel implements PropertyChangeListener {
         } else if ("profileUpdated".equals(evt.getPropertyName())) {
             updateCurrentUser();
         }
+
+        if ("Chat Deleted".equals(evt.getPropertyName())){
+            JOptionPane.showMessageDialog(this, "Chat successfully deleted!", "Successful Deletiom", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     /**
@@ -172,12 +180,28 @@ public class MainView extends JPanel implements PropertyChangeListener {
                     retrieveChatController.retrieveChat(chatName);
                     viewModelManager.setActiveView(ChatView.viewName);
                 });
+                chatButton.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (SwingUtilities.isRightMouseButton(e)){
+                            showChatOptionsPopup(e,chatName);
+                        }
+                    }
+                });
                 chatListPanel.add(chatButton, gbc);
                 gbc.gridy++;
             }
         }
         chatListPanel.revalidate();
         chatListPanel.repaint();
+    }
+
+    private void showChatOptionsPopup(MouseEvent e, String chatname) {
+        JPopupMenu chatOptions = new JPopupMenu();
+        JMenuItem deleteChatItem = new JMenuItem("Delete Chat");
+        deleteChatItem.addActionListener(event -> deleteChatController.deleteChat(chatname));
+        chatOptions.add(deleteChatItem);
+        chatOptions.show(e.getComponent(), e.getX(), e.getY());
     }
 
     private void toggleDarkMode() {
