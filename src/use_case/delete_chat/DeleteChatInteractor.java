@@ -16,14 +16,15 @@ public class DeleteChatInteractor implements DeleteChatInputBoundary{
 
     @Override
     public void deleteChat(DeleteChatInputData inputData) {
+
         if (!deleteChatDAO.ChatExists(inputData.getChatname())) {
             deleteChatPresenter.setFailView("The chat does not exist");
         } else {
-
+            System.out.println("interactor called");
             Chat deletedChat =  deleteChatDAO.getChat(inputData.getChatname());
-            deleteChatDAO.DeleteChat(inputData.getChatname());
             DeleteChatOutputData outputdata = new DeleteChatOutputData(deletedChat.getChatName(), deletedChat.getUsers(), false);
             deleteChatPresenter.setPassView(outputdata);
+            deleteChatDAO.DeleteChat(inputData.getChatname());
 
         }
     }

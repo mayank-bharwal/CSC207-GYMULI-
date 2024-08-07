@@ -2,13 +2,17 @@ package interface_adapter.delete_chat;
 
 import use_case.delete_chat.DeleteChatOutputBoundary;
 import use_case.delete_chat.DeleteChatOutputData;
+import interface_adapter.ViewModelManager;
+
+import javax.swing.text.View;
 
 public class DeleteChatPresenter implements DeleteChatOutputBoundary {
     private final DeleteChatViewModel deleteChatViewModel;
+    private final ViewModelManager   viewModelManager;
 
-
-    public DeleteChatPresenter(DeleteChatViewModel deleteChatViewModel) {
+    public DeleteChatPresenter(DeleteChatViewModel deleteChatViewModel, ViewModelManager viewModelManager) {
         this.deleteChatViewModel = deleteChatViewModel;
+        this.viewModelManager = viewModelManager;
     }
 
 
@@ -19,6 +23,9 @@ public class DeleteChatPresenter implements DeleteChatOutputBoundary {
         state.setError(null);
         deleteChatViewModel.setState(state);
         deleteChatViewModel.firePropertyChanged();
+
+        viewModelManager.firePropertyChanged("ChatDeleted", null, null);
+
     }
 
     @Override

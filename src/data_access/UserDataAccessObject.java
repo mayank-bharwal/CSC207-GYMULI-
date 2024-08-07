@@ -318,6 +318,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
     public Map<User, Double> getNSimilarUsers(User user, int N) {
 
         //Document doc = mongoConnection.getSimilarityCollection().find(new Document("_id",mongoConnection.getCollectionID())).first();
+
 	    Map<String, User> acct = new HashMap<>(accounts);
         acct.remove(user.getUsername());
         Document doc = facade.getDocument(user,acct);

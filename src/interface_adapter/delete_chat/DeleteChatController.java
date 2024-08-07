@@ -15,14 +15,12 @@ public class DeleteChatController {
     }
 
     public void deleteChat(String chatname) {
+        System.out.println("Controller Called");
         DeleteChatInputData inputData = new DeleteChatInputData(chatname);
         deleteChatInputBoundary.deleteChat(inputData);
 
-        User currentUser = viewModelManager.getCurrentUser();
-        currentUser.getChats().remove(chatname);
 
-        viewModelManager.setCurrentUser(currentUser);
 
-        viewModelManager.firePropertyChanged("chatsUpdated", null, null);
+
     }
 }
