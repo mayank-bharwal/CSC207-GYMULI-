@@ -87,7 +87,7 @@ public class Main {
 
         JFrame application = new JFrame("GYMULI");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        application.setPreferredSize(new Dimension(800, 600));
+        application.setPreferredSize(new Dimension(1000, 800));
 
         CardLayout cardLayout = new CardLayout();
 
