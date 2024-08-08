@@ -3,6 +3,8 @@
 ## CSC207-GYMULI
 ## Overview
 
+Presentation: https://docs.google.com/presentation/d/1SPmEeAGDUKO9dkmWy4pxy4X9er-3Ub5vvBcFvgSicbI/edit?usp=sharing
+
 The project involves creating a social app for UofT students to connect based on shared interests.
 Users can create accounts, input personal information, and find others with similar hobbies. 
 Key features include:
