@@ -74,8 +74,4 @@ public class GetAPI {
         return API_BODY;
     }
 
-    public static void main(String[] args) {
-        //System.out.println(callAPI("Mike tyson Loves Boxing", "My dog is named Tyson"));
-        System.out.println(getProfKey());
-    }
 }

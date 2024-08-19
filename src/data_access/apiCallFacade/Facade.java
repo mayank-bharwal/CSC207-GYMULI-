@@ -49,7 +49,7 @@ public class Facade implements FacadeInterface {
     }
 
     /**
-     * Obsolete method from an earlier implementation of Similarity Scores
+     * OBSOLETE method from an earlier implementation of Similarity Scores
      * @param user
      * @param accounts
      */

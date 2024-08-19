@@ -311,6 +311,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
         /**
          * CHANGE facade.use_paid to true when NOT TESTING
+         * switch to turn off/on the paid API, to save costs
          */
         facade.use_paid(true); // false in TESTING, true in PRODUCTION
 

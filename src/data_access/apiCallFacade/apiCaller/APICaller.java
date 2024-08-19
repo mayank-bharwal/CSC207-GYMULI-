@@ -77,7 +77,7 @@ public class APICaller implements APICallerInterface {
                 /*
                 Will never be used in production since third api would be called
                  */
-                return (float) Math.random() * 0.5f;
+                return (float) Math.random() * (float) Math.random() + 0.01f;
             }
         } catch (IOException | JSONException e) {
             throw new RuntimeException("API call failed -- All three", e);
@@ -115,14 +115,5 @@ public class APICaller implements APICallerInterface {
     public void use_paid(boolean paid) {
         this.use_paid = paid;
     }
-
-    public static void main (String[]args){
-            APICaller apicaller = new APICaller();
-            Float score = apicaller.getSimilarityScore("Mike tyson Loves Boxing $$$$ ##@@9881989^^&&!!!++]{{", "My dog tyson");
-            System.out.println("Similarity Score: " + score);
-            System.out.println(getBackupAPI());
-
-            //System.out.println(apicaller.filterProfanity("Damn, Mike Tyson is a boxer and shit"));
-        }
     }
 
