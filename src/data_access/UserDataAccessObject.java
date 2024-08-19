@@ -60,12 +60,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         this.UserCollection = mongoConnection.getUserCollection();
         this.facade = new Facade();
 
-        /**
-         * CHANGE facade.use_paid to true when NOT TESTING
-         */
-        facade.use_paid(true); // false in TESTING, true in PRODUCTION
-
-
         try (MongoCursor<Document> cursor = UserCollection.find().iterator()) {
             while (cursor.hasNext()) {
 
@@ -314,6 +308,13 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
     @Override
     public Map<User, Double> getNSimilarUsers(User user, int N) {
+
+        /**
+         * CHANGE facade.use_paid to true when NOT TESTING
+         */
+        facade.use_paid(true); // false in TESTING, true in PRODUCTION
+
+
 	    Map<String, User> acct = new HashMap<>(accounts);
         acct.remove(user.getUsername());
         return facade.getMap(user,acct,N);
