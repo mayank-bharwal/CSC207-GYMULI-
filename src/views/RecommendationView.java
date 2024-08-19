@@ -26,13 +26,13 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
     private final RecommendationsViewModel recommendationsViewModel;
     private final SearchUserViewModel searchUserViewModel;
     private final AddFriendsViewModel addFriendsViewModel;
-
     private final JButton findFriendsButton;
     private final JButton goBackButton;
     private final JButton searchButton;
     private final JTextField searchField;
     private final JPanel contentPanel;
     private final JLabel searchUserLabel;
+    private final JLabel loadingLabel;
 
 
     public RecommendationView(RecommendationsController recommendationsController, AddFriendsController addFriendsController, SearchUserController searchUserController, ViewModelManager viewModelManager, RecommendationsViewModel recommendationsViewModel, SearchUserViewModel searchUserViewModel, AddFriendsViewModel addFriendsViewModel) {
@@ -46,6 +46,9 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
         this.recommendationsViewModel.addPropertyChangeListener(this);
         this.searchUserViewModel.addPropertyChangeListener(this);
         this.addFriendsViewModel.addPropertyChangeListener(this);
+        this.loadingLabel = new JLabel("Loading, Please wait....", SwingConstants.CENTER);
+        loadingLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+        loadingLabel.setForeground(Color.RED);
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
@@ -55,7 +58,7 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
         gbc.insets = new Insets(10, 10, 10, 10);
 
         JLabel title = recommendationsViewModel.titleLabel;
-        title.setFont(new Font("Arial", Font.BOLD, 24));
+        title.setFont(new Font("Tahoma", Font.BOLD, 24));
         title.setHorizontalAlignment(SwingConstants.CENTER);
 
         gbc.gridx = 0;
@@ -99,7 +102,7 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
         gbc.anchor = GridBagConstraints.CENTER;
 
         searchUserLabel = new JLabel("Search User:");
-        searchUserLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        searchUserLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -123,9 +126,22 @@ public class RecommendationView extends JPanel implements PropertyChangeListener
         add(new JScrollPane(contentPanel), BorderLayout.CENTER);
 
         findFriendsButton.addActionListener(e -> {
+
             searchField.setText("");
             contentPanel.removeAll();
-            recommendationsController.execute(viewModelManager.getCurrentUser(), Integer.valueOf(number_of_friends_field.getText()));
+            // Show loading label
+            contentPanel.add(loadingLabel);
+            contentPanel.revalidate();
+            contentPanel.repaint();
+            // Execute in a separate thread to avoid blocking the UI thread
+            SwingUtilities.invokeLater(() -> {
+                        recommendationsController.execute(viewModelManager.getCurrentUser(), Integer.valueOf(number_of_friends_field.getText()));
+
+                        // Remove the loading label once the recommendations are updated
+                        contentPanel.remove(loadingLabel);
+                        contentPanel.revalidate();
+                        contentPanel.repaint();
+                    });
         });
 
         goBackButton.addActionListener(e -> viewModelManager.setActiveView(MainView.viewName));

@@ -200,7 +200,7 @@ public void propertyChange(PropertyChangeEvent evt) {
 
                 JPanel rightPanel = new JPanel(new BorderLayout());
                 JLabel friendLabel = new JLabel(friend);
-                friendLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                friendLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
                 rightPanel.add(friendLabel, BorderLayout.WEST);
 
 
