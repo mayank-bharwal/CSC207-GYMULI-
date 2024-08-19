@@ -4,8 +4,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
-
-import data_access.apiCallFacade.apiCaller.APICaller;
 import data_access.readDB.MongoConnection;
 import data_access.readDB.readDBInterface;
 import data_access.apiCallFacade.Facade;
@@ -60,7 +58,7 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
         this.accounts = accounts;
         this.mongoConnection = mongoConnection;
         this.UserCollection = mongoConnection.getUserCollection();
-        this.facade = new Facade(mongoConnection);
+        this.facade = new Facade();
 
         /**
          * CHANGE facade.use_paid to true when NOT TESTING
@@ -316,55 +314,9 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
     @Override
     public Map<User, Double> getNSimilarUsers(User user, int N) {
-
-        //Document doc = mongoConnection.getSimilarityCollection().find(new Document("_id",mongoConnection.getCollectionID())).first();
-
 	    Map<String, User> acct = new HashMap<>(accounts);
         acct.remove(user.getUsername());
-        Document doc = facade.getDocument(user,acct);
-        //System.out.println(doc);
-        //System.out.println("getNSimilarUsers for " + user.getUsername() + ": Document exists: " + (doc != null));
-
-        if (doc != null) {
-            List<Map.Entry<User, Double>> userSimilarities = new ArrayList<>();
-            String username = user.getUsername();
-
-            for (String key : doc.keySet()) {
-                if (key == null || key.equals("_id")) continue; // Skip the _id field
-
-                String[] users = key.replace("(", "").replace(")", "").split(", ");
-                if (users.length == 2) {
-                    String user1 = users[0];
-                    String user2 = users[1];
-                    Double scoreWrapper = doc.getDouble(key);
-
-                    if (scoreWrapper == null) {
-                        System.out.println("Null score for key: " + key);
-                        continue;
-                    }
-
-                    double score = scoreWrapper.doubleValue();
-                    if (user1.equals(username) || user2.equals(username)) {
-                        String otherUser = user1.equals(username) ? user2 : user1;
-                        User similarUser = getUser(otherUser);
-                        if (similarUser != null) {
-                            userSimilarities.add(new AbstractMap.SimpleEntry<>(similarUser, score));
-                        }
-                    }
-                }
-            }
-
-            userSimilarities.sort((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()));
-
-            Map<User, Double> topNUsers = userSimilarities.stream()
-                    .limit(N)
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-            System.out.println("Found similar users for " + username + ": " + topNUsers.size());
-            return topNUsers;
-        }
-        System.out.println("Document does not exist for user: " + user.getUsername());
-        return new HashMap<>();
+        return facade.getMap(user,acct,N);
     }
 
 

@@ -60,7 +60,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         formPanel.add(logoLabel, gbc);
 
         JLabel title = new JLabel("GYMULI");
-        title.setFont(new Font("Arial", Font.BOLD, 24));
+        title.setFont(new Font("Tahoma", Font.BOLD, 24));
         title.setHorizontalAlignment(SwingConstants.CENTER);
 
         gbc.gridy = 1;

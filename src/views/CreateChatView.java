@@ -35,7 +35,7 @@ public class CreateChatView extends JPanel implements PropertyChangeListener {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         JLabel title = new JLabel("Create Chat", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 24));
+        title.setFont(new Font("Tahoma", Font.BOLD, 24));
         add(title, BorderLayout.NORTH);
 
         gbc.gridx = 0;

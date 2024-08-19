@@ -66,7 +66,7 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
         this.ChatCollection = mongoConnection.getChatCollection();
         this.UserCollection = mongoConnection.getUserCollection();
         this.userDataAccessObject = userDataAccessObject;
-        this.facade = new Facade(mongoConnection);
+        this.facade = new Facade();
 
         try (MongoCursor<Document> chatCursor = ChatCollection.find().iterator()) {
             while (chatCursor.hasNext()) {
