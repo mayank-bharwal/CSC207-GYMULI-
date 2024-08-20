@@ -53,4 +53,8 @@ Open the cluster and check the DATABASE GYMULI.
 Also if the app does not run because of a MongoSocket error just open mongoDB and it should prompt you to add the IP adress to mongo. This issue is fixed it should not happen but just in case.
 
 These are the existing users.
+username: ishaan pwd: test
+username: umertest5  pwd: test5
+
+you can browse the database for more users.
 
