@@ -67,7 +67,7 @@ public class UpdateProfileView  extends JPanel implements ActionListener, Proper
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel titleLabel = new JLabel(UpdateProfileViewModel.TITLE_LABEL, JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
         titleLabel.setPreferredSize(new Dimension(800, 40));
         this.add(titleLabel, BorderLayout.NORTH);
 

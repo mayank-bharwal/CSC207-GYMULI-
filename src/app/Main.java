@@ -82,21 +82,28 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 public class Main {
 
+    /**
+     * The main entry point of the application.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
 
-
+        // Create the main application window.
         JFrame application = new JFrame("GYMULI");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setPreferredSize(new Dimension(1000, 800));
 
+        // Create a CardLayout to manage different views in the application.
         CardLayout cardLayout = new CardLayout();
-
         JPanel views = new JPanel(cardLayout);
         application.add(views);
 
+        // Initialize the ViewModelManager.
         ViewModelManager viewModelManager = new ViewModelManager();
         new ViewManager(views, cardLayout, viewModelManager);
 
+        // Initialize ViewModels
         LoginViewModel loginViewModel = new LoginViewModel();
         SignupViewModel signupViewModel = new SignupViewModel();
         CreateChatViewModel createChatViewModel = new CreateChatViewModel();
@@ -104,25 +111,24 @@ public class Main {
         RecommendationsViewModel recommendationsViewModel = new RecommendationsViewModel();
         RefreshUserViewModel refreshUserViewModel = new RefreshUserViewModel();
 
+        // Set up MongoDB connection and DAOs.
         MongoConnection mongoConnection = new MongoConnection();
-
         UserFactory userFactory = new CommonUserFactory();
         UserDataAccessObject userDataAccessObject = new UserDataAccessObject(userFactory, new HashMap<>(), mongoConnection);
         ChatDataAccessObject chatDataAccessObject = new ChatDataAccessObject(mongoConnection, new HashMap<>(), new MessageFactory(), new HashMap<>(), new ChatFactory(), userDataAccessObject);
 
-
+        // Setup for Signup and Login views
         AccountCreationOutputBoundary accountCreationOutputBoundary = new SignupPresenter(viewModelManager, signupViewModel, loginViewModel);
         AccountCreationInputBoundary accountCreationInputBoundary = new AccountCreationInteractor(userDataAccessObject, accountCreationOutputBoundary, userFactory);
-
         SignupView signupView = SignupViewFactory.create(viewModelManager, loginViewModel, signupViewModel, accountCreationInputBoundary);
         views.add(signupView, signupView.viewName);
 
         LoginOutputBoundary loginOutputBoundary = new LoginPresenter(loginViewModel, viewModelManager);
         LoginInputBoundary loginInputBoundary = new LoginInteractor(loginOutputBoundary, userDataAccessObject);
-
         LoginView loginView = LoginViewFactory.create(viewModelManager, loginViewModel, loginInputBoundary);
         views.add(loginView, loginView.viewName);
 
+        // Setup for main application views
         RetrieveChatViewModel retrieveChatViewModel = new RetrieveChatViewModel();
         RetrieveChatPresenter retrieveChatPresenter = new RetrieveChatPresenter(retrieveChatViewModel);
         RetrieveChatInputBoundary retrieveChatInteractor = new RetrieveChatInteractor(retrieveChatPresenter, chatDataAccessObject);
@@ -138,6 +144,7 @@ public class Main {
         MainView mainView = MainViewFactory.create(viewModelManager, retrieveChatController, userDataAccessObject, deleteChatController);
         views.add(mainView, MainView.viewName);
 
+        // Setup for chat-related views
         SendMessageViewModel sendMessageViewModel = new SendMessageViewModel();
         SendMessagePresenter sendMessagePresenter = new SendMessagePresenter(sendMessageViewModel);
         SendMessageInteractor sendMessageInteractor = new SendMessageInteractor(chatDataAccessObject, sendMessagePresenter, new MessageFactory());
@@ -146,6 +153,7 @@ public class Main {
         ChatView chatView = ChatViewFactory.create(viewModelManager, sendMessageController, sendMessageViewModel, retrieveChatViewModel);
         views.add(chatView, ChatView.viewName);
 
+        // Setup for creating and updating chat views
         CreateChatPresenter createChatPresenter = new CreateChatPresenter(createChatViewModel);
         MakeChatInputBoundary makeChatInputBoundary = new MakeChatInteractor(chatDataAccessObject, createChatPresenter, new ChatFactory());
         CreateChatView createChatView = CreateChatViewFactory.create(viewModelManager, createChatViewModel, makeChatInputBoundary);
@@ -156,7 +164,7 @@ public class Main {
         UpdateProfileView updateProfileView = UpdateProfileViewFactory.create(viewModelManager, updateProfileViewModel, updateProfileInputBoundary);
         views.add(updateProfileView, UpdateProfileView.viewName);
 
-
+        // Setup for managing friends views
         AddFriendsViewModel addFriendsViewModel = new AddFriendsViewModel();
         AddFriendsPresenter addFriendsPresenter = new AddFriendsPresenter(addFriendsViewModel);
         AddFriendsInputBoundary addFriendsInteractor = new AddFriendsInteractor(addFriendsPresenter, userDataAccessObject);
@@ -175,6 +183,7 @@ public class Main {
                 removeFriendsController, addFriendsController, refreshUserController, userDataAccessObject);
         views.add(friendsView, EditFriendsView.viewName);
 
+        // Setup for user search and recommendation views
         SearchUserViewModel searchUserViewModel = new SearchUserViewModel();
         SearchUserOutputBoundary searchUserOutputBoundary = new SearchUserPresenter(searchUserViewModel);
         SearchUserInputBoundary searchUserInputBoundary = new SearchUserInteractor(searchUserOutputBoundary, userDataAccessObject);
@@ -186,14 +195,18 @@ public class Main {
         RecommendationView recommendationView = RecommendationViewFactory.create(viewModelManager, addFriendsController, recommendationsController, recommendationsViewModel, searchUserController, searchUserViewModel, addFriendsViewModel);
         views.add(recommendationView, RecommendationView.viewName);
 
+        // Setup for the profile view
         ProfileView profileView = ProfileViewFactory.create(viewModelManager);
         views.add(profileView, ProfileView.viewName);
 
+        // Set the initial active view to the login view.
         viewModelManager.setActiveView(loginView.viewName);
         viewModelManager.firePropertyChanged();
 
+        // Start the user data access object timer.
         userDataAccessObject.startTimer();
 
+        // Finalize and display the application window.
         application.pack();
         application.setVisible(true);
     }

@@ -54,7 +54,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         usernamePanel.setOpaque(false);
 
         JLabel atSymbolLabel = new JLabel("@");
-        atSymbolLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        atSymbolLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
 
         usernameLabel = createLabel(Font.BOLD, 24);
 
@@ -106,7 +106,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         programOfStudyLabel = createLabel(Font.PLAIN, 14);
 
         JLabel separator = new JLabel("|");
-        separator.setFont(new Font("Arial", Font.PLAIN, 14));
+        separator.setFont(new Font("Tahoma", Font.PLAIN, 14));
 
         GridBagConstraints gbcInfo = new GridBagConstraints();
         gbcInfo.insets = new Insets(0, 0, 0, 5);
@@ -151,7 +151,7 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
     private JLabel createLabel(int fontStyle, int fontSize) {
         JLabel label = new JLabel();
-        label.setFont(new Font("Arial", fontStyle, fontSize));
+        label.setFont(new Font("Tahoma", fontStyle, fontSize));
         return label;
     }
 

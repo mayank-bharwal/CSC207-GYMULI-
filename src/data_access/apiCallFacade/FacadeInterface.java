@@ -11,5 +11,5 @@ public interface FacadeInterface {
     public void UpdateDB(User user, Map<String, User> accounts);
     public String filter(String text);
     public void use_paid(boolean use_paid);
-    public Document getDocument(User user, Map<String, User> accounts);
+    public Map<User, Double> getMap(User user,Map<String,User> accounts, int n);
 }

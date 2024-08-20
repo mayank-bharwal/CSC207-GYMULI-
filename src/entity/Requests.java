@@ -1,8 +1,6 @@
 package entity;
 
 
-
-
 /**
  * The Requests class represents a friend request from one user to the other, and contains the request sender and the request receiver
  */
