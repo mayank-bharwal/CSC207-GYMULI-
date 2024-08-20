@@ -20,7 +20,6 @@ Key features include:
 1. Download the ZIP file of the repository by clicking on the green code button.
 2. You can clone it and it would prompt you to add Maven dependancy. Do that, the project uses Maven.
 3. In your IDE of choice, navigate to the "Main" class in the app subfolder of src and press the run button.
-4. The Recommendation use case is implemented on console for Phase1, please UserDataAccessObject.main() to check it.
 
 ## File Structure
 
@@ -31,12 +30,16 @@ The repo is structured as:
 -   `test` contains the test directory.
 
 ## How to make it work
-1. Go to sign up and create a user.
+1. Go to sign up and create a user. You may need to maximise the screen.
 2. Log in with that user.
 3. You can create a chat using an existing user.
 4. You can send messages by clicking on the chat.
-5. Currently we dont have the implementation for the other user to instantly see a created chat. For that you would have to run the app again.
-6. Otherwise everything else is working perfectly. The two similarusers can send messages and  the messages are rendered in the chat instantly.
+5. You can also find recommendations and search a user in the search user view. You can add friends in that view.
+6. There is also a friends view which shows you all you friends.
+7. You can also shift to dark mode by clicking on the toggle dark mode button.
+8. By clicking on the profile button you can view your profile and also update your profile.
+9. Enjoy!
+
 
 ## MongoDB credentials to check the Database
 https://www.mongodb.com
@@ -49,6 +52,5 @@ Database -> Browse Collections -> GYMULI
 Open the cluster and check the DATABASE GYMULI.
 Also if the app does not run because of a MongoSocket error just open mongoDB and it should prompt you to add the IP adress to mongo. This issue is fixed it should not happen but just in case.
 
-These are the existing similarusers.
-username: test1 pwd:test1
-username: test2 pwd:test2
+These are the existing users.
+
