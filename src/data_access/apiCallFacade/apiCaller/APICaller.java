@@ -15,7 +15,7 @@ public class APICaller implements APICallerInterface {
             .readTimeout(60, TimeUnit.SECONDS)
             .build();
 
-    private boolean use_paid = false;
+    private boolean use_paid = true;
 
     @Override
     public float getSimilarityScore(String text1, String text2) {

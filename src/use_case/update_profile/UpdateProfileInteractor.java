@@ -7,10 +7,24 @@ import entity.UserFactory;
 import java.util.List;
 import java.util.Objects;
 
+
+/**
+ * Interactor for the Update Profile use case, responsible for processing and validating
+ * the input data and coordinating with the output boundary and data access interfaces.
+ * Implements the UpdateProfileInputBoundary.
+ */
+
 public class UpdateProfileInteractor implements UpdateProfileInputBoundary {
 
     private UpdateProfileUserDataAccessInterface updateProfileUserDataAccessInterface;
     private UpdateProfileOutputBoundary updateProfileOutputBoundary;
+
+    /**
+     * Constructs an UpdateProfileInteractor with the provided data access and output boundary interfaces.
+     *
+     * @param updateProfileUserDataAccessInterface  The interface to access user data for updating the profile.
+     * @param updateProfileOutputBoundary          The interface to handle the output of the update profile operation.
+     */
 
 
     public UpdateProfileInteractor(UpdateProfileUserDataAccessInterface updateProfileUserDataAccessInterface,
@@ -20,6 +34,14 @@ public class UpdateProfileInteractor implements UpdateProfileInputBoundary {
         this.updateProfileUserDataAccessInterface = updateProfileUserDataAccessInterface;
 
     }
+
+    /**
+     * Executes the update profile operation. Validates the input data and interacts with the
+     * data access layer to update the user's profile. Depending on the outcome, the success
+     * or failure view is prepared via the output boundary.
+     *
+     * @param updateProfileInputData The input data required to update the user's profile.
+     */
 
 
     @Override
