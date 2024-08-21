@@ -118,19 +118,6 @@ public class UserDataAccessObject implements AccountCreationUserDataAccessInterf
 
          return cU;
 
-
-
-//         user.setUsername(username);
-//         user.setPassword(password);
-//         user.setBio(bio);
-//         user.setAge(age);
-//         user.setProgramOfStudy(programOfStudy);
-//         user.setInterests(interests);
-//         user.setFriends(friends);
-//         user.setChats(chats);
-//         user.setDateCreated(dateCreated);
-
-
      }
 
 

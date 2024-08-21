@@ -164,36 +164,6 @@ public class ChatDataAccessObject implements RetrieveChatUserDataAccessInterface
 
 
 
-
-//        List<Document> msgL = new ArrayList<>();
-//        List<String> msgs = new ArrayList<>();
-//
-//
-//
-//        for (Document chatDocument : chatDocuments) {
-//            // Extract the list of message documents
-//             msgL = (List<Document>) chatDocument.get("allMessages");
-//
-//        }
-//
-//        for (Document msg: msgL) {
-//
-//            String msgChatName = msg.getString("chatName");
-//            String sender = msg.getString("username");
-//            String receiver = msg.getString("receiver");
-//            String messageText = msg.getString("message");
-//            Date sendDate = msg.getDate("dateCreated");
-//            LocalDateTime dateCreatedM = LocalDateTime.ofInstant(sendDate.toInstant(), ZoneId.systemDefault());
-//            Message m = messageFactory.createMessage(msgChatName, sender, receiver, messageText, dateCreatedM);
-//
-//            chats.get(chatName).getAllmessages().add(m);
-//
-//        }
-//
-//        return chats.get(chatName);
-
-
-
     }
 
     @Override
