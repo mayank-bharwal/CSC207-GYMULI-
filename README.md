@@ -40,21 +40,5 @@ The repo is structured as:
 8. By clicking on the profile button you can view your profile and also update your profile.
 9. Enjoy!
 
-
-## MongoDB credentials to check the Database
-https://www.mongodb.com
-
-Username- umer.farooqui@mail.utoronto.ca
-password -RealMadrid123Canon
-
-
-Database -> Browse Collections -> GYMULI
-Open the cluster and check the DATABASE GYMULI.
-Also if the app does not run because of a MongoSocket error just open mongoDB and it should prompt you to add the IP adress to mongo. This issue is fixed it should not happen but just in case.
-
-These are the existing users.
-username: ishaan pwd: test
-username: umertest5  pwd: test5
-
 you can browse the database for more users.
 
