@@ -90,7 +90,7 @@ public class Main {
     public static void main(String[] args) {
 
         // Create the main application window.
-        JFrame application = new JFrame("GYMULI");
+        JFrame application = new JFrame("YapYap");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setPreferredSize(new Dimension(1000, 800));
 
